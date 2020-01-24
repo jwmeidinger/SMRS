@@ -1,2 +1,2 @@
 # SMRS
-Standardized Metrics Reporting and storage
+Standardized Metrics Reporting and Storage
