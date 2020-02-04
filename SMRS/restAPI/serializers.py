@@ -1,38 +1,38 @@
 from rest_framework import serializers
-from restAPI.models import Team, Project, Engineer, Review, Defect, Tool, Activity
+from restAPI.models import Team, Project, Engineer, Review, Defect, PhaseType, ProjectNumber
 
 
 class TeamSerializer(serializers.ModelSerializer):
     class Meta:
         model  = Team
-        fields = ('id','team_title','team_projectid')
+        fields = ('id','name',)
 
 class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model  = Project
-        fields = ('id','project_title')
+        fields = ('id','name','productOwner','teamID')
 
 class EngineerSerializer(serializers.ModelSerializer):
     class Meta:
         model  = Engineer
-        fields = ('id','engineer_firstname','engineer_teamid')
+        fields = ('id','name','racf','teamID')
 
 class ReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model  = Review
-        fields = ('id','review_title','review_defectid','review_projectid','review_toolid')
+        fields = ('id','dateOpened','dateClosed','projectID','whereFound','tag','severity','url')
 
 class DefectSerializer(serializers.ModelSerializer):
     class Meta:
         model  = Defect
-        fields = ('id','defect_title','defect_employeeid','defect_projectid','defect_toolid')
+        fields = ('id','dateOpened','dateClosed','projectID','whereFound','tag','severity','url')
 
-class ToolSerializer(serializers.ModelSerializer):
+class PhaseTypeSerializer(serializers.ModelSerializer):
     class Meta:
-        model  = Tool
-        fields = ('id','tool_name')
+        model  = PhaseType
+        fields = ('id','phase_type')
 
-class ActivitySerializer(serializers.ModelSerializer):
+class ProjectNumberSerializer(serializers.ModelSerializer):
     class Meta:
-        model  = Activity
-        fields = ('id','activity_type')
+        model  = ProjectNumber
+        fields = ('id','number', 'projectID')

@@ -5,11 +5,12 @@ from rest_framework import routers
 from restAPI.views import (
     TeamView,
     ProjectView,
-    ToolView,
     DefectView,
     EngineerView,
     ReviewView,
-    ActivityView,)
+    ProjectNumberView,
+    PhaseTypeView,
+)
 
 app_name = 'restAPI'
 
@@ -19,8 +20,8 @@ router.register('Project', ProjectView)
 router.register('Engineer', EngineerView)
 router.register('Review', ReviewView)
 router.register('Defect', DefectView)
-router.register('Activity', ActivityView)
-router.register('Tool', ToolView)
+router.register('ProjectNumber', ProjectNumberView)
+router.register('PhaseType', PhaseTypeView)
 
 urlpatterns = [
     path('', include(router.urls)),

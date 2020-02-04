@@ -1,59 +1,75 @@
 from django.db import models
 
 
+MajorMinorChoices = [
+    ('Minor', 'Minor'),
+    ('Major', 'Major'),
+]
+
+
 ## Django creates the ID Automaticly  
 
-class Project (models.Model):
-    project_title           = models.CharField(max_length=25)
-    project_description     = models.CharField(max_length=200)
+class PhaseType (models.Model):
+    phase_type               = models.CharField(max_length=25) # type can't be used need to be renamed
     
     def __str__(self):
-        return self.project_title
+        return self.phase_type
 
-
-class Tool (models.Model):
-    tool_name               = models.CharField(max_length=25)
-    
-    def __str__(self):
-        return self.tool_name
 
 class Team (models.Model):
-    team_title              = models.CharField(max_length=25)
-    team_projectid          = models.ManyToManyField(Project)
+    name                     = models.CharField(max_length=25)
 
     def __str__(self):
-        return self.team_title
+        return self.name
 
 
 class Engineer (models.Model):
-    engineer_firstname      = models.CharField(max_length=25) 
-    engineer_teamid         = models.ForeignKey(Team, on_delete=models.CASCADE)
+    name                    = models.CharField(max_length=30) 
+    racf                    = models.CharField(max_length=30) 
+    teamID                  = models.ForeignKey(Team, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.engineer_firstname
+        return self.name
+
+
+class Project (models.Model):
+    name                    = models.CharField(max_length=25)
+    productOwner            = models.ForeignKey(Engineer, on_delete=models.CASCADE)
+    teamID                  = models.ForeignKey(Team, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
 
 
 class Defect (models.Model):
-    defect_title            = models.CharField(max_length=25)
-    defect_employeeid       = models.ForeignKey(Engineer, on_delete=models.CASCADE)
-    defect_projectid        = models.ForeignKey(Project, on_delete=models.CASCADE)
-    defect_toolid           = models.ForeignKey(Tool, on_delete=models.CASCADE)
+    dateOpened              = models.DateField(auto_now=False, auto_now_add=False)
+    dateClosed              = models.DateField(blank=True, null=True)
+    projectID               = models.ForeignKey(Project, on_delete=models.CASCADE)
+    whereFound              = models.ForeignKey(PhaseType, on_delete=models.CASCADE)
+    tag                     = models.CharField(max_length=50)
+    severity                = models.CharField(choices=MajorMinorChoices,max_length=25)
+    url                     = models.URLField(max_length=200)
 
     def __str__(self):
-        return self.defect_title
-
-class Activity (models.Model):
-    activity_type           = models.CharField(max_length=25, null=False, blank=False, unique=True) # switch this to selection later
-
-    def __str__(self):
-        return self.activity_type
+        return self.tag
 
 
 class Review (models.Model):
-    review_title            = models.CharField(max_length=25)
-    review_defectid         = models.ManyToManyField(Defect)
-    review_toolid           = models.ForeignKey(Tool, on_delete=models.CASCADE)
-    review_projectid        = models.ForeignKey(Project, on_delete=models.CASCADE)
+    dateOpened              = models.DateField(auto_now=False, auto_now_add=False)
+    dateClosed              = models.DateField(blank=True, null=True)
+    projectID               = models.ForeignKey(Project, on_delete=models.CASCADE)
+    whereFound              = models.ForeignKey(PhaseType, on_delete=models.CASCADE)
+    tag                     = models.CharField(max_length=50)
+    severity                = models.CharField(choices=MajorMinorChoices,max_length=25)
+    url                     = models.URLField(max_length=200)
 
     def __str__(self):
-        return self.review_title
+        return self.tag
+
+
+class ProjectNumber (models.Model):
+    number              = models.IntegerField()
+    projectID           = models.ForeignKey(Project, on_delete=models.CASCADE)
+    
+    def __str__(self):
+        return str(self.number)
