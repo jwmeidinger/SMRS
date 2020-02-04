@@ -6,7 +6,6 @@ MajorMinorChoices = [
     ('Major', 'Major'),
 ]
 
-
 ## Django creates the ID Automaticly  
 
 class PhaseType (models.Model):
