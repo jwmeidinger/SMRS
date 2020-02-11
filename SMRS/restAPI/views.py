@@ -1,12 +1,12 @@
 from django.shortcuts import render
 from rest_framework import viewsets
 
-from restAPI.models import Team, Project, Engineer, Review, Defect, ProjectNumber, PhaseType
+from restAPI.models import Project, Review, Defect, ProjectNumber, PhaseType
+from account.models import Team
 from restAPI.serializers import(
-TeamSerializer, ProjectSerializer, 
-EngineerSerializer, ReviewSerializer,
-DefectSerializer, ProjectNumberSerializer,
-PhaseTypeSerializer,)
+TeamSerializer, ProjectSerializer,
+ReviewSerializer,DefectSerializer,
+ProjectNumberSerializer, PhaseTypeSerializer,)
 
 
 class TeamView(viewsets.ModelViewSet):
@@ -16,10 +16,6 @@ class TeamView(viewsets.ModelViewSet):
 class ProjectView(viewsets.ModelViewSet):
     queryset            = Project.objects.all()
     serializer_class    = ProjectSerializer
-
-class EngineerView(viewsets.ModelViewSet):
-    queryset            = Engineer.objects.all()
-    serializer_class    = EngineerSerializer
 
 class ReviewView(viewsets.ModelViewSet):
     queryset            = Review.objects.all()

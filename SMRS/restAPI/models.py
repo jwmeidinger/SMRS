@@ -1,6 +1,8 @@
 from django.db import models
 
 
+import account.models as model
+
 MajorMinorChoices = [
     ('Minor', 'Minor'),
     ('Major', 'Major'),
@@ -15,26 +17,10 @@ class PhaseType (models.Model):
         return self.phase_type
 
 
-class Team (models.Model):
-    name                     = models.CharField(max_length=25)
-
-    def __str__(self):
-        return self.name
-
-
-class Engineer (models.Model):
-    name                    = models.CharField(max_length=30) 
-    racf                    = models.CharField(max_length=30) 
-    teamID                  = models.ForeignKey(Team, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.name
-
-
 class Project (models.Model):
     name                    = models.CharField(max_length=25)
-    productOwner            = models.ForeignKey(Engineer, on_delete=models.CASCADE)
-    teamID                  = models.ForeignKey(Team, on_delete=models.CASCADE)
+    productOwner            = models.ForeignKey(model.Account, null = True, blank = True, on_delete=models.CASCADE)
+    teamID                  = models.ForeignKey(model.Team, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
@@ -45,9 +31,9 @@ class Defect (models.Model):
     dateClosed              = models.DateField(blank=True, null=True)
     projectID               = models.ForeignKey(Project, on_delete=models.CASCADE)
     whereFound              = models.ForeignKey(PhaseType, on_delete=models.CASCADE)
-    tag                     = models.CharField(max_length=50)
+    tag                     = models.CharField(max_length=50) ## change to uniq
     severity                = models.CharField(choices=MajorMinorChoices,max_length=25)
-    url                     = models.URLField(max_length=200)
+    url                     = models.URLField(max_length=200) ## change to uniq
 
     def __str__(self):
         return self.tag
@@ -58,9 +44,9 @@ class Review (models.Model):
     dateClosed              = models.DateField(blank=True, null=True)
     projectID               = models.ForeignKey(Project, on_delete=models.CASCADE)
     whereFound              = models.ForeignKey(PhaseType, on_delete=models.CASCADE)
-    tag                     = models.CharField(max_length=50)
+    tag                     = models.CharField(max_length=50) ## change to uniq
     severity                = models.CharField(choices=MajorMinorChoices,max_length=25)
-    url                     = models.URLField(max_length=200)
+    url                     = models.URLField(max_length=200) ## change to uniq
 
     def __str__(self):
         return self.tag

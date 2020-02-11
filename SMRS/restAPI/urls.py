@@ -6,7 +6,6 @@ from restAPI.views import (
     TeamView,
     ProjectView,
     DefectView,
-    EngineerView,
     ReviewView,
     ProjectNumberView,
     PhaseTypeView,
@@ -17,7 +16,6 @@ app_name = 'restAPI'
 router = routers.DefaultRouter()
 router.register('Team', TeamView)
 router.register('Project', ProjectView)
-router.register('Engineer', EngineerView)
 router.register('Review', ReviewView)
 router.register('Defect', DefectView)
 router.register('ProjectNumber', ProjectNumberView)

@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from restAPI.models import Team, Project, Engineer, Review, Defect, PhaseType, ProjectNumber
+from restAPI.models import Project, Review, Defect, PhaseType, ProjectNumber
+from account.models import Team
 
 
 class TeamSerializer(serializers.ModelSerializer):
@@ -12,10 +13,6 @@ class ProjectSerializer(serializers.ModelSerializer):
         model  = Project
         fields = ('id','name','productOwner','teamID')
 
-class EngineerSerializer(serializers.ModelSerializer):
-    class Meta:
-        model  = Engineer
-        fields = ('id','name','racf','teamID')
 
 class ReviewSerializer(serializers.ModelSerializer):
     class Meta:
@@ -36,3 +33,13 @@ class ProjectNumberSerializer(serializers.ModelSerializer):
     class Meta:
         model  = ProjectNumber
         fields = ('id','number', 'projectID')
+
+
+### this will be used if they would like to view the foreign key as the name instead of the primary key
+"""
+def to_representation(self, instance):
+    ###Convert `username` to lowercase.
+    ret = super().to_representation(instance)
+    ret['username'] = ret['username'].lower()
+    return ret
+"""
