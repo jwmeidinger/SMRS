@@ -3,7 +3,7 @@ from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.forms import UserCreationForm
 from account.models import Account, Team
 
-# Used to creat users in the Admin
+# Used to create users in the Admin
 class UserCreateForm(UserCreationForm):
     class Meta:
         model = Account

@@ -1,5 +1,3 @@
-## Author: Jordan Meidinger
-## Date: Fall 2019
 
 from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
@@ -33,7 +31,7 @@ class MyAccountManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_staffuser(self, email, name, racf,password):
+    def create_staffuser(self, email, name, racf, password):
         # Creates and saves a staff user with the given email and password
         user = self.create_user(
             email = self.normalize_email(email),
@@ -84,17 +82,18 @@ class Account(AbstractBaseUser):
     # Uses the Class above to create new Users
     objects = MyAccountManager()
 
-    # The user will ID with their email
+    # If we want to get the users name
     def get_full_name(self):
         return self.name
     
-    # The user will ID with their email
+    # The user email
     def get_email(self):
         return self.email
 
     def __str__(self):
         return self.email
 
+    # Check if user is Admin
     def has_perm(self, perm, obj=None):
         return self.is_admin
 

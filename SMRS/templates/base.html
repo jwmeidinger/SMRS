@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>SMRS</title>
+  
+  <!-- this is for later ..... currently used for Bootstrap --> {% include 'snippets/header.html' %}
+  
+</head>
+
+<body>
+
+  <!-- This allows the footer to be on the bottom always -->
+  <style type = "text/css">
+    .main{
+      min-height: 100vh;
+      height: 100%;
+    }
+  </style>
+  <div class="main">
+    {% block content %} 
+
+    This is replaced
+
+    {% endblock %}
+  </div>
+
+
+
+
+<!-- this is for later --> {% include 'snippets/footer.html' %}
+</body>
+
+</html>

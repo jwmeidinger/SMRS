@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% include 'snippets/formCss.html' %}
+
+<form class="form-signin" method="post">{% csrf_token %}
+  <h1 class="h3 mb-3 font-weight-normal">Register</h1>
+  <input type="email" name="email" class="form-control" placeholder="Email address" required autofocus>
+  <input type="text" name="name"  class="form-control" placeholder="Name" required autofocus>
+  <input type="text" name="racf" class="form-control" placeholder="RACF" required autofocus>
+    {% for field in registation_form %}
+        {% if field.name == "teamid"%}
+        <input list="teamid" name='teamid' class="form-control" placeholder='Team ID' >
+            <datalist id="teamid" >
+            {% for choice_id, choice_label in field.field.choices %}
+                <option value="{{choice_id}}">{{choice_label}}</option>
+            {% endfor %}
+            </datalist> 
+        {% endif %} 
+    {% endfor %}
+  <input type="password" name="password1" class="form-control" placeholder="Password" required>
+  <input type="password" name="password2" class="form-control" placeholder="Re-type Password" required>
+     {% if registation_form.errors %}
+        {% for field in registation_form %}
+            {% for error in field.errors %}
+                <div class="alert alert-danger">
+                    <strong> {{error|escape}} </strong>
+                </div>
+            {% endfor %}
+        {% endfor %}
+        {% for error in registation_form.non_field_errors %}
+            <strong> {{error|escape}} </strong>
+        {% endfor %}
+    {% endif %}  
+
+  <button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
+
+</form>
+
+{% endblock content %}
