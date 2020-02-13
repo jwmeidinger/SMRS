@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from restAPI.models import Project, Review, Defect, PhaseType, ProjectNumber
-from account.models import Team
+from account.models import Team , Account
 
 
 class TeamSerializer(serializers.ModelSerializer):
@@ -33,6 +33,11 @@ class ProjectNumberSerializer(serializers.ModelSerializer):
     class Meta:
         model  = ProjectNumber
         fields = ('id','number', 'projectID')
+        
+class UserSerializer(serializers.ModelSerializer):
+   class Meta:
+        model = Account
+        fields = ('name',)
 
 
 ### this will be used if they would like to view the foreign key as the name instead of the primary key
