@@ -9,6 +9,7 @@ from restAPI.views import (
     ReviewView,
     ProjectNumberView,
     PhaseTypeView,
+    UserView
 )
 
 app_name = 'restAPI'
@@ -20,6 +21,7 @@ router.register('Review', ReviewView)
 router.register('Defect', DefectView)
 router.register('ProjectNumber', ProjectNumberView)
 router.register('PhaseType', PhaseTypeView)
+router.register('Users',UserView)
 
 urlpatterns = [
     path('', include(router.urls)),
