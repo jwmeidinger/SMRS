@@ -1,0 +1,40 @@
+body{
+  background-color: #66666630;
+}
+
+header{
+  background-color: #88882230;
+  display: flex;
+
+    /* justify-content: space-between; */
+    justify-content: space-around;
+}
+
+header >*{
+
+
+}
+
+header nav{
+  display: flex;
+  padding: 1em;
+}
+
+
+header nav a{
+  padding-left: 1em;
+  padding-right: 1em;
+}
+
+#primaryContent{
+  border: .5em solid black;
+  padding: 1em;
+  /* display: flex; */
+
+}
+
+.soloItem{
+  padding: 2px;
+  border: 1px solid black
+
+}
