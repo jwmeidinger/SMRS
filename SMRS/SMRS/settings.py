@@ -38,8 +38,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # Open Source apps
     'rest_framework',
     'rest_framework.authtoken',
+    # Team made apps
     'restAPI',
     'account',
     
