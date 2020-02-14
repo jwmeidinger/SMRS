@@ -38,13 +38,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
-    # Downloaded apps
-    'rest_framework', # Found here: https://www.django-rest-framework.org/
-
-    # Created but Team apps
+    'rest_framework',
+    'rest_framework.authtoken',
     'restAPI',
     'account',
+    
 ]
 
 MIDDLEWARE = [
@@ -129,3 +127,5 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
