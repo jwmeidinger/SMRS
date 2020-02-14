@@ -9,6 +9,12 @@ import requests
 #print(r.text)
 
 #Delete Team
-item = '7' ## remember to change the ID of team you want to change
-r = requests.delete('http://127.0.0.1:8000/restAPI/Team/{}'.format(item))
+#item = '7' ## remember to change the ID of team you want to change
+#r = requests.delete('http://127.0.0.1:8000/restAPI/Team/{}'.format(item))
+#print(r.text)
+
+#Get information from authtoken
+data = {'username':'admin@smrs.com',
+        'password':'pass'}
+r = requests.post('http://127.0.0.1:8000/restAPI/auth-token/',data = data )
 print(r.text)
