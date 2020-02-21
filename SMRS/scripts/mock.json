@@ -1,0 +1,27 @@
+{
+    "Users": {
+        "1": {
+            "name": "Jordan Meidinger",
+            "projects": [
+                {
+                    "name": "tractor"
+                },
+                {
+                    "name": "embedded systems"
+                }
+            ]
+        },
+        "2": {
+            "name": "Jayden",
+            "projects": []
+        },
+        "3": {
+            "name": "Anna",
+            "projects": []
+        },
+        "4": {
+            "name": "Wyly",
+            "projects": []
+        }
+    }
+}
