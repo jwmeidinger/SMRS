@@ -12,7 +12,7 @@ def home_view(request):
     context= {}
     user = request.user
     if user.is_authenticated:
-        context['message'] = 'working'
+        context['message'] = 'YERP'
     return render(request, "account/home.html", context)
 
 '''
