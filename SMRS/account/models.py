@@ -5,15 +5,27 @@ from django.conf import settings
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from rest_framework.authtoken.models import Token
-## Team needs to be in Account app as it is required by the AbstractBaseUser
 
+"""
+*** This file is used to create the Database.
+    It uses Django ORM which allows for easy queries later on
+    Offical : https://docs.djangoproject.com/en/3.0/topics/db/models/
+"""
+
+
+"""
+*** Team needs to be in Account app as it is required by the AbstractBaseUser
+"""
 class Team (models.Model):
     name                     = models.CharField(max_length=25) ## change to uniq
 
     def __str__(self):
         return self.name
 
-
+"""
+*** This Account manager is used to create a new user.
+    The reason this is created as it allows to create different premissions
+"""
 class MyAccountManager(BaseUserManager):
     def create_user(self, email, name, racf, password=None):
         # Creates and saves a User with the given email and password.
@@ -60,6 +72,11 @@ class MyAccountManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
+"""
+*** This Account is the custom user for Django
+    The reason this is created as it allows to create new field such as
+    email, racf, teamid, ect.
+"""
 class Account(AbstractBaseUser):
 
     email = models.EmailField(
@@ -70,7 +87,7 @@ class Account(AbstractBaseUser):
     name                = models.TextField()
     racf                = models.CharField(max_length=30, unique=True)
     teamid              = models.ForeignKey(Team, blank = True, null = True, on_delete=models.CASCADE)
-    ## Items required
+    ## Items required by AbstratctBaseUser
     date_joined         = models.DateTimeField(auto_now_add=True, editable=False)
     last_login          = models.DateTimeField(auto_now=True)
     is_active           = models.BooleanField(default=True)
@@ -103,6 +120,10 @@ class Account(AbstractBaseUser):
     def has_module_perms(self, app_label):
         return True
 
+"""
+*** Generate new Auth token for every new user.
+    You can remove tokens in the admin Portal
+"""
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def create_auth_token(sender, instance=None, created=False, **kwargs):
     if created:

@@ -5,9 +5,14 @@ from account.models import Team
 from account.forms import RegistrationForm, AccountAuthenticationForm
 
 '''
-*** Splash page
+*** This file is used to grab information and put it into the html
+    Main items for each function is Request, Context, and Template
+    Offical : https://docs.djangoproject.com/en/3.0/topics/http/views/
 '''
 
+'''
+*** Splash page
+'''
 def home_view(request):
     context= {}
     user = request.user
@@ -17,6 +22,8 @@ def home_view(request):
 
 '''
 *** Create new account
+    Need to Un-commment in urls and templates/snippets/header.html 
+    If you would like to create new users on the home page
 '''
 def registration_view(request):
     context = {}
