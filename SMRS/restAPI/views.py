@@ -10,6 +10,10 @@ ReviewSerializer,DefectSerializer,
 ProjectNumberSerializer, PhaseTypeSerializer, UserSerializer)
 
 
+##https://www.django-rest-framework.org/api-guide/viewsets/ for full documentation on views
+##Permission class allows for read only or IsAuthenticatedOrReadOnly allowing for only users that have permission to edit 
+##Need to provide at least the queryset and serializer_class attributes
+
 class TeamView(viewsets.ModelViewSet):
     queryset            = Team.objects.all()
     serializer_class    = TeamSerializer
