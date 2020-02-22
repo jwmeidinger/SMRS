@@ -1,11 +1,19 @@
-## Author: Jordan Meidinger
-## Date: Fall 2019
 
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate
 from account.models import Account, Team
 
+"""
+*** This file is used to create Forms
+    It allows for easy validation and database input
+    Offical : https://docs.djangoproject.com/en/3.0/topics/db/models/
+"""
+
+"""
+*** Used to create new users 
+    not implmemented right now as it's not required on homepage.
+"""
 class RegistrationForm(UserCreationForm):
     email = forms.EmailField(max_length=60, help_text='Required. Add a valid email address')
     teamid = forms.ModelChoiceField(queryset=Team.objects.all())
@@ -14,6 +22,9 @@ class RegistrationForm(UserCreationForm):
         model = Account
         fields = ('email', 'name', 'racf', 'teamid','password1', 'password2')
 
+"""
+*** Used to Login 
+"""
 class AccountAuthenticationForm(forms.ModelForm):
     
     password = forms.CharField( widget=forms.PasswordInput)
