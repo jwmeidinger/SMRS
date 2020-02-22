@@ -1,8 +1,13 @@
 from rest_framework import serializers
 from restAPI.models import Project, Review, Defect, PhaseType, ProjectNumber
 from account.models import Team , Account
+##Remeber to import every model you use 
 
 
+##Use your model snippet and Serializer with serializer.ModelSerializer as paramater to create a Model serializer
+##Model has to equal which model you are requiring to serialize
+##Fields allows to show what information from the database you want users to see
+##https://www.django-rest-framework.org/tutorial/1-serialization/ for the full documentation
 class TeamSerializer(serializers.ModelSerializer):
     class Meta:
         model  = Team
