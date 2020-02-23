@@ -39,9 +39,13 @@ qwerty
 ## Installation
 
 How to set it up....
+
 **Step 1 - Download from GitHub:**
+
     How to do that
+    
 **Step 2 - Start the Env:**
+
     How to do that
 
 ## Usage
