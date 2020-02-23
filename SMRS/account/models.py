@@ -8,8 +8,12 @@ from rest_framework.authtoken.models import Token
 
 """
 *** This file is used to create the Database.
-    It uses Django ORM which allows for easy queries later on
+    It uses Django ORM which allows for easy queries later on.
+    Each model is a Python class that subclasses django.db.models.Model.
+    Each field is specified as a class attribute, and each attribute maps to a database column.
+    With all of this, Django gives you an automatically-generated database-access API
     Offical : https://docs.djangoproject.com/en/3.0/topics/db/models/
+    Offical : https://docs.djangoproject.com/en/3.0/ref/models/fields/#common-model-field-options
 """
 
 

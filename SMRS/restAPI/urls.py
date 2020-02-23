@@ -3,6 +3,7 @@ from django.urls import path, include
 from rest_framework import routers
 from rest_framework.authtoken import views
 
+## Import views from the Rest API
 from restAPI.views import (
     TeamView,
     ProjectView,
@@ -12,14 +13,13 @@ from restAPI.views import (
     PhaseTypeView,
     UserView
 )
-##import required views from the Rest API
-
-
-##https://www.django-rest-framework.org/api-guide/routers/ for full documentation on routing
-##There are two mandatory arguments to the register() method: Prefix - The URL prefix to use for this set of routes and viewset - The viewset class.
-
-
-
+"""
+*** This file is used to route all of the API urls.
+    There are two mandatory arguments to the register() method:
+    The URL prefix to use for this set of routes and viewset
+    The viewset class
+    Offical : https://www.django-rest-framework.org/api-guide/routers/
+"""
 
 app_name = 'restAPI'
 
