@@ -1,7 +1,17 @@
 from django.db import models
 
-
 import account.models as model
+
+
+"""
+*** This file is used to create the Database.
+    It uses Django ORM which allows for easy queries later on.
+    Each model is a Python class that subclasses django.db.models.Model.
+    Each field is specified as a class attribute, and each attribute maps to a database column.
+    With all of this, Django gives you an automatically-generated database-access API
+    Offical : https://docs.djangoproject.com/en/3.0/topics/db/models/
+    Offical : https://docs.djangoproject.com/en/3.0/ref/models/fields/#common-model-field-options
+"""
 
 MajorMinorChoices = [
     ('Minor', 'Minor'),
@@ -9,15 +19,6 @@ MajorMinorChoices = [
 ]
 
 ## Django creates the ID Automaticly  
-
-
-
-##https://docs.djangoproject.com/en/3.0/topics/db/models/ For the django full documentation on Models
-##Each model is a Python class that subclasses django.db.models.Model.
-##Each field is specified as a class attribute, and each attribute maps to a database column.
-##With all of this, Django gives you an automatically-generated database-access API
-##Be careful not to choose field names that conflict with the models API like clean, save, or delete.
-##https://docs.djangoproject.com/en/3.0/ref/models/fields/#common-model-field-options this is the reference for the Field Options
 
 class PhaseType (models.Model):
     phase_type               = models.CharField(max_length=25) # type can't be used need to be renamed
