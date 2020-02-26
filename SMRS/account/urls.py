@@ -12,7 +12,7 @@ from .views import (
 """
 app_name = 'account'
 urlpatterns = [
-    #path('register/', registration_view,name='register'), #If you want people to register on the homepage
+    path('register/', registration_view,name='register'), #If you want people to register on the homepage
     path('logout/', logout_view, name='logout'),
     path('login/', login_view, name='login'),
     path('must_authenticate/', must_authenticate, name='must_authenticate'),

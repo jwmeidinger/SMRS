@@ -10,15 +10,8 @@ from account.forms import RegistrationForm, AccountAuthenticationForm
     Offical : https://docs.djangoproject.com/en/3.0/topics/http/views/
 '''
 
-'''
-*** Splash page
-'''
-def home_view(request):
-    context= {}
-    user = request.user
-    if user.is_authenticated:
-        context['message'] = 'YERP'
-    return render(request, "account/home.html", context)
+
+
 
 '''
 *** Create new account
