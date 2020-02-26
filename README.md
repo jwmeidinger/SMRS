@@ -17,21 +17,31 @@
 
 ## Overview
 
-Jayden Put Text here
+This project is part of the John Deere Standaridized Metrics Reporting and Storage project. This project allows a django rest API to obtain reports from variety of repositories ones such as github and Colaborative. Using the rest API to filter this information to a database and making a easy to use application to filter any and all information for John Deere engineers.
 
 ## What's in the API
 
-- Example
-- Example
+The API conists of
+
+-Get request to obtain data from Team, project, Review, Defects, ProjectNumber, PhaseType and User list.
+-Ability to Grant or delete Tokens from an admins privlage.
+-Create request for Authenticated users for selected privilages such as Team manager can create defects or team members.
+-Deletion request for Authenticated users for selected Objects such as Team manager can delete a project.
+-Models to allow creation of fields for Objects with certain field types.
+-Serializers allow reformatting of the objects for our purpose to json but can be formatted to different styles.
+-Views allow for the showing of the projects choicen objects to projected on the page of the application.
+
 
 ## Requirements
 
 The following requirements must be met to use this API:
 
-- A account if you would like to change things
+- Admin super user to allow changes to overall database and to run server
 - Python 3.5 or later
-- Examples..
-
+- All required installs from requirement.txt
+- Processors: Intel Atom® processor or Intel® Core™ i3 processor
+- Disk space: 1 GB
+- Operating systems: Windows* 7 or later, macOS, and Linux
 ## API Key and Credentials
 
 qwerty
@@ -42,11 +52,11 @@ How to set it up....
 
 **Step 1 - Download from GitHub:**
 
-    How to do that
+    Navigate to the Github page that is holding the projects code and click the download button and to edit the codeopen it in         your chosen editor
     
 **Step 2 - Start the Env:**
 
-    How to do that
+    
 
 ## Usage
 
