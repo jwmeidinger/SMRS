@@ -8,10 +8,6 @@ from restAPI.models import Project, Review, Defect, ProjectNumber, PhaseType
 from account.models import Team, Account
 
 
-
-
-
-
 '''
 *** Splash page
 '''
@@ -30,7 +26,6 @@ def home_view(request):
         counts[i] = 0
 
     for defect in defect_values:
-        print(defect)
         counts[defect['whereFound']-1] += 1
 
     #defect_values = [val['phase_type'] for val in list(defects.values('phase_type'))]
