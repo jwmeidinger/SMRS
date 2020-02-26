@@ -9,10 +9,10 @@
   <h5 class="my-0 mr-md-auto font-weight-normal" ><span style="color : green;">SMRS</span></h5>
   <!--  if users is authenticated -->
   {% if  request.user.is_authenticated %}
-  <nav class="my-2 my-md-0 mr-md-3">
+  <nav class="my-2 my-md-0 mr-md-3" >
     <a class="p-2 text-dark" href="{% url 'home' %}">Dashboard</a>
-    <a class="p-2 text-dark" href="#">Team</a>
-    <a class="p-2 text-dark" href="#">Projects</a>
+    <a class="p-2 text-dark" href="{% url 'dashboard:team' %}">Team</a>
+    <a class="p-2 text-dark" href="{% url 'dashboard:project' %}">Projects</a>
     <a class="p-2 text-dark" href="#">User</a>
     <a class="p-2 text-dark" href="http://127.0.0.1:8000/restAPI/">RestAPI</a>  <!--  Needs to be changed -->
   </nav>
