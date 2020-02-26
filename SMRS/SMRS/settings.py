@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     # Team made apps
     'restAPI',
     'account',
+    'dashboard',
     
 ]
 
@@ -110,6 +111,13 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [ #https://www.django-rest-framework.org/api-guide/authentication/
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication', #https://www.django-rest-framework.org/api-guide/authentication/#tokenauthentication
+    ]
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
@@ -127,6 +135,11 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
+STATICFILES_DIR = [
+    os.path.join(BASE_DIR, 'static'),
+]
+
+
 
 STATIC_URL = '/static/'
 

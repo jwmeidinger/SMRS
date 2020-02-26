@@ -9,21 +9,25 @@
   <h5 class="my-0 mr-md-auto font-weight-normal" ><span style="color : green;">SMRS</span></h5>
   <!--  if users is authenticated -->
   {% if  request.user.is_authenticated %}
-  <nav class="my-2 my-md-0 mr-md-3">
-    <a class="p-2 text-dark" href="{% url 'home' %}">Home</a>
+  <nav class="my-2 my-md-0 mr-md-3" >
+    <a class="p-2 text-dark" href="{% url 'home' %}">Dashboard</a>
+    <a class="p-2 text-dark" href="{% url 'dashboard:team' %}">Team</a>
+    <a class="p-2 text-dark" href="{% url 'dashboard:project' %}">Projects</a>
+    <a class="p-2 text-dark" href="#">User</a>
     <a class="p-2 text-dark" href="http://127.0.0.1:8000/restAPI/">RestAPI</a>  <!--  Needs to be changed -->
-    <a class="p-2 text-dark" href="#">Research</a>
-    <a class="p-2 text-dark" href="#">Support</a>
   </nav>
   <a class="btn btn-outline-primary" href="{% url 'account:logout' %}">Logout</a>
 
   {% else %}
   <nav class="my-2 my-md-0 mr-md-3">
-    <a class="p-2 text-dark" href="{% url 'home' %}">Home</a>
-    <a class="p-2 text-dark" href="#">Research</a>
-    <a class="p-2 text-dark" href="{% url 'account:login' %}">Login</a>
+    <a class="p-2 text-dark" href="{% url 'home' %}">Dashboard</a>
+    <a class="p-2 text-dark" href="#">About</a>
   </nav>
-  <a class="btn btn-outline-primary" href="{% url 'account:register' %}">Register</a>
+  <a class="btn btn-outline-primary" href="{% url 'account:login' %}">Login</a>
+
+  <!--  Uncomment this if you want a register on the home page
+      <a class="btn btn-outline-primary" href="{% url 'account:register' %}">Register</a>
+  -->
   {% endif %}
 
 </div>
