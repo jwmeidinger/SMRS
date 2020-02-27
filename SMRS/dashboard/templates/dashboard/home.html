@@ -16,36 +16,37 @@
 
       <div class="soloItem">
         <h3>Solo Item 1</h3>
-        <img class="expandable" src= "#" alt="">
         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-        <div class="graph">
-          <!-- {% autoescape off %} -->
+        <!-- <div class="graph">
           {{ graph|safe }}
-          <!-- {% endautoescape %} -->
+        </div> -->
+        <div class="graph">
+          {{ graph2|safe  }}
         </div>
+
+        <!-- <img class="expandable" src= "{% static 'images/graphPlaceHolder.png' %}" alt=""> -->
       </div>
       <div class="soloItem">
 
-          <h3>Solo Item 2</h3>
-
-          <!-- <div class="graph">
-            {% autoescape off %}
-            {{ graph }}
-            {% endautoescape %}
-          </div> -->
+          <h3>Number of Effects Per Release</h3>
+          <p>Color represents two different projects</p>
+          <div class="graph">
+            {{ graph|safe  }}
+          </div>
 
       </div>
       <div class="soloItem">
 
           <h3>Solo Item 3</h3>
-          <img class="expandable" src="#" alt="">
+          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+
+          <img class="expandable" src="{% static 'images/graphPlaceHolder.png' %}" alt="">
           <!-- <div class="graph">
             {% autoescape off %}
             {{ graph }}
             {% endautoescape %}
           </div> -->
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-        </div>
+          </div>
     </div>
 
   </div>
