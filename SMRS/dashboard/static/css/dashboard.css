@@ -1,0 +1,28 @@
+.expandable{
+  max-width: 300px;
+}
+
+#dashboard{
+  display: flex;
+  flex-wrap: wrap;
+
+}
+
+#dashboard .soloItem .graph{
+  height:600px;
+  /* min-width: 25%; */
+  max-width:100%;
+}
+
+.soloItem{
+
+  width:33%;
+
+}
+
+
+@media only screen and (max-width: 600px) {
+  .soloItem {
+    width:100%;
+  }
+}

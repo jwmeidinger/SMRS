@@ -42,7 +42,8 @@ def home_view(request):
     fig.add_trace(scatter2)
     plt_div = plot(fig, output_type='div', include_plotlyjs=False, show_link=False, link_text="")
     context['graph'] = plt_div
-
+    context['graph2'] = plot(fig, output_type='div', include_plotlyjs=False, show_link=False, link_text="")
+    
     user = request.user
     if user.is_authenticated:
         context['message'] = 'Welcome to the Dashboard'
@@ -62,4 +63,3 @@ def team_view(request):
     if user.is_authenticated:
         team = Team.objects.filter(pk = user.pk)
     return render(request, "dashboard/team.html", context)
-

@@ -1,17 +1,32 @@
-<style type="text/css">
-
-
-
-
-
-.body{
+body{
   background-color: #66666630;
 }
 
+header{
+  background-color: #88882230;
+  display: flex;
+
+    /* justify-content: space-between; */
+    justify-content: space-around;
+}
+
+header >*{
 
 
+}
 
-.primaryContent{
+header nav{
+  display: flex;
+  padding: 1em;
+}
+
+
+header nav a{
+  padding-left: 1em;
+  padding-right: 1em;
+}
+
+#primaryContent{
   border: .5em solid black;
   padding: 1em;
   /* display: flex; */
@@ -69,5 +84,8 @@
 .dropdown:hover .dropbtn {background-color: #3e8e41;}
 
 
+/* TESTs */
+.dashboard{
 
-</style>
+  background-color: red;
+}
