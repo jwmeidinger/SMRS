@@ -4,5 +4,11 @@
 
 #dashboard{
   display: flex;
+  flex-wrap: wrap;
 
+}
+
+#dashboard .soloItem .graph{
+  height:600px;
+  width: 800px;
 }
