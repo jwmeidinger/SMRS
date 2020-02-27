@@ -1,0 +1,8 @@
+.expandable{
+  max-width: 300px;
+}
+
+#dashboard{
+  display: flex;
+
+}
