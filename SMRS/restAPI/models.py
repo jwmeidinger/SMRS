@@ -21,7 +21,7 @@ MajorMinorChoices = [
 ## Django creates the ID Automaticly  
 
 class PhaseType (models.Model):
-    phase_type               = models.CharField(max_length=25) # type can't be used need to be renamed
+    phase_type               = models.CharField(max_length=25)
     
     def __str__(self):
         return self.phase_type
@@ -41,9 +41,9 @@ class Defect (models.Model):
     dateClosed              = models.DateField(blank=True, null=True)
     projectID               = models.ForeignKey(Project, on_delete=models.CASCADE)
     whereFound              = models.ForeignKey(PhaseType, on_delete=models.CASCADE)
-    tag                     = models.CharField(max_length=50) ## change to uniq
+    tag                     = models.CharField(max_length=50, unique=True)
     severity                = models.CharField(choices=MajorMinorChoices,max_length=25)
-    url                     = models.URLField(max_length=200) ## change to uniq
+    url                     = models.URLField(max_length=200, unique=True)
 
     def __str__(self):
         return self.tag
@@ -54,9 +54,9 @@ class Review (models.Model):
     dateClosed              = models.DateField(blank=True, null=True)
     projectID               = models.ForeignKey(Project, on_delete=models.CASCADE)
     whereFound              = models.ForeignKey(PhaseType, on_delete=models.CASCADE)
-    tag                     = models.CharField(max_length=50) ## change to uniq
+    tag                     = models.CharField(max_length=50, unique=True)
     severity                = models.CharField(choices=MajorMinorChoices,max_length=25)
-    url                     = models.URLField(max_length=200) ## change to uniq
+    url                     = models.URLField(max_length=200, unique=True)
 
     def __str__(self):
         return self.tag
