@@ -75,6 +75,7 @@ header nav a{
  display: block;
 }
 
+
 /* Change color of dropdown links on hover */
 .dropdown-content a:hover {background-color: #ddd;}
 
@@ -83,3 +84,8 @@ header nav a{
 
 /* Change the background color of the dropdown button when the dropdown content is shown */
 .dropdown:hover .dropbtn {background-color: #3e8e41;}
+
+#projects{
+
+    display: flex;
+}

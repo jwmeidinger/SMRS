@@ -43,7 +43,7 @@ def home_view(request):
     plt_div = plot(fig, output_type='div', include_plotlyjs=False, show_link=False, link_text="")
     context['graph'] = plt_div
     context['graph2'] = plot(fig, output_type='div', include_plotlyjs=False, show_link=False, link_text="")
-    
+
     user = request.user
     if user.is_authenticated:
         context['message'] = 'Welcome to the Dashboard'
@@ -54,7 +54,13 @@ def project_view(request):
     context= {}
     user = request.user
     if user.is_authenticated:
-        project = Project.objects.all()
+        team= Team.objects.filter(pk=user.pk).first()
+        project = Project.objects.filter(teamID=team)
+        # for each in project:
+        #     if user.team_id==each.team_id:
+        context["projects"]=project
+        context["team"]=team.name
+
     return render(request, "dashboard/projects.html", context)
 
 def team_view(request):
