@@ -6,7 +6,7 @@ import plotly.graph_objs as graph_objs
 import random
 
 from restAPI.models import Project, Review, Defect, ProjectNumber, PhaseType
-from account.models import Team, Account 
+from account.models import Team, Account
 from dashboard.forms import DefectForm, ReviewForm
 
 
@@ -81,7 +81,7 @@ def home_view(request):
                     yaxis_title="Reviews")
     context['graph'] = plot(fig, output_type='div', include_plotlyjs=False, show_link=False, link_text="")
     context['graph2'] = plot(fig2, output_type='div', include_plotlyjs=False, show_link=False, link_text="")
-    
+
     user = request.user
     if user.is_authenticated:
         context['message'] = 'Welcome to the Dashboard'
@@ -112,7 +112,16 @@ def project_view(request):
     context= {}
     user = request.user
     if user.is_authenticated:
-        project = Project.objects.all()
+
+        team= Team.objects.filter(pk=user.pk).first()
+        project = Project.objects.filter(teamID=team)
+        # project = Project.objects.all()
+
+        context["projects"]=project
+        context["team"]=team.name
+        # In order to fill out a favorite list it would be convinient to have a favorite projects list attached to the user to pull from
+        # context["favorites"]=user.favoriteProjects
+
     return render(request, "dashboard/projects.html", context)
 
 '''
@@ -126,7 +135,7 @@ def projectDetail_view(request, pk):
         project_detail = get_object_or_404(Project, pk=pk)
         allDefects = Defect.objects.filter(projectID=project_detail)
         allReviews = Review.objects.filter(projectID=project_detail)
-
+        context['projectName'] = project_detail.name
         context['allDefects'] = allDefects
         context['allReviews'] = allReviews
     return render(request, "dashboard/project_detail.html", context)
@@ -140,7 +149,7 @@ def defect_view(request, pk):
     user = request.user
     if not user.is_authenticated:
         return redirect("acccount:login")
-    
+
     currentDefect = Defect.objects.filter(pk = pk).first()
     if request.POST:
         form = DefectForm(request.POST, instance = currentDefect)
@@ -180,7 +189,7 @@ def review_view(request, pk):
     user = request.user
     if not user.is_authenticated:
         return redirect("acccount:login")
-    
+
     currentReview = Review.objects.filter(pk = pk).first()
 
     if request.POST:

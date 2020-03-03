@@ -15,17 +15,38 @@
     <!-- For this version we're assuming that one person is on one team. In udpates this needs to be changed -->
     <h3>Team ID: {{team}}</h3>
 
+
+    <h3>Favorites</h3>
     <table>
       <tr>
         <th>Project Name</th>
         <th>Project Owner</th>
       </tr>
 
-      {% for project in projects %}
+      {% for project in favorites %}
       <tr>
-        <td>{{project.name}}</td>
+        <td href="{% url 'dashboard:detail' project.pk %}">{{project.name}}</td>
         <!-- For Now the Team ID is redundent information since one person is in one team. But in future updates we hope to have one person on many teams. -->
         <td>{{project.teamID}}</td>
+      </tr>
+
+      {% endfor %}
+    </table>
+
+    <h3>All Projects</h3>
+    <table>
+      <tr>
+        <th>Project Name</th>
+        <th>Project Owner</th>
+        <th>Add Favorite</th>
+      </tr>
+
+      {% for project in projects %}
+      <tr>
+        <td ><a href="{% url 'dashboard:detail' project.pk %}">{{project.name}}</a></td>
+        <!-- For Now the Team ID is redundent information since one person is in one team. But in future updates we hope to have one person on many teams. -->
+        <td>{{project.teamID}}</td>
+        <td></td>
       </tr>
 
       {% endfor %}
