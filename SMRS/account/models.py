@@ -90,6 +90,7 @@ class Account(AbstractBaseUser):
     )
     name                = models.TextField()
     racf                = models.CharField(max_length=30, unique=True)
+    darkColorScheme     = models.BooleanField(default=False)
     teamid              = models.ForeignKey(Team, blank = True, null = True, on_delete=models.CASCADE)
     ## Items required by AbstratctBaseUser
     date_joined         = models.DateTimeField(auto_now_add=True, editable=False)

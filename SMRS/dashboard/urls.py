@@ -3,6 +3,10 @@ from django.urls import path
 from .views import(
     team_view,
     project_view,
+    projectDetail_view,
+    defect_view,
+    review_view,
+
 )
 
 
@@ -19,7 +23,9 @@ urlpatterns = [
     
     path('projects/', project_view, name='project'),
     path('team/', team_view, name='team'),
-    
+    path('project/<int:pk>', projectDetail_view, name='detail'),
+    path('review/<int:pk>', review_view, name='reviewDetail'),
+    path('defect/<int:pk>', defect_view, name='defectDetail'),
 
     
 ]
