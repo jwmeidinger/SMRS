@@ -68,8 +68,10 @@ def home_view(request):
     for review in review_values:
         review_month = review["dateOpened"].month
         counts[review_month] += 1
-    for i in range(1, 13):
-        if not counts[i]:
+    for i in range(2, 13):
+        if counts[i]:
+            counts[i] += counts[i-1]
+        else:
             del counts[i]
 
     months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
