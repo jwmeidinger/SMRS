@@ -96,4 +96,5 @@ header nav a{
   text-align: center;
   font-size: 2em;
   border-bottom: 10px double black;
+  padding-bottom: .5em;
 }
