@@ -17,7 +17,7 @@ from dashboard.graphs import *
 def home_view(request):
     context= {}
 
-    context['graph'] = DefectsWhereFound(start_date="2000-01-01")
+    context['graph'] = DefectsWhereFound(start_date="2018-01-01")
     context['graph2'] = ReviewsOverTime(start_date="2000-01-01")
     context['graph3'] = PostReleaseDefects(start_date="2000-01-01")
     

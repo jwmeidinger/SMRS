@@ -6,35 +6,33 @@ from restAPI.models import Project, Review, Defect, ProjectNumber, PhaseType
 
 def DefectsWhereFound(start_date, end_date=datetime.date.today()):
 
+    start_year = int(start_date.split("-")[0])
+    end_year = end_date.year
+
     defects = Defect.objects.filter(dateOpened__range=[start_date, end_date]).all()
     phase_type = PhaseType.objects.all()
-    projects = Project.objects.all()
 
-    defect_values = defects.values("whereFound", "id", "projectID")
+    defect_values = defects.values("whereFound", "dateOpened", "id", "projectID")
     phase_type_values = [val['phase_type'] for val in list(phase_type.values('phase_type'))]
-    project_values = projects.values("name", "id")
 
     fig = graph_objs.Figure()
+    defects_by_year = dict()
 
-    for proj_val in project_values:
-        name = proj_val["name"]
+    for i in range(start_year, end_year+1):
+        defects_by_year[i] = dict()
+        for j in range(len(phase_type_values)):
+            defects_by_year[i][j] = 0
 
-        counts = dict()
-        for i in range(len(phase_type_values)):
-            counts[i] = 0
-
-        for defect in defect_values:
-            if defect["projectID"] == proj_val["id"]:
-                counts[defect['whereFound']-1] += 1
+    for defect in defect_values:
+        defects_by_year[defect["dateOpened"].year][defect["whereFound"]-1] += 1
+        
+    for year, counts in defects_by_year.items():
 
         new_scatter = graph_objs.Bar(x=phase_type_values, y=list(counts.values()),
-            name=name,
+            name=year,
             opacity=0.8,
         )
         fig.add_trace(new_scatter)
-
-
-        new_scatter = graph_objs.Scatter(x=phase_type_values, y=list(counts.values()))
 
     fig.update_layout(title="Defects Where Found",
                     xaxis_title="Phases",
@@ -91,7 +89,7 @@ def PostReleaseDefects(start_date, end_date=datetime.date.today()):
         else:
             total_defects[year] = 1
             post_release_defects[year] = 0
-        print(defect)
+
         if defect["whereFound"] == 8:
             post_release_defects[year] += 1
 
