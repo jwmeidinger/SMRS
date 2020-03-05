@@ -35,7 +35,10 @@ header nav a{
 
 .soloItem{
   padding: 2px;
-  border: 1px solid black
+  border: 1px solid black;
+  margin: .5em;
+  border-radius: .5em;
+
 
 }
 
@@ -74,6 +77,7 @@ header nav a{
  display: block;
 }
 
+
 /* Change color of dropdown links on hover */
 .dropdown-content a:hover {background-color: #ddd;}
 
@@ -83,9 +87,14 @@ header nav a{
 /* Change the background color of the dropdown button when the dropdown content is shown */
 .dropdown:hover .dropbtn {background-color: #3e8e41;}
 
+#projects{
 
-/* TESTs */
-.dashboard{
+    display: flex;
+}
 
-  background-color: red;
+#title{
+  text-align: center;
+  font-size: 2em;
+  border-bottom: 10px double black;
+  padding-bottom: .5em;
 }

@@ -4,6 +4,37 @@
 
 #dashboard{
   display: flex;
-  background-color: red;
+  flex-wrap: wrap;
+  justify-content: center;
 
+
+}
+
+#dashboard .soloItem .graph{
+  height:600px;
+  /* min-width: 25%; */
+  max-width:100%;
+}
+
+
+
+.soloItem{
+  text-align: center;
+  width:30%;
+  background-color: #fff8dc ;
+  padding: .5em;
+
+}
+
+@media only screen and (max-width: 1200px) {
+  .soloItem {
+
+    width:40%;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .soloItem {
+    width:100%;
+  }
 }

@@ -1,4 +1,90 @@
-#projects{
+/* Font imports */
+@import url('https://fonts.googleapis.com/css?family=Fjalla+One|Noto+Sans&display=swap');
+/* Font calls:
 
-    display: flex;
+    font-family: 'Noto Sans', sans-serif;
+
+    font-family: 'Fjalla One', sans-serif;
+
+ */
+#primaryContent{
+  background-color: #f5f2d0;
+}
+
+body{
+  text-align: center;
+  font-family: 'Noto Sans', sans-serif;
+}
+
+h2, #subTitle{
+  font-family: 'Fjalla One', sans-serif;
+}
+
+
+
+.projectList{
+  border: 2px solid black;
+  margin-bottom: 1em;
+  background-color: white;
+}
+
+
+
+table{
+  border: 1px solid black;
+  width: 100%;
+
+
+}
+
+th{
+  border-bottom: 5px double black;
+  padding-right: 1em;
+  padding-left: 1em;
+  color:white;
+  text-shadow: 2px 2px 4px #000000;
+
+}
+
+tr:nth-child(odd){
+  background-color: #f3ffbc;
+}
+
+tr:nth-child(even){
+  background-color: #e9f8ff;
+}
+
+/* Default Projects Table */
+th:nth-child(odd){
+
+
+    background-color: #2E8B57;
+}
+
+th:nth-child(even){
+
+      background-color: #98FB98;
+}
+
+
+/* Favorites Table */
+#favoritesTable th:nth-child(odd){
+
+  background-color: #CCCC00;
+}
+
+#favoritesTable th:nth-child(even){
+  background-color: #FFFFE0;
+}
+
+
+td{
+  border-right:solid black 1px;
+  border-bottom:solid black 1px;
+}
+
+button{
+  background-color: #c5edba;
+  font-size: 20px;
+  border-radius: 8px;
 }

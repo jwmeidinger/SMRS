@@ -10,6 +10,7 @@
 
 </head>
 <body>
+<div class="container">
   <div id="primaryContent">
     <h2 id="title">Projects</h2>
     <!-- For this version we're assuming that one person is on one team. In udpates this needs to be changed -->
@@ -28,14 +29,14 @@
       <tr>
         <td ><a href="{% url 'dashboard:detail' project.pk %}">{{project.name}}</a></td>
         <!-- For Now the Team ID is redundent information since one person is in one team. But in future updates we hope to have one person on many teams. -->
-        <td>{{project.teamID}}</td>
+        <td>{{project.productOwner}}</td>
         <td><a href="{% url 'dashboard:delfav' project.pk %}">X</a></td>
       </tr>
 
       {% endfor %}
     </table>
 
-    <h3>All Projects</h3>
+    <h3>All Team Projects</h3>
     <table>
       <tr>
         <th>Project Name</th>
@@ -47,7 +48,7 @@
       <tr>
         <td ><a href="{% url 'dashboard:detail' project.pk %}">{{project.name}}</a></td>
         <!-- For Now the Team ID is redundent information since one person is in one team. But in future updates we hope to have one person on many teams. -->
-        <td>{{project.teamID}}</td>
+        <td>{{project.productOwner}}</td>
         <td><a href="{% url 'dashboard:addfav' project.pk %}">+</a></td>
       </tr>
 
@@ -57,7 +58,7 @@
 
 
   </div>
-
+</div>
 </body>
 
 
