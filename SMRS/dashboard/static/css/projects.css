@@ -54,6 +54,19 @@ tr:nth-child(even){
   background-color: #e9f8ff;
 }
 
+/* Default Projects Table */
+th:nth-child(odd){
+
+
+    background-color: #2E8B57;
+}
+
+th:nth-child(even){
+
+      background-color: #98FB98;
+}
+
+
 /* Favorites Table */
 #favoritesTable th:nth-child(odd){
 
@@ -64,17 +77,6 @@ tr:nth-child(even){
   background-color: #FFFFE0;
 }
 
-/* All Projects Table */
-#allTable th:nth-child(odd){
-
-
-    background-color: #2E8B57;
-}
-
-#allTable th:nth-child(even){
-
-      background-color: #98FB98;
-}
 
 td{
   border-right:solid black 1px;
