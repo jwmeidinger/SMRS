@@ -11,6 +11,7 @@
 </head>
 <body>
   <div id="primaryContent">
+<<<<<<< HEAD
 
     <!-- May add this into a form. Need to first check if forms word differently in Django -->
     <form >
@@ -68,6 +69,53 @@
     </form>
 
     <!-- End primary content div -->
+=======
+    <h2 id="title">Projects</h2>
+    <!-- For this version we're assuming that one person is on one team. In udpates this needs to be changed -->
+    <h3>Team ID: {{team}}</h3>
+
+
+    <h3>Favorites</h3>
+    <table>
+      <tr>
+        <th>Project Name</th>
+        <th>Project Owner</th>
+        <th>Remove Fav</th>
+      </tr>
+
+      {% for project in FavProjects %}
+      <tr>
+        <td ><a href="{% url 'dashboard:detail' project.pk %}">{{project.name}}</a></td>
+        <!-- For Now the Team ID is redundent information since one person is in one team. But in future updates we hope to have one person on many teams. -->
+        <td>{{project.teamID}}</td>
+        <td><a href="{% url 'dashboard:delfav' project.pk %}">X</a></td>
+      </tr>
+
+      {% endfor %}
+    </table>
+
+    <h3>All Projects</h3>
+    <table>
+      <tr>
+        <th>Project Name</th>
+        <th>Project Owner</th>
+        <th>Add Favorite</th>
+      </tr>
+
+      {% for project in projects %}
+      <tr>
+        <td ><a href="{% url 'dashboard:detail' project.pk %}">{{project.name}}</a></td>
+        <!-- For Now the Team ID is redundent information since one person is in one team. But in future updates we hope to have one person on many teams. -->
+        <td>{{project.teamID}}</td>
+        <td><a href="{% url 'dashboard:addfav' project.pk %}">+</a></td>
+      </tr>
+
+      {% endfor %}
+    </table>
+
+
+
+>>>>>>> master
   </div>
 
 </body>
