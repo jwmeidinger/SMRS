@@ -19,7 +19,11 @@
   width:33%;
 
 }
-
+@media only screen and (max-width: 1200px) {
+  .soloItem {
+    width:50%;
+  }
+}
 
 @media only screen and (max-width: 600px) {
   .soloItem {
