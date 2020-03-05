@@ -1,17 +1,21 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block content %}
+<head>
 
-<<<<<<< HEAD
+  <link rel="stylesheet" href="{% static 'css/master.css' %}">
+  <link rel="stylesheet" href="{% static 'css/details.css' %}">
+
+</head>
 <div class="container">
 
   <form class="form-signin" method="post">{% csrf_token %}
-      <h1 class="h3 mb-3 font-weight-normal">Defect Details</h1>
+      <h1 id="title" class="h3 mb-3 font-weight-normal">Defect: {{form.initial.projectID}}</h1>
       <h2>Date Opened</h2>
-      <input type="text" name="dateOpened"  class="form-control" placeholder="Date Opened" required autofocus value = "{{form.initial.dateOpened}}">
+      <input type="text" name="dateOpened"  class="form-control" placeholder="Date Opened" required autofocus value = "{{form.initial.dateOpened|date:'Y-m-d' }}">
       <h2>Date Closed</h2>
-      <input type="text" name="dateClosed"  class="form-control" placeholder="Date Closed" value = "{{form.initial.dateClosed}}">
-      <p> If you would like to change the Product ID please change to PK</p>
+      <input type="text" name="dateClosed"  class="form-control" placeholder="Date Closed" value = "{{form.initial.dateOpened|date:'Y-m-d' }}">
+      <p class="info"> If you would like to change the Product ID please change to PK</p>
       {% for field in form %}
           {% if field.name == "projectID" %}
           <h2>Project Id</h2>
@@ -23,7 +27,7 @@
               </datalist>
           {% endif %}
       {% endfor %}
-      <p> If you would like to change the Where Found please change to PK</p>
+      <p class="info"> If you would like to change the Where Found please change to PK</p>
       {% for field in form %}
           {% if field.name == "whereFound" %}
           <h2>Where Found</h2>
@@ -45,56 +49,6 @@
             <div class="alert alert-danger">
                 <strong> {{error|escape}} </strong>
             </div>
-=======
-<form class="form-signin" method="post">{% csrf_token %}
-    <h1 class="h3 mb-3 font-weight-normal">Defect</h1>
-    <input type="text" name="dateOpened"  class="form-control" placeholder="Date Opened" required autofocus value = "{{form.initial.dateOpened|date:'Y-m-d' }}">
-    <input type="text" name="dateClosed"  class="form-control" placeholder="Date Closed" value = "{{form.initial.dateClosed|date:'Y-m-d' }}">
-    <p> If you would like to change the Product ID please change to PK</p>
-    {% for field in form %}
-        {% if field.name == "projectID" %}
-        <input list="projectID" name="projectID"   class="form-control" placeholder="Project ID"  required value = "{{form.initial.projectID}}" >
-            <datalist id ="projectID" >
-                {% for choice_id, choice_label in field.field.choices %}
-                    <option value="{{choice_id}}">{{choice_label}}</option>
-                {% endfor %}
-            </datalist>
-        {% endif %}
-    {% endfor %}
-    <p> If you would like to change the Where Found please change to PK</p>
-    {% for field in form %}
-        {% if field.name == "whereFound" %}
-        <input list="whereFound" name="whereFound"  class="form-control" placeholder="Where Found" required value = "{{form.initial.whereFound}}">
-            <datalist id ="whereFound" >
-                {% for choice_id, choice_label in field.field.choices %}
-                    <option value="{{choice_id}}">{{choice_label}}</option>
-                {% endfor %}
-            </datalist>
-        {% endif %}
-    {% endfor %}
-    <input type="text" name="tag"         class="form-control" placeholder="Tag"         required value = "{{form.initial.tag}}"> 
-    <input type="text" name="severity"    class="form-control" placeholder="Severity"    required value = "{{form.initial.severity}}">
-    <input type="text" name="url"         class="form-control" placeholder="URL"         required value = "{{form.initial.url}}">
-    {% if form.errors %}
-    {% for field in form %}
-        {% for error in field.errors %}
-            <div class="alert alert-danger">
-                <strong> {{error|escape}} </strong>
-            </div>
-        {% endfor %}
-    {% endfor %}
-    {% for error in form.non_field_errors %}
-        <strong> {{error|escape}} </strong>
-    {% endfor %}
-    {% endif %}  
-        {%if success_message %}
-            <p style = "color: green; text-align: center"> {{success_message|safe}}</p>
-        {% endif %}
-        
-    <button class="btn btn-lg btn-primary btn-block" type="submit">Save Changes</button>
-  
-  </form>
->>>>>>> master
 
         {% endif %}
           {%if success_message %}
