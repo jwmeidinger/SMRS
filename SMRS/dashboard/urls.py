@@ -6,6 +6,8 @@ from .views import(
     projectDetail_view,
     defect_view,
     review_view,
+    projectAddFav_view,
+    projectDelFav_view,
 
 )
 
@@ -26,6 +28,7 @@ urlpatterns = [
     path('project/<int:pk>', projectDetail_view, name='detail'),
     path('review/<int:pk>', review_view, name='reviewDetail'),
     path('defect/<int:pk>', defect_view, name='defectDetail'),
-
+    path('addfav/<int:pk>', projectAddFav_view, name='addfav'),
+    path('delfav/<int:pk>', projectDelFav_view, name='delfav'),
     
 ]

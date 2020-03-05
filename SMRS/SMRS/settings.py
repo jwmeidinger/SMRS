@@ -118,7 +118,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication', #https://www.django-rest-framework.org/api-guide/authentication/#tokenauthentication
     ]
 }
-
+CSRF_USE_SESSIONS = True
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 

@@ -4,8 +4,8 @@
 
 <form class="form-signin" method="post">{% csrf_token %}
     <h1 class="h3 mb-3 font-weight-normal">Defect</h1>
-    <input type="text" name="dateOpened"  class="form-control" placeholder="Date Opened" required autofocus value = "{{form.initial.dateOpened}}">
-    <input type="text" name="dateClosed"  class="form-control" placeholder="Date Closed" value = "{{form.initial.dateClosed}}">
+    <input type="text" name="dateOpened"  class="form-control" placeholder="Date Opened" required autofocus value = "{{form.initial.dateOpened|date:'Y-m-d' }}">
+    <input type="text" name="dateClosed"  class="form-control" placeholder="Date Closed" value = "{{form.initial.dateClosed|date:'Y-m-d' }}">
     <p> If you would like to change the Product ID please change to PK</p>
     {% for field in form %}
         {% if field.name == "projectID" %}
@@ -44,7 +44,7 @@
     {% endfor %}
     {% endif %}  
         {%if success_message %}
-            <p style = "color: green; text-align: center"> {{success_message}}</p>
+            <p style = "color: green; text-align: center"> {{success_message|safe}}</p>
         {% endif %}
         
     <button class="btn btn-lg btn-primary btn-block" type="submit">Save Changes</button>
