@@ -1,5 +1,5 @@
 
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from rest_framework import viewsets, permissions
 from plotly.offline import plot
 import plotly.graph_objs as graph_objs
@@ -91,7 +91,7 @@ def home_view(request):
 '''
 *** User's Team, members, and Projects
 '''
-## TODO: Need to Finish HTML and CSS
+## TODO: Need to Finish CSS
 def team_view(request):
     context= {}
     user = request.user
@@ -107,12 +107,25 @@ def team_view(request):
 '''
 *** User's Personally selected Projects
 '''
-## TODO: This needs to be done
+## TODO: Need to Finish CSS
 def project_view(request):
     context= {}
     user = request.user
     if user.is_authenticated:
-        project = Project.objects.all()
+        value = request.COOKIES.get('FavoriteProjects')
+        print(value)
+        if value != None: ## Browers never on the page before
+            favs = set(value.split(","))
+            blankspace  = ",".join(favs)
+            if blankspace != "": ## if empty don't make a request to DB
+                favoriteProjects = Project.objects.filter(pk__in = favs ).all()
+                context["FavProjects"]= favoriteProjects
+
+        team= Team.objects.filter(pk=user.pk).first()
+        projects = Project.objects.filter(teamID=team)
+    
+        context["projects"]=projects
+        context["team"]=team.name
     return render(request, "dashboard/projects.html", context)
 
 '''
@@ -132,9 +145,52 @@ def projectDetail_view(request, pk):
     return render(request, "dashboard/project_detail.html", context)
 
 '''
+*** User's Favorite Projects
+'''
+def projectAddFav_view(request, pk):
+    value = request.COOKIES.get('FavoriteProjects')
+    projectpk = pk ## have to declare before response
+    response = redirect("dashboard:project")
+    if value == None or value == "": ## No Favorite set yet
+        print('added first value')
+        response.set_cookie('FavoriteProjects', '{}'.format(projectpk))
+    else: ## Have Favorite
+        print('added 2nd value')
+        value += ",{}".format(projectpk)
+        print(value)
+        items = list(value.split(","))
+        setOfElems = set()
+        for elem in items:
+            if elem in setOfElems:
+                print("double")
+            else:
+                setOfElems.add(elem)         
+        print(setOfElems)
+        final  = ",".join(setOfElems) ## back to string
+        print(final)
+        response.set_cookie('FavoriteProjects', final)
+    return response
+
+
+'''
+*** User's Removes Favorite Projects
+'''
+def projectDelFav_view(request, pk):
+    value = request.COOKIES.get('FavoriteProjects')
+    projectpk = pk
+    items = set(value.split(','))
+    print(items)
+    items.remove("{}".format(projectpk))
+    response = redirect("dashboard:project")
+    final  = ",".join(items)
+    response.set_cookie('FavoriteProjects', final)
+    return response
+
+
+'''
 *** User's Personally selected Projects
 '''
-## TODO: Need Team Leader to be able to change items
+## TODO: Need  ONLY Team Leader to be able to change items
 def defect_view(request, pk):
     context= {}
     user = request.user
@@ -174,7 +230,7 @@ def defect_view(request, pk):
 '''
 *** User's Personally selected Projects
 '''
-## TODO: Need Team Leader to be able to change items
+## TODO: Need ONLY Team Leader to be able to change items
 def review_view(request, pk):
     context= {}
     user = request.user
