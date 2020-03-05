@@ -89,3 +89,7 @@ header nav a{
 
     display: flex;
 }
+
+#title{
+  text-align: center;
+}

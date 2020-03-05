@@ -1,16 +1,21 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block content %}
+<head>
 
+  <link rel="stylesheet" href="{% static 'css/master.css' %}">
+  <link rel="stylesheet" href="{% static 'css/details.css' %}">
+
+</head>
 <div class="container">
 
   <form class="form-signin" method="post">{% csrf_token %}
-      <h1 class="h3 mb-3 font-weight-normal">Review</h1>
+      <h1 id="title" class="h3 mb-3 font-weight-normal">Review: {{form.initial.projectID}}</h1>
       <h2>Date Opened</h2>
       <input type="text" name="dateOpened"  class="form-control" placeholder="Date Opened" required autofocus value = "{{form.initial.dateOpened}}">
       <h2>Date Closed</h2>
       <input type="text" name="dateClosed"  class="form-control" placeholder="Date Closed" value = "{{form.initial.dateClosed}}">
-      <p> If you would like to change the Product ID please change to PK</p>
+      <p class="info"> If you would like to change the Product ID please change to PK</p>
       {% for field in form %}
           {% if field.name == "projectID" %}
           <h2>Project Id</h2>
@@ -22,7 +27,7 @@
               </datalist>
           {% endif %}
       {% endfor %}
-      <p> If you would like to change the Where Found please change to PK</p>
+      <p class="info"> If you would like to change the Where Found please change to PK</p>
       {% for field in form %}
           {% if field.name == "whereFound" %}
           <h2>Where Found</h2>

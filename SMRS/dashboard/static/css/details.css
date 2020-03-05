@@ -1,0 +1,22 @@
+body{
+  background-color: #e0f3f7;
+}
+
+.info{
+  background-color: gold;
+  border-radius: .4em;
+  padding:.2em;
+  font-style: italic;
+}
+
+h2{
+  padding-top: 1em;
+}
+
+#title{
+
+  font-size: 3em;
+
+  border-bottom: .5em double black;
+
+}

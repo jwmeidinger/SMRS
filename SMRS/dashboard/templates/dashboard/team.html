@@ -1,13 +1,15 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block content %}
+<link rel="stylesheet" href="{% static 'css/master.css' %}">
+<link rel="stylesheet" href="{% static 'css/team.css' %}">
 
 
 <div class='container mt-4 p-4'
   style="max-width: 500px;
          width:     100%;
          margin:    auto;">
-  <h1>{{TeamName}}</h1>
+  <h1 id='title'>{{TeamName}}</h1>
   <div class='row'>
     {% if projectList %}
     <h3 class='mb-3 font-weight-normal display-6 mx-auto' >Team Projects:</h3>

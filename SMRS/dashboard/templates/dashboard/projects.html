@@ -11,49 +11,63 @@
 </head>
 <body>
   <div id="primaryContent">
-    <h2 id="title">Projects</h2>
-    <!-- For this version we're assuming that one person is on one team. In udpates this needs to be changed -->
-    <h3>Team ID: {{team}}</h3>
 
+    <!-- May add this into a form. Need to first check if forms word differently in Django -->
+    <form >
 
-    <h3>Favorites</h3>
-    <table>
-      <tr>
-        <th>Project Name</th>
-        <th>Project Owner</th>
-      </tr>
+          <h2 id="title">Projects</h2>
+          <!-- For this version we're assuming that one person is on one team. In udpates this needs to be changed -->
+          <h3 id="teamId">Team ID: {{team}}</h3>
 
-      {% for project in favorites %}
-      <tr>
-        <td href="{% url 'dashboard:detail' project.pk %}">{{project.name}}</td>
-        <!-- For Now the Team ID is redundent information since one person is in one team. But in future updates we hope to have one person on many teams. -->
-        <td>{{project.teamID}}</td>
-      </tr>
+      <!-- Favorite Items would Ideally appear at the top -->
+          <div class="projectList ">
 
-      {% endfor %}
-    </table>
+            <h3>Favorites</h3>
+            <table id="favoritesTable">
+              <tr>
+                <th>Project Name</th>
+                <th>Project Owner</th>
+              </tr>
 
-    <h3>All Projects</h3>
-    <table>
-      <tr>
-        <th>Project Name</th>
-        <th>Project Owner</th>
-        <th>Add Favorite</th>
-      </tr>
+              {% for project in favorites %}
+              <tr>
+                <td href="{% url 'dashboard:detail' project.pk %}">{{project.name}}</td>
+                <!-- For Now the Team ID is redundent information since one person is in one team. But in future updates we hope to have one person on many teams. -->
+                <td>{{project.teamID}}</td>
+              </tr>
 
-      {% for project in projects %}
-      <tr>
-        <td ><a href="{% url 'dashboard:detail' project.pk %}">{{project.name}}</a></td>
-        <!-- For Now the Team ID is redundent information since one person is in one team. But in future updates we hope to have one person on many teams. -->
-        <td>{{project.teamID}}</td>
-        <td></td>
-      </tr>
+              {% endfor %}
+            </table>
+          </div>
 
-      {% endfor %}
-    </table>
+          <div class="projectList">
 
+            <h3>All Projects</h3>
+            <table id="allTable">
+              <tr>
+                <th>Project Name</th>
+                <th>Project Owner</th>
+                <th>Add Favorite</th>
+              </tr>
 
+              {% for project in projects %}
+              <tr>
+                <td ><a href="{% url 'dashboard:detail' project.pk %}">{{project.name}}</a></td>
+                <!-- For Now the Team ID is redundent information since one person is in one team. But in future updates we hope to have one person on many teams. -->
+                <td>{{project.teamID}}</td>
+                <!-- Checkbox needs to be further updated to work with Django automation.
+              Right now it does not do anything -->
+                <td><input type="checkbox" ></td>
+              </tr>
 
+              {% endfor %}
+            </table>
+
+          </div>
+          <button type="submit" name="updateFavorites">Update Favorites</button>
+    </form>
+
+    <!-- End primary content div -->
   </div>
 
 </body>
