@@ -2,43 +2,37 @@
 
 {% block content %}
 
-
-<div class='container mt-4 p-4'
-  style="max-width: 500px;
-         width:     100%;
-         margin:    auto;">
-  <h1>{{TeamName}}</h1>
-  <div class='row'>
-    {% if projectList %}
-    <h3 class='mb-3 font-weight-normal display-6 mx-auto' >Team Projects:</h3>
+<div class="container">
+  <div class="row">
+    <div class="col-sm-3 align-self-center">
+      {% if TeamMembers %}
+      <h3 class='mb-4 font-weight-normal display-6 mx-auto' >Members:</h3>
+      {% for item in TeamMembers %}
+        <ul class= 'list-group '>
+          <a style="text-decoration: none;">
+            <li class="list-group-item" style="background-color: #f2f2f2;">{{item}}</li>
+          </a>
+        </ul>
+      {% endfor %}
+      {% endif %}
     </div>
-     {% for item in projectList %}
-      <ul class= 'list-group '>
-        <a href="{% url 'dashboard:detail' item.pk %}" style="text-decoration: none;">
-          <li class="list-group-item" style="background-color: #f2f2f2;">{{item}}</li>
-        </a>
-      </ul>
-    {% endfor %}
-    {% endif %}
-</div>
-
-<div class='container mt-4 p-4'
-  style="max-width: 500px;
-         width:     100%;
-         margin:    auto;">
-  <div class='row'>
-    {% if TeamMembers %}
-    <h3 class='mb-4 font-weight-normal display-6 mx-auto' >Members:</h3>
+    <div class="col-sm-6">
+        <h1 class="h4">Team : {{TeamName}}</h1>
+        {% if projectList %}
+        <h3 class='mb-3 font-weight-normal display-6 mx-auto' >Projects:</h3>
+        {% for item in projectList %}
+          <ul class= 'list-group '>
+            <a href="{% url 'dashboard:detail' item.pk %}" style="text-decoration: none;">
+              <li class="list-group-item" style="background-color: #f2f2f2;">{{item}}</li>
+            </a>
+          </ul>
+        {% endfor %}
+        {% endif %}
     </div>
-     {% for item in TeamMembers %}
-      <ul class= 'list-group '>
-        <a style="text-decoration: none;">
-          <li class="list-group-item" style="background-color: #f2f2f2;">{{item}}</li>
-        </a>
-      </ul>
-    {% endfor %}
-    {% endif %}
+      <div class="col-sm-3"></div> <!--Off set-->
+  </div>
 </div>
 
 
 {% endblock content %}
+

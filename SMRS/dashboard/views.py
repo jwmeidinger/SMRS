@@ -52,7 +52,6 @@ def project_view(request):
     user = request.user
     if user.is_authenticated:
         value = request.COOKIES.get('FavoriteProjects')
-        print(value)
         if value != None: ## Browers never on the page before
             favs = set(value.split(","))
             blankspace  = ",".join(favs)
@@ -79,6 +78,7 @@ def projectDetail_view(request, pk):
         allDefects = Defect.objects.filter(projectID=project_detail)
         allReviews = Review.objects.filter(projectID=project_detail)
 
+        context['projectName'] = project_detail.name
         context['allDefects'] = allDefects
         context['allReviews'] = allReviews
     return render(request, "dashboard/project_detail.html", context)
@@ -91,12 +91,9 @@ def projectAddFav_view(request, pk):
     projectpk = pk ## have to declare before response
     response = redirect("dashboard:project")
     if value == None or value == "": ## No Favorite set yet
-        print('added first value')
         response.set_cookie('FavoriteProjects', '{}'.format(projectpk))
     else: ## Have Favorite
-        print('added 2nd value')
         value += ",{}".format(projectpk)
-        print(value)
         items = list(value.split(","))
         setOfElems = set()
         for elem in items:
@@ -104,9 +101,7 @@ def projectAddFav_view(request, pk):
                 print("double")
             else:
                 setOfElems.add(elem)         
-        print(setOfElems)
         final  = ",".join(setOfElems) ## back to string
-        print(final)
         response.set_cookie('FavoriteProjects', final)
     return response
 
@@ -118,7 +113,6 @@ def projectDelFav_view(request, pk):
     value = request.COOKIES.get('FavoriteProjects')
     projectpk = pk
     items = set(value.split(','))
-    print(items)
     items.remove("{}".format(projectpk))
     response = redirect("dashboard:project")
     final  = ",".join(items)
