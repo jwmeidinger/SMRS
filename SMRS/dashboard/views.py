@@ -16,10 +16,27 @@ from dashboard.graphs import *
 ## TODO: Need to Figure out a better way to Create custom graphs or make all the ones they want and let them select them.
 def home_view(request):
     context= {}
-
+    startDate = ""
+    endDate = ""
+    ## Default Dates 
     context['graph'] = DefectsWhereFound(start_date="2018-01-01")
     context['graph2'] = ReviewsOverTime(start_date="2000-01-01")
     context['graph3'] = PostReleaseDefects(start_date="2000-01-01")
+
+    if request.POST:
+        startDate = request.POST["startDate"]
+        endDate = request.POST["endDate"]
+        if startDate != "": ## if just start date example: 2018 - Present
+            context['graph'] = DefectsWhereFound(start_date=startDate)
+            context['graph2'] = ReviewsOverTime(start_date=startDate)
+            context['graph3'] = PostReleaseDefects(start_date=startDate)
+
+        if endDate != "": ## if just end date example: from start - 2016
+            context['graph'] = DefectsWhereFound(end_date=endDate) #need to reformat in graphs.py
+            context['graph2'] = ReviewsOverTime(end_date=endDate)
+            context['graph3'] = PostReleaseDefects(end_date=endDate)
+        
+        ##TODO: need to add Date to Date
     
     user = request.user
     if user.is_authenticated:
@@ -35,7 +52,7 @@ def team_view(request):
     context= {}
     user = request.user
     if user.is_authenticated:
-        team = Team.objects.filter(pk = user.pk).first()
+        team = Team.objects.filter(pk = user.teamid.pk).first()
         allmembers = Account.objects.filter(teamid = team)
         projectsOfTeam = Project.objects.filter(teamID = team)
         context['TeamName'] = team.name
@@ -59,7 +76,7 @@ def project_view(request):
                 favoriteProjects = Project.objects.filter(pk__in = favs ).all()
                 context["FavProjects"]= favoriteProjects
 
-        team= Team.objects.filter(pk=user.pk).first()
+        team= Team.objects.filter(pk=user.teamid.pk).first()
         projects = Project.objects.filter(teamID=team)
     
         context["projects"]=projects

@@ -4,10 +4,10 @@ import datetime
 
 from restAPI.models import Project, Review, Defect, ProjectNumber, PhaseType
 
-def DefectsWhereFound(start_date, end_date=datetime.date.today()):
+def DefectsWhereFound(start_date="2000-11-01", end_date=datetime.date.today()):
 
     start_year = int(start_date.split("-")[0])
-    end_year = end_date.year
+    end_year = end_date.year ## Need to also allow strings
 
     defects = Defect.objects.filter(dateOpened__range=[start_date, end_date]).all()
     phase_type = PhaseType.objects.all()
@@ -41,7 +41,7 @@ def DefectsWhereFound(start_date, end_date=datetime.date.today()):
     return plot(fig, output_type='div', include_plotlyjs=False, show_link=False, link_text="")
 
 
-def ReviewsOverTime(start_date, end_date=datetime.date.today()):
+def ReviewsOverTime(start_date="2000-11-01", end_date=datetime.date.today()):
     reviews = Review.objects.filter(dateOpened__range=[start_date, end_date]).all()
     review_values = reviews.values("dateOpened")
     fig = graph_objs.Figure()
@@ -75,7 +75,7 @@ def ReviewsOverTime(start_date, end_date=datetime.date.today()):
     graph = plot(fig, output_type='div', include_plotlyjs=False, show_link=False, link_text="")
     return graph
 
-def PostReleaseDefects(start_date, end_date=datetime.date.today()):
+def PostReleaseDefects(start_date="2000-11-01", end_date=datetime.date.today()):
     defects = Defect.objects.all()
     defect_values = defects.values("dateOpened", "whereFound")
 

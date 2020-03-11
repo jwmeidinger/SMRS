@@ -2,11 +2,11 @@ import requests
 import json
 
 """
-*** Grap Team,Project,Review,Defect,ProjectNumber,PhaseType,Users list
+*** Grap Team, Project, Review, Defect, ProductNumber, PhaseType, Users list
 """
-#item = 'Team'
-#r = requests.get('http://127.0.0.1:8000/restAPI/{}/'.format(item))
-#print(r.text)
+item = 'Team'
+r = requests.get('http://127.0.0.1:8000/restAPI/{}/'.format(item))
+print(r.text)
 
 """
 *** Grap your auth token

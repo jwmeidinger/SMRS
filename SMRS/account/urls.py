@@ -3,6 +3,7 @@ from .views import (
     registration_view,
     logout_view,
     login_view,
+    detail_view,
     must_authenticate,)
 
 """
@@ -15,5 +16,6 @@ urlpatterns = [
     path('register/', registration_view,name='register'), #If you want people to register on the homepage
     path('logout/', logout_view, name='logout'),
     path('login/', login_view, name='login'),
+    path('detail/', detail_view, name='detail'),
     path('must_authenticate/', must_authenticate, name='must_authenticate'),
 ]

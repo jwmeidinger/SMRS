@@ -31,12 +31,18 @@
 
       <div class="soloItem">
 
-          <h3>Number of Defects Per Release</h3>
-          <p>Color represents different years</p>
-          <div class="graph">
-            {{ graph|safe  }}
-          </div>
-
+        <h3>Number of Defects Per Release</h3>
+        <p>Color represents different years</p>
+        <div class="graph">
+          {{ graph|safe  }}
+        </div>
+        <form class="form-signin" method="post">{% csrf_token %}
+          <label >Start Date: {{form.initial.darkColorScheme}}</label>
+          <input type='text' name="startDate" class="form-control" placeholder="YYYY-MM-DD">
+          <label >End Date: {{form.initial.darkColorScheme}}</label>
+          <input type='text' name="endDate" class="form-control" placeholder="YYYY-MM-DD">
+          <button class="btn btn-lg btn-primary btn-block" type="submit">Filter</button>
+        </form>
       </div>
       <div class="soloItem">
 

@@ -32,7 +32,7 @@ class AccountAdmin(UserAdmin):
     add_form = UserCreationForm
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
-        ('Personal info', {'fields': ('name','racf','teamid')}),
+        ('Personal info', {'fields': ('name','racf','teamid','darkColorScheme')}),
         ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser')}),
         ('Important dates', {'fields': ('last_login', 'date_joined')}),)
     ordering = ('email',)

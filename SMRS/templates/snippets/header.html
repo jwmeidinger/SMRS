@@ -14,7 +14,7 @@
     <a class="p-2 text-dark" href="{% url 'home' %}">Dashboard</a>
     <a class="p-2 text-dark" href="{% url 'dashboard:team' %}">Team</a>
     <a class="p-2 text-dark" href="{% url 'dashboard:project' %}">Projects</a>
-    <a class="p-2 text-dark" href="#">User</a>
+    <a class="p-2 text-dark" href="{% url 'account:detail' %}">User</a>
     <a class="p-2 text-dark" href="http://127.0.0.1:8000/restAPI/">RestAPI</a>  <!--  Needs to be changed -->
   </nav>
   <a class="btn btn-outline-primary" href="{% url 'account:logout' %}">Logout</a>

@@ -16,6 +16,10 @@ from rest_framework.authtoken.models import Token
     Offical : https://docs.djangoproject.com/en/3.0/ref/models/fields/#common-model-field-options
 """
 
+Theme = [
+    ('Light', 'Light'),
+    ('Dark', 'Dark'),
+]
 
 """
 *** Team needs to be in Account app as it is required by the AbstractBaseUser
@@ -90,7 +94,7 @@ class Account(AbstractBaseUser):
     )
     name                = models.TextField()
     racf                = models.CharField(max_length=30, unique=True)
-    darkColorScheme     = models.BooleanField(default=False)
+    darkColorScheme     = models.CharField(choices=Theme, default="Light", max_length=10)
     teamid              = models.ForeignKey(Team, blank = True, null = True, on_delete=models.CASCADE)
     ## Items required by AbstratctBaseUser
     date_joined         = models.DateTimeField(auto_now_add=True, editable=False)

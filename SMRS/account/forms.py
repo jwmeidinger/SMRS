@@ -40,5 +40,26 @@ class AccountAuthenticationForm(forms.ModelForm):
             if not authenticate(email= email, password= password):
                 raise forms.ValidationError("Incorrect email or password")
         
+class AccountUpdateForm(forms.ModelForm):
+
+    last_name = forms.CharField( max_length= 15, required=False) ## This needs to be here to make it not required in the form
+
+    class Meta:
+        model = Account
+        fields = ('email', 'name', 'racf', 'teamid', 'darkColorScheme')
+        
+
+    def clean_email(self):
+        if self.is_valid:
+            email = self.cleaned_data['email']
+            try:
+                account = Account.objects.exclude(pk=self.instance.pk).get(email=email)
+            except:
+                return email
+            raise forms.ValidationError('Email "%s" is already in use.' % email)
+            
+            
+
+
 
 

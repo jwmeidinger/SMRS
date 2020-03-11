@@ -2,15 +2,13 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
 from account.models import Team
-from account.forms import RegistrationForm, AccountAuthenticationForm
+from account.forms import RegistrationForm, AccountAuthenticationForm, AccountUpdateForm
 
 '''
 *** This file is used to grab information and put it into the html
     Main items for each function is Request, Context, and Template
     Offical : https://docs.djangoproject.com/en/3.0/topics/http/views/
 '''
-
-
 
 
 '''
@@ -69,6 +67,40 @@ def login_view(request):
 
     context['form'] = form
     return render(request, 'account/login.html', context)
+
+'''
+*** View and Change account
+'''
+def detail_view(request):
+    context = {}
+    if not request.user.is_authenticated:
+        return redirect("account:login")
+    
+    if request.POST:
+        form = AccountUpdateForm(request.POST, instance=request.user)
+        print(request.POST['email'])
+        if form.is_valid():
+            form.initial = {
+                "email": request.POST['email'],
+                "name": request.POST['name'],
+                "racf": request.POST['racf'],
+                "teamid": request.POST['teamid'],
+                "darkColorScheme": request.POST['darkColorScheme'],
+            }
+            form.save()
+            context['success_message'] = "Updated"
+    else:
+        form = AccountUpdateForm(
+            initial= {
+                "email": request.user.email,
+                "name": request.user.name,
+                "racf": request.user.racf,
+                "teamid": request.user.teamid,
+                "darkColorScheme": request.user.darkColorScheme,
+            }
+        )
+    context['form'] = form
+    return render(request, 'account/detail.html', context)
 
 '''
 *** Account not logged in

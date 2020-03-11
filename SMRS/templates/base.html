@@ -2,9 +2,22 @@
 <html>
 <head>
 <title>SMRS</title>
-  
-  <!-- this is for later ..... currently used for Bootstrap --> {% include 'snippets/header.html' %}
-  
+{% load static %}
+
+<!-- Nav bar and Bootstrap links --> 
+{% include 'snippets/header.html' %}
+<!-- end Nav bar --> 
+
+<!-- Theme --> 
+{% if request.user.darkColorScheme == "Light" %}
+<link rel="stylesheet" href="{% static 'css/lightMode.css' %}">
+{% endif %}
+<link rel="stylesheet" href="{% static 'css/darkMode.css' %}">
+<!-- End Theme --> 
+
+<!-- Form formating -->
+{% include 'snippets/formCss.html' %}
+
 </head>
 
 <body>
@@ -14,9 +27,9 @@
     .main{
       min-height: 100vh;
       height: 100%;
-      
     }
   </style>
+
   <div class="main">
     {% block content %} 
 
@@ -25,10 +38,8 @@
     {% endblock %}
   </div>
 
+<!-- Footer --> {% include 'snippets/footer.html' %}
 
-
-
-<!-- this is for later --> {% include 'snippets/footer.html' %}
 </body>
 
 </html>
