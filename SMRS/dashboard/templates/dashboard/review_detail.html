@@ -3,7 +3,7 @@
 {% block content %}
 
 <head>
-<link rel="stylesheet" href="{% static 'css/master.css' %}">
+
 <link rel="stylesheet" href="{% static 'css/details.css' %}">
 </head>
 
@@ -18,7 +18,7 @@
             <input type="text" name="dateOpened"  class="form-control" placeholder="Date Opened" required autofocus value = "{{form.initial.dateOpened|date:'Y-m-d' }}">
             <h3 class="h4">Date Closed</h3>
             <input type="text" name="dateClosed"  class="form-control" placeholder="Date Closed" value = "{{form.initial.dateOpened|date:'Y-m-d' }}">
-            
+
             {% for field in form %}
                 {% if field.name == "projectID" %}
                 <h3 class="h4">Project Id</h3>

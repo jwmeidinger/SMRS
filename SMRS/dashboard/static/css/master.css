@@ -1,6 +1,4 @@
-body{
-  background-color: #66666630;
-}
+
 
 header{
   background-color: #88882230;
@@ -97,4 +95,30 @@ header nav a{
   font-size: 2em;
   border-bottom: 10px double black;
   padding-bottom: .5em;
+}
+
+/* Table info */
+table{
+  border: 1px solid black;
+  width: 100%;
+
+
+}
+
+th{
+  border-bottom: 5px double black;
+  padding-right: 1em;
+  padding-left: 1em;
+  color:white;
+  text-shadow: 2px 2px 4px #000000;
+
+}
+
+td{
+  border-right:solid black 1px;
+  border-bottom:solid black 1px;
+}
+
+.info{
+  text-align: center;
 }

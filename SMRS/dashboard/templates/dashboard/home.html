@@ -3,14 +3,14 @@
 {% block content %}
 <head>
 
-  <link rel="stylesheet" href="{% static 'css/master.css' %}">
+  <!-- <link rel="stylesheet" href="{% static 'css/master.css' %}"> -->
   <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
-  <link rel="stylesheet" href="{% static 'css/projects.css' %}">
+  <!-- <link rel="stylesheet" href="{% static 'css/projects.css' %}"> -->
 
 </head>
 <body>
   <div id="primaryContent">
-    <h2>Dashboard</h2>
+    <h2 id="title">Dashboard</h2>
 
     <div id="dashboard">
 
@@ -47,7 +47,7 @@
       <div class="soloItem">
 
           <h3>Solo Item 3</h3>
-        
+
           <div class="graph">
             {{ graph3|safe  }}
           </div>
