@@ -25,7 +25,7 @@ def DefectsWhereFound(start_date="2000-11-01", end_date=datetime.date.today()):
 
     for defect in defect_values:
         defects_by_year[defect["dateOpened"].year][defect["whereFound"]-1] += 1
-        
+
     for year, counts in defects_by_year.items():
 
         new_scatter = graph_objs.Bar(x=phase_type_values, y=list(counts.values()),
@@ -54,20 +54,20 @@ def ReviewsOverTime(start_date="2000-11-01", end_date=datetime.date.today()):
             counts_by_year[review_year] = dict()
             for i in range(1, 13):
                 counts_by_year[review_year][i] = 0
-        
+
         counts = counts_by_year[review_year]
         review_month = review["dateOpened"].month
         counts[review_month] += 1
 
     months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
-    
+
     for counts in counts_by_year.values():
         for i in range(1, 12):
             counts[i+1] += counts[i]
 
         new_scatter = graph_objs.Scatter(x=months, y=list(counts.values()))
         fig.add_trace(new_scatter)
-    
+
     fig.update_layout(title="Reviews over time",
                       xaxis_title="Months",
                       yaxis_title="Reviews")
@@ -96,17 +96,16 @@ def PostReleaseDefects(start_date="2000-11-01", end_date=datetime.date.today()):
     years = list(total_defects.keys())
     percentages = list()
     for year in years:
-        percentages.append(float(post_release_defects[year])/total_defects[year]) 
-    
-    
+        percentages.append(float(post_release_defects[year])/total_defects[year])
+
+
     fig = graph_objs.Figure()
     new_scatter = graph_objs.Bar(x=years, y=percentages)
     fig.add_trace(new_scatter)
-    
+
     fig.update_layout(title="Reviews over time",
                       xaxis_title="Years",
                       yaxis_title="Percentage")
 
     graph = plot(fig, output_type='div', include_plotlyjs=False, show_link=False, link_text="")
     return graph
-
