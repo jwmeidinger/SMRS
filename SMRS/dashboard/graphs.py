@@ -4,28 +4,31 @@ import datetime
 
 from restAPI.models import Project, Review, Defect, ProjectNumber, PhaseType
 
-def DefectsWhereFound(start_date="2000-11-01", end_date=datetime.date.today()):
+def DefectsWhereFound(start_date, end_date):
 
-    start_year = int(start_date.split("-")[0])
-    end_year = end_date.year ## Need to also allow strings
-
+    # Filter based on this range
     defects = Defect.objects.filter(dateOpened__range=[start_date, end_date]).all()
-    phase_type = PhaseType.objects.all()
-
     defect_values = defects.values("whereFound", "dateOpened", "id", "projectID")
+
+    # Get phase types
+    phase_type = PhaseType.objects.all()
     phase_type_values = [val['phase_type'] for val in list(phase_type.values('phase_type'))]
 
+    # Create figure
     fig = graph_objs.Figure()
     defects_by_year = dict()
 
-    for i in range(start_year, end_year+1):
+    # Loop per year
+    for i in range(start_date.year, end_date.year+1):
         defects_by_year[i] = dict()
         for j in range(len(phase_type_values)):
             defects_by_year[i][j] = 0
 
+    # find which phase each defect falls in
     for defect in defect_values:
         defects_by_year[defect["dateOpened"].year][defect["whereFound"]-1] += 1
         
+    # Make bar graph scatter for each year
     for year, counts in defects_by_year.items():
 
         new_scatter = graph_objs.Bar(x=phase_type_values, y=list(counts.values()),
@@ -34,10 +37,12 @@ def DefectsWhereFound(start_date="2000-11-01", end_date=datetime.date.today()):
         )
         fig.add_trace(new_scatter)
 
+    # Set figure details
     fig.update_layout(title="Defects Where Found",
                     xaxis_title="Phases",
                     yaxis_title="Defects")
 
+    # Generate graph object
     return plot(fig, output_type='div', include_plotlyjs=False, show_link=False, link_text="")
 
 
@@ -61,14 +66,15 @@ def ReviewsOverTime(start_date="2000-11-01", end_date=datetime.date.today()):
 
     months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
     
-    for counts in counts_by_year.values():
+    for year, counts in counts_by_year.items():
         for i in range(1, 12):
             counts[i+1] += counts[i]
 
-        new_scatter = graph_objs.Scatter(x=months, y=list(counts.values()))
+        new_scatter = graph_objs.Scatter(x=months, y=list(counts.values()),
+                                        name=year)
         fig.add_trace(new_scatter)
     
-    fig.update_layout(title="Reviews over time",
+    fig.update_layout(title="Post Release Defects",
                       xaxis_title="Months",
                       yaxis_title="Reviews")
 
@@ -90,13 +96,13 @@ def PostReleaseDefects(start_date="2000-11-01", end_date=datetime.date.today()):
             total_defects[year] = 1
             post_release_defects[year] = 0
 
-        if defect["whereFound"] == 8:
+        if defect["whereFound"] in [6, 7, 8]:
             post_release_defects[year] += 1
 
     years = list(total_defects.keys())
     percentages = list()
     for year in years:
-        percentages.append(float(post_release_defects[year])/total_defects[year]) 
+        percentages.append(100 * float(post_release_defects[year])/total_defects[year]) 
     
     
     fig = graph_objs.Figure()
@@ -106,6 +112,12 @@ def PostReleaseDefects(start_date="2000-11-01", end_date=datetime.date.today()):
     fig.update_layout(title="Reviews over time",
                       xaxis_title="Years",
                       yaxis_title="Percentage")
+                      
+    # Set x axis to show only integers
+    fig.update_xaxes(
+        tickformat="d"
+    )
+    fig.update_yaxes(ticksuffix="%")
 
     graph = plot(fig, output_type='div', include_plotlyjs=False, show_link=False, link_text="")
     return graph

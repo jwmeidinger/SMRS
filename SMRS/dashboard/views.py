@@ -16,27 +16,37 @@ from dashboard.graphs import *
 ## TODO: Need to Figure out a better way to Create custom graphs or make all the ones they want and let them select them.
 def home_view(request):
     context= {}
-    startDate = ""
-    endDate = ""
-    ## Default Dates 
-    context['graph'] = DefectsWhereFound(start_date="2018-01-01")
-    context['graph2'] = ReviewsOverTime(start_date="2000-01-01")
-    context['graph3'] = PostReleaseDefects(start_date="2000-01-01")
+    start_date = None
+    end_date = None
 
     if request.POST:
-        startDate = request.POST["startDate"]
-        endDate = request.POST["endDate"]
-        if startDate != "": ## if just start date example: 2018 - Present
-            context['graph'] = DefectsWhereFound(start_date=startDate)
-            context['graph2'] = ReviewsOverTime(start_date=startDate)
-            context['graph3'] = PostReleaseDefects(start_date=startDate)
+        start_date = request.POST["startDate"]
+        end_date = request.POST["endDate"]
 
-        if endDate != "": ## if just end date example: from start - 2016
-            context['graph'] = DefectsWhereFound(end_date=endDate) #need to reformat in graphs.py
-            context['graph2'] = ReviewsOverTime(end_date=endDate)
-            context['graph3'] = PostReleaseDefects(end_date=endDate)
-        
-        ##TODO: need to add Date to Date
+    # Set default end date to be right now
+    if not end_date:
+        end_date = datetime.date.today()
+
+    # Set default start date to be one year before end date (if applicable)
+    if not start_date:
+        if type(end_date) != datetime.date:
+            end_date = datetime.datetime.strptime(end_date, '%Y-%m-%d').date()
+        start_date = end_date
+        start_date = start_date.replace(year=end_date.year-1)
+
+    # Convert strings to dates
+    if type(start_date) != datetime.date:
+        start_date = datetime.datetime.strptime(start_date, "%Y-%m-%d").date()
+    if type(end_date) != datetime.date:
+        end_date = datetime.datetime.strptime(end_date, "%Y-%m-%d").date()
+
+    context['startDate'] = start_date
+    context['endDate'] = end_date
+    context['graph'] = DefectsWhereFound(start_date=start_date, end_date=end_date)
+    context['graph2'] = ReviewsOverTime(start_date=start_date, end_date=end_date)
+    context['graph3'] = PostReleaseDefects(start_date=start_date, end_date=end_date)
+
+    ##TODO: need to add Date to Date
     
     user = request.user
     if user.is_authenticated:
