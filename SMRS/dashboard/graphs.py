@@ -4,6 +4,29 @@ import datetime
 
 from restAPI.models import Project, Review, Defect, ProjectNumber, PhaseType
 
+def AllDefectsTable(start_date, end_date):
+    # Filter based on this range
+    defects = Defect.objects.filter(dateOpened__range=[start_date, end_date]).all()
+    defect_values = defects.values()
+    if not defect_values:
+        return None
+    
+    cell_columns = dict()
+    for key in defect_values[0].keys():
+        cell_columns[key] = list()
+        for defect in defect_values:
+            cell_columns[key].append(defect[key])
+
+    print(cell_columns)
+    header = dict(values=list(defect_values[0].keys()))
+    cells = dict(values=[col for col in cell_columns.values()])
+    table = graph_objs.Table(header=header, 
+                            cells=cells,)
+    fig = graph_objs.Figure(data=[table])
+    
+    return plot(fig, output_type='div', include_plotlyjs=False, show_link=False, link_text="")
+
+
 def DefectsWhereFound(start_date, end_date):
 
     # Filter based on this range
@@ -112,7 +135,7 @@ def PostReleaseDefects(start_date="2000-11-01", end_date=datetime.date.today()):
     fig.update_layout(title="Reviews over time",
                       xaxis_title="Years",
                       yaxis_title="Percentage")
-                      
+
     # Set x axis to show only integers
     fig.update_xaxes(
         tickformat="d"

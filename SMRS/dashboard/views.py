@@ -3,6 +3,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from rest_framework import viewsets, permissions
 from plotly.offline import plot
 import plotly.graph_objs as graph_objs
+import datetime
 import random
 
 from restAPI.models import Project, Review, Defect, ProjectNumber, PhaseType
@@ -45,6 +46,7 @@ def home_view(request):
     context['graph'] = DefectsWhereFound(start_date=start_date, end_date=end_date)
     context['graph2'] = ReviewsOverTime(start_date=start_date, end_date=end_date)
     context['graph3'] = PostReleaseDefects(start_date=start_date, end_date=end_date)
+    #context['table'] = AllDefectsTable(start_date=start_date, end_date=end_date)
 
     ##TODO: need to add Date to Date
     
