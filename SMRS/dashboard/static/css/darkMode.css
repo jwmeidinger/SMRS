@@ -36,7 +36,7 @@ input[type=text]:focus {
 
 .info{
   /* background-color: brown; */
-  
+
   border: 4px solid #d5cda2 ;
   color:gold ;
 }
@@ -57,12 +57,15 @@ tr a{
 }
 
 tr:nth-child(odd){
-  background-color: #000066;
+  background-color: grey;
 }
 
 tr:nth-child(even){
-  background-color: #0000aa;
+  background-color:  #013220;
 }
 
+#title{
+  border:1px silver solid;
+  padding: .5em;
 
 }
