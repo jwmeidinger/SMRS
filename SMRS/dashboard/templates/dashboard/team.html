@@ -10,7 +10,7 @@
       {% for item in TeamMembers %}
         <ul class= 'list-group '>
           <a style="text-decoration: none;">
-            <li class="list-group-item" style="background-color: #f2f2f2;">{{item}}</li>
+            <li class="list-group-item">{{item}}</li>
           </a>
         </ul>
       {% endfor %}
@@ -23,7 +23,7 @@
         {% for item in projectList %}
           <ul class= 'list-group '>
             <a href="{% url 'dashboard:detail' item.pk %}" style="text-decoration: none;">
-              <li class="list-group-item" style="background-color: #f2f2f2;">{{item}}</li>
+              <li class="list-group-item" >{{item}}</li>
             </a>
           </ul>
         {% endfor %}
@@ -35,4 +35,3 @@
 
 
 {% endblock content %}
-

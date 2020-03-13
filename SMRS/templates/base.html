@@ -4,16 +4,23 @@
 <title>SMRS</title>
 {% load static %}
 
-<!-- Nav bar and Bootstrap links --> 
+<!-- Nav bar and Bootstrap links -->
 {% include 'snippets/header.html' %}
-<!-- end Nav bar --> 
+<!-- end Nav bar -->
 
-<!-- Theme --> 
+<!-- Theme -->
+
+<!-- Place defaults at top -->
+<link rel="stylesheet" href="{% static 'css/master.css' %}">
+
 {% if request.user.darkColorScheme == "Light" %}
 <link rel="stylesheet" href="{% static 'css/lightMode.css' %}">
-{% endif %}
+
+{%elif request.user.darkColorScheme == "Dark"%}
+
 <link rel="stylesheet" href="{% static 'css/darkMode.css' %}">
-<!-- End Theme --> 
+{% endif %}
+<!-- End Theme -->
 
 <!-- Form formating -->
 {% include 'snippets/formCss.html' %}
@@ -31,7 +38,7 @@
   </style>
 
   <div class="main">
-    {% block content %} 
+    {% block content %}
 
     This is replaced
 

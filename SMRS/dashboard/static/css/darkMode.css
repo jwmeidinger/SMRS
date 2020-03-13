@@ -1,0 +1,68 @@
+body{
+  background: black;
+  color:white;
+}
+
+.soloItem{
+
+  background-color: grey ;
+
+
+}
+
+
+input[type=text]{
+  background-color: #DCDCDC;
+  color: black;
+}
+
+input[type=text]:focus {
+  background-color: black;
+  color:orange;
+}
+
+.list-group-item{
+  background-color: #013220 ;
+  /* border-color: #DCDCDC; */
+}
+
+.list-group-item:hover{
+  border-color: #DCDCDC;
+  background-color: #011f14;
+
+
+}
+
+
+.info{
+  /* background-color: brown; */
+  
+  border: 4px solid #d5cda2 ;
+  color:gold ;
+}
+
+.btn{
+  background-color: #000076;
+}
+
+/* table info */
+table{
+  border-color: grey;
+}
+
+
+
+tr a{
+  color:white;
+}
+
+tr:nth-child(odd){
+  background-color: #000066;
+}
+
+tr:nth-child(even){
+  background-color: #0000aa;
+}
+
+
+}

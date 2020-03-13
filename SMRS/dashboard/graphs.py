@@ -82,7 +82,7 @@ def ReviewsOverTime(start_date="2000-11-01", end_date=datetime.date.today()):
             counts_by_year[review_year] = dict()
             for i in range(1, 13):
                 counts_by_year[review_year][i] = 0
-        
+
         counts = counts_by_year[review_year]
         review_month = review["dateOpened"].month
         counts[review_month] += 1
@@ -96,8 +96,8 @@ def ReviewsOverTime(start_date="2000-11-01", end_date=datetime.date.today()):
         new_scatter = graph_objs.Scatter(x=months, y=list(counts.values()),
                                         name=year)
         fig.add_trace(new_scatter)
-    
-    fig.update_layout(title="Post Release Defects",
+
+    fig.update_layout(title="Reviews over time",
                       xaxis_title="Months",
                       yaxis_title="Reviews")
 
@@ -131,8 +131,8 @@ def PostReleaseDefects(start_date="2000-11-01", end_date=datetime.date.today()):
     fig = graph_objs.Figure()
     new_scatter = graph_objs.Bar(x=years, y=percentages)
     fig.add_trace(new_scatter)
-    
-    fig.update_layout(title="Reviews over time",
+
+    fig.update_layout(title="Post Release Defects",
                       xaxis_title="Years",
                       yaxis_title="Percentage")
 
@@ -144,4 +144,3 @@ def PostReleaseDefects(start_date="2000-11-01", end_date=datetime.date.today()):
 
     graph = plot(fig, output_type='div', include_plotlyjs=False, show_link=False, link_text="")
     return graph
-
