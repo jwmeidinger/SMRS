@@ -47,7 +47,6 @@ def home_view(request):
 '''
 *** User's Team, members, and Projects
 '''
-## TODO: Need to Finish CSS
 def team_view(request):
     context= {}
     user = request.user
@@ -63,7 +62,6 @@ def team_view(request):
 '''
 *** User's Personally selected Projects
 '''
-## TODO: Need to Finish CSS
 def project_view(request):
     context= {}
     user = request.user
@@ -86,7 +84,7 @@ def project_view(request):
 '''
 *** User's Personally selected Projects
 '''
-## TODO: Need to Finish HTML and CSS
+## TODO: Need to add Graph and Table
 def projectDetail_view(request, pk):
     context= {}
     user = request.user
@@ -94,10 +92,14 @@ def projectDetail_view(request, pk):
         project_detail = get_object_or_404(Project, pk=pk)
         allDefects = Defect.objects.filter(projectID=project_detail)
         allReviews = Review.objects.filter(projectID=project_detail)
+        if request.POST:
+            if request.POST["defectCheck"] != "0":
+                openDefects = Defect.objects.filter(projectID=project_detail, dateClosed__isnull=True)
+                context['openDefects'] = openDefects
 
-        context['projectName'] = project_detail.name
         context['allDefects'] = allDefects
         context['allReviews'] = allReviews
+        context['projectName'] = project_detail.name
     return render(request, "dashboard/project_detail.html", context)
 
 '''
@@ -140,7 +142,6 @@ def projectDelFav_view(request, pk):
 '''
 *** User's Personally selected Projects
 '''
-## TODO: Need  ONLY Team Leader to be able to change items
 def defect_view(request, pk):
     context= {}
     user = request.user
@@ -148,6 +149,8 @@ def defect_view(request, pk):
         return redirect("acccount:login")
     
     currentDefect = Defect.objects.filter(pk = pk).first()
+    project = Project.objects.filter(pk = currentDefect.projectID.pk).first()
+
     if request.POST:
         form = DefectForm(request.POST, instance = currentDefect)
         if form.is_valid():
@@ -160,8 +163,11 @@ def defect_view(request, pk):
                 "severity"  : request.POST["severity"],
                 "url"       : request.POST["url"]
             }
-            form.save()
-            context["success_message"] = "Updated"
+            if project.productOwner == user or user.is_admin:
+                form.save()
+                context["success_message"] = "Updated"
+            else:
+                context["success_message"] = "Must be Product Owner or Admin"
     else:
         form = DefectForm(
              initial = {
@@ -180,7 +186,6 @@ def defect_view(request, pk):
 '''
 *** User's Personally selected Projects
 '''
-## TODO: Need ONLY Team Leader to be able to change items
 def review_view(request, pk):
     context= {}
     user = request.user
@@ -188,6 +193,7 @@ def review_view(request, pk):
         return redirect("acccount:login")
     
     currentReview = Review.objects.filter(pk = pk).first()
+    project = Project.objects.filter(pk = currentReview.projectID.pk).first()
 
     if request.POST:
         form = ReviewForm(request.POST)
@@ -201,8 +207,11 @@ def review_view(request, pk):
                 "severity"  : request.POST["severity"],
                 "url"       : request.POST["url"]
             }
-            form.save()
-            context["success_message"] = "Updated"
+            if project.productOwner == user or user.is_admin:
+                form.save()
+                context["success_message"] = "Updated"
+            else:
+                context["success_message"] = "Must be Product Owner or Admin"
     else:
         form = ReviewForm(
              initial = {

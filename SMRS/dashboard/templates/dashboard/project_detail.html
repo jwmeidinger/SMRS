@@ -6,8 +6,8 @@
   <h1 class="h3 font-weight-normal text-center ">{{projectName}}</h1>
   <div class="row">
     <div class="col-sm-6">
+    <h3 class='mb-3 font-weight-normal display-6 text-center' >Project Reviews:</h3>
       {% if allReviews %}
-      <h3 class='mb-3 font-weight-normal display-6 text-center' >Project Reviews:</h3>
         {% for item in allReviews %}
           <ul class= 'list-group '>
             <a href="{% url 'dashboard:reviewDetail' item.pk %}" style="text-decoration: none;">
@@ -18,8 +18,17 @@
       {% endif %}
     </div>
     <div class="col-sm-6">
-        {% if allDefects %}
-        <h3 class='mb-3 font-weight-normal display-6 text-center' >Project Defects:</h3>
+        {% if openDefects %}
+        <h3 class='mb-3 font-weight-normal display-6 text-center' >Open Defects:</h3>
+            {% for item in openDefects %}
+              <ul class= 'list-group '>
+                <a href="{% url 'dashboard:defectDetail' item.pk %}" style="text-decoration: none;">
+                  <li class="list-group-item" >{{item}}</li>
+                </a>
+              </ul>
+            {% endfor %}
+          {% else %}
+          <h3 class='mb-3 font-weight-normal display-6 text-center' >Project Defects:</h3>
           {% for item in allDefects %}
             <ul class= 'list-group '>
               <a href="{% url 'dashboard:defectDetail' item.pk %}" style="text-decoration: none;">
@@ -27,6 +36,20 @@
               </a>
             </ul>
           {% endfor %}
+        {% endif %}
+        {% if openDefects or allDefects  %}
+        <form method="post">{% csrf_token %}
+          <div class="form-check text-center">
+            <input type="hidden" name="defectCheck" value="0"/>
+            <input class="form-check-input" type="checkbox" value="openDefect" name="defectCheck">
+            <label class="form-check-label" for="defectCheck">
+              Open defects only
+            </label>
+          </div>
+            <div style="width: 100px;" >
+              <button class="btn btn-lg btn-primary btn-block" type="submit">Filter</button>
+            </div>
+        </form>
         {% endif %}
       </div>
   </div>
