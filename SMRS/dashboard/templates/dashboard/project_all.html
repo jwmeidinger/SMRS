@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<head>
+<link rel="stylesheet" href="{% static 'css/projects.css' %}">
+</head>
+
+<body>
+<div class="container">
+  <div id="primaryContent">
+    <h2 id="title">All Projects</h2>
+
+    <h3>Filter</h3>
+    <div class="row d-flex flex-row">
+     <form class="form-signin" method="post">{% csrf_token %}
+        <div class="d-flex justify-content-start">
+        <select class="p-2 form-control" name="filterItem">
+            <option value="projectName">Project Name</option>
+            <option value="projectTeam">Project Team Name</option>
+            <option value="projectOwner">Project Owner</option>
+            <option value="projectPk">Primary Key</option>
+        </select>
+        <input type='text' name="filterInput" class="form-control p-2" required>
+        </div>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Filter</button>
+     </form>
+    </div>
+
+    {% if  request.user.is_authenticated %}  <!-- allows users to still add to there favorite  -->
+    <table>
+      <tr>
+        <th>Project Name</th>
+        <th>Project Owner</th>
+        <th>Team</th>
+        <th>Add Favorite</th>
+      </tr>
+
+      {% for project in projects %}
+      <tr>
+        <td ><a href="{% url 'dashboard:detail' project.pk %}">{{project.name}}</a></td>
+        <td>{{project.productOwner}}</td>
+        <td>{{project.teamID}}</td>
+        <td><a href="{% url 'dashboard:addfav' project.pk %}">+</a></td>
+      </tr>
+
+      {% endfor %}
+    </table>
+    {% else %}
+     <table>
+      <tr>
+        <th>Project Name</th>
+        <th>Project Owner</th>
+        <th>Team</th>
+      </tr>
+
+      {% for project in projects %}
+      <tr>
+        <td ><a href="{% url 'dashboard:detail' project.pk %}">{{project.name}}</a></td>
+        <td>{{project.productOwner}}</td>
+        <td>{{project.teamID}}</td>
+      </tr>
+
+      {% endfor %}
+    </table>
+    {% endif %}
+  </div>
+</div>
+</body>
+
+
+
+{% endblock content %}

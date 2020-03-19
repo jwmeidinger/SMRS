@@ -88,18 +88,18 @@ def project_view(request):
 def projectDetail_view(request, pk):
     context= {}
     user = request.user
-    if user.is_authenticated:
-        project_detail = get_object_or_404(Project, pk=pk)
-        allDefects = Defect.objects.filter(projectID=project_detail)
-        allReviews = Review.objects.filter(projectID=project_detail)
-        if request.POST:
-            if request.POST["defectCheck"] != "0":
-                openDefects = Defect.objects.filter(projectID=project_detail, dateClosed__isnull=True)
-                context['openDefects'] = openDefects
+    
+    project_detail = get_object_or_404(Project, pk=pk)
+    allDefects = Defect.objects.filter(projectID=project_detail)
+    allReviews = Review.objects.filter(projectID=project_detail)
+    if request.POST:
+        if request.POST["defectCheck"] != "0":
+            openDefects = Defect.objects.filter(projectID=project_detail, dateClosed__isnull=True)
+            context['openDefects'] = openDefects
 
-        context['allDefects'] = allDefects
-        context['allReviews'] = allReviews
-        context['projectName'] = project_detail.name
+    context['allDefects'] = allDefects
+    context['allReviews'] = allReviews
+    context['projectName'] = project_detail.name
     return render(request, "dashboard/project_detail.html", context)
 
 '''
@@ -108,7 +108,7 @@ def projectDetail_view(request, pk):
 def projectAddFav_view(request, pk):
     value = request.COOKIES.get('FavoriteProjects')
     projectpk = pk ## have to declare before response
-    response = redirect("dashboard:project")
+    response = redirect("dashboard:project_team")
     if value == None or value == "": ## No Favorite set yet
         response.set_cookie('FavoriteProjects', '{}'.format(projectpk))
     else: ## Have Favorite
@@ -133,11 +133,35 @@ def projectDelFav_view(request, pk):
     projectpk = pk
     items = set(value.split(','))
     items.remove("{}".format(projectpk))
-    response = redirect("dashboard:project")
+    response = redirect("dashboard:project_team")
     final  = ",".join(items)
     response.set_cookie('FavoriteProjects', final)
     return response
 
+'''
+*** All Projects viewable by everyone
+'''
+def projectAll_view(request):
+    context= {}
+    projects = Project.objects.all()
+    context["projects"] = projects
+    
+    if request.POST:
+        filterItem = request.POST.get('filterItem')
+        filterInput = request.POST.get('filterInput')
+        if filterItem == "projectName":
+            projects = Project.objects.filter(name=filterInput).all()
+        if filterItem == "projectTeam":
+            teamID = Team.objects.filter(name=filterInput).first()
+            projects = Project.objects.filter(teamID=teamID).all()
+        if filterItem == "projectOwner":
+            productOwner = Account.objects.filter(name=filterInput).first()
+            projects = Project.objects.filter(productOwner=productOwner).all()
+        if filterItem == "projectPk":
+            projects = Project.objects.filter(pk=int(filterInput)).all() 
+
+    context["projects"] = projects
+    return render(request, "dashboard/project_all.html", context)
 
 '''
 *** User's Personally selected Projects
@@ -146,7 +170,7 @@ def defect_view(request, pk):
     context= {}
     user = request.user
     if not user.is_authenticated:
-        return redirect("acccount:login")
+        return redirect("account:login")
     
     currentDefect = Defect.objects.filter(pk = pk).first()
     project = Project.objects.filter(pk = currentDefect.projectID.pk).first()
@@ -190,7 +214,7 @@ def review_view(request, pk):
     context= {}
     user = request.user
     if not user.is_authenticated:
-        return redirect("acccount:login")
+        return redirect("account:login")
     
     currentReview = Review.objects.filter(pk = pk).first()
     project = Project.objects.filter(pk = currentReview.projectID.pk).first()
@@ -226,3 +250,11 @@ def review_view(request, pk):
         )
     context['form'] = form
     return render(request, "dashboard/review_detail.html", context)
+
+'''
+*** Information on website
+'''
+def about_view (request):
+    context= {}
+
+    return render(request, "dashboard/about.html", context)
