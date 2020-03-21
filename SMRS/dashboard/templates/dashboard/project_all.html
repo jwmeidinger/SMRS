@@ -43,9 +43,11 @@
         <td>{{project.teamID}}</td>
         <td><a href="{% url 'dashboard:addfav' project.pk %}">+</a></td>
       </tr>
-
       {% endfor %}
     </table>
+    
+    {% include 'snippets/paginator_projects.html' %}
+
     {% else %}
      <table>
       <tr>
@@ -60,9 +62,11 @@
         <td>{{project.productOwner}}</td>
         <td>{{project.teamID}}</td>
       </tr>
-
       {% endfor %}
     </table>
+
+    {% include 'snippets/paginator_projects.html' %}
+            
     {% endif %}
   </div>
 </div>

@@ -15,6 +15,7 @@
             </a>
           </ul>
         {% endfor %}
+
       {% endif %}
     </div>
     <div class="col-sm-6">
@@ -27,6 +28,9 @@
                 </a>
               </ul>
             {% endfor %}
+
+            
+
           {% else %}
           <h3 class='mb-3 font-weight-normal display-6 text-center' >Project Defects:</h3>
           {% for item in allDefects %}
@@ -36,6 +40,9 @@
               </a>
             </ul>
           {% endfor %}
+          <div class="">
+            {% include "snippets/paginator_allDefects.html" %}
+          </div>
         {% endif %}
         {% if openDefects or allDefects  %}
         <form method="post">{% csrf_token %}

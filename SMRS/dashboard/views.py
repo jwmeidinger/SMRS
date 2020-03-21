@@ -1,5 +1,6 @@
 
 from django.shortcuts import render, get_object_or_404, redirect
+from django.core.paginator import Paginator
 from rest_framework import viewsets, permissions
 from plotly.offline import plot
 import plotly.graph_objs as graph_objs
@@ -67,7 +68,7 @@ def project_view(request):
     user = request.user
     if user.is_authenticated:
         value = request.COOKIES.get('FavoriteProjects')
-        if value != None: ## Browers never on the page before
+        if value != None: ## Browser never on the page before
             favs = set(value.split(","))
             blankspace  = ",".join(favs)
             if blankspace != "": ## if empty don't make a request to DB
@@ -89,14 +90,28 @@ def projectDetail_view(request, pk):
     context= {}
     user = request.user
     
-    project_detail = get_object_or_404(Project, pk=pk)
-    allDefects = Defect.objects.filter(projectID=project_detail)
-    allReviews = Review.objects.filter(projectID=project_detail)
+    project_detail = get_object_or_404(Project, pk=pk) # Get the project info
+    allDefects = Defect.objects.filter(projectID=project_detail) # Get the Defects of project
+    allReviews = Review.objects.filter(projectID=project_detail) # Get the Reviews of project
+
+    ## This allows to have pages of items 
+    paginator = Paginator(allDefects, 15) ## To switch items per page change the number
+    try: # If no items
+        page = int(request.GET.get('page', '1'))
+    except:
+        page = 1
+    try:# If page is not found
+        allDefects = paginator.page(page)
+    except:
+        allDefects = paginator.page(paginator.num_pages)
+
+    ## Used to filter open Defects
     if request.POST:
         if request.POST["defectCheck"] != "0":
             openDefects = Defect.objects.filter(projectID=project_detail, dateClosed__isnull=True)
             context['openDefects'] = openDefects
 
+    ## Setting items to the template
     context['allDefects'] = allDefects
     context['allReviews'] = allReviews
     context['projectName'] = project_detail.name
@@ -144,6 +159,18 @@ def projectDelFav_view(request, pk):
 def projectAll_view(request):
     context= {}
     projects = Project.objects.all()
+
+    ## This allows to have pages of items 
+    paginator = Paginator(projects, 20) ## To switch items per page change the number
+    try: # If no items
+        page = int(request.GET.get('page', '1'))
+    except:
+        page = 1
+    try:# If page is not found
+        projects = paginator.page(page)
+    except:
+        projects = paginator.page(paginator.num_pages)
+
     context["projects"] = projects
     
     if request.POST:
