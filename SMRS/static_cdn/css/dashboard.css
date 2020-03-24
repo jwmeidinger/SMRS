@@ -20,13 +20,15 @@
 
 .soloItem{
   text-align: center;
-  width:30%;
-  background-color: #fff8dc ;
+  width:100%;
+  /* background-color: #fff8dc ; */
   padding: .5em;
 
 }
 
-@media only screen and (max-width: 1200px) {
+
+/* Auto adjust tabbed out for now. Trying out simple 100% width */
+/* @media only screen and (max-width: 1200px) {
   .soloItem {
 
     width:40%;
@@ -37,4 +39,4 @@
   .soloItem {
     width:100%;
   }
-}
+} */

@@ -1,0 +1,15 @@
+
+
+.myCenter{
+
+  display: flex;
+  justify-content: center;
+  background-color:red;
+  border:black solid 10px;
+
+}
+
+body{
+
+  
+}
