@@ -297,8 +297,4 @@ def review_view(request, pk):
 def about_view (request):
     context= {}
 
-<<<<<<< HEAD
     return render(request, "dashboard/about.html", context)
-=======
-    return render(request, "dashboard/about.html", context)
->>>>>>> wyly_fix
