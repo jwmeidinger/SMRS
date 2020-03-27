@@ -9,10 +9,8 @@
 <body>
 <div class="container">
   <div id="primaryContent">
-    <h2 id="title">Projects</h2>
-    <!-- For this version we're assuming that one person is on one team. In udpates this needs to be changed -->
+    <h2 id="title">Your Projects</h2>
     <h3>Team ID: {{team}}</h3>
-
 
     <h3>Favorites</h3>
     <table>
@@ -25,7 +23,6 @@
       {% for project in FavProjects %}
       <tr>
         <td ><a href="{% url 'dashboard:detail' project.pk %}">{{project.name}}</a></td>
-        <!-- For Now the Team ID is redundent information since one person is in one team. But in future updates we hope to have one person on many teams. -->
         <td>{{project.productOwner}}</td>
         <td><a href="{% url 'dashboard:delfav' project.pk %}">X</a></td>
       </tr>
@@ -44,16 +41,14 @@
       {% for project in projects %}
       <tr>
         <td ><a href="{% url 'dashboard:detail' project.pk %}">{{project.name}}</a></td>
-        <!-- For Now the Team ID is redundent information since one person is in one team. But in future updates we hope to have one person on many teams. -->
         <td>{{project.productOwner}}</td>
         <td><a href="{% url 'dashboard:addfav' project.pk %}">+</a></td>
       </tr>
-
       {% endfor %}
     </table>
-
-
-
+    <div class= "form-signin">
+      <a class="btn btn-lg btn-primary btn-block" href="{% url 'dashboard:project_all' %}"> All Projects</a>
+    </div>
   </div>
 </div>
 </body>

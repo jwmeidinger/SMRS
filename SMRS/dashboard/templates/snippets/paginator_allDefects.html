@@ -1,0 +1,27 @@
+
+  <div class="myCenter">
+{% if allDefects.has_previous %}
+      <a class="btn btn-sm btn-primary" href="?page=1">First</a>
+      <a class="btn btn-sm btn-primary" href="?page={{ allDefects.previous_page_number }}">Previous</a>
+{% endif %}
+
+{% for num in allDefects.paginator.page_range %}
+  <!-- <div class="text-center"> -->
+
+      {% if allDefects.number == num %}
+          <a class="btn btn-sm btn-primary" href="?page={{ num }}">{{ num }}</a>
+      {% elif num > allDefects.number|add:'-3' and num < allDefects.number|add:'3' %}
+          <a class="btn btn-sm btn-primary" href="?page={{ num }}">{{ num }}</a>
+      {% endif %}
+  <!-- </div> -->
+{% endfor %}
+
+{% if allDefects.has_next %}
+  <!-- <div class="text-center"> -->
+
+      <a class="btn btn-sm btn-primary" href="?page={{allDefects.next_page_number}}">Next</a>
+      <a class="btn btn-sm btn-primary" href="?page={{ allDefects.paginator.num_pages }}">Last</a>
+  <!-- </div> -->
+{% endif %}
+
+</div>

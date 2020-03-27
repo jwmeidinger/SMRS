@@ -8,6 +8,7 @@
   <!-- <link rel="stylesheet" href="{% static 'css/projects.css' %}"> -->
 
 </head>
+<div class="container">
 <body>
   <div id="primaryContent">
     <h2 id="title">Dashboard</h2>
@@ -37,9 +38,9 @@
           {{ graph|safe  }}
         </div>
         <form class="form-signin" method="post">{% csrf_token %}
-          <label >Start Date: {{form.initial.darkColorScheme}}</label>
+          <label >Start Date:</label>
           <input type='text' name="startDate" class="form-control" placeholder="YYYY-MM-DD">
-          <label >End Date: {{form.initial.darkColorScheme}}</label>
+          <label >End Date:</label>
           <input type='text' name="endDate" class="form-control" placeholder="YYYY-MM-DD">
           <button class="btn btn-lg btn-primary btn-block" type="submit">Filter</button>
         </form>
@@ -58,6 +59,6 @@
   {{ graph|safe }}
 </div>
 </body>
-
+</div>
 
 {% endblock content %}

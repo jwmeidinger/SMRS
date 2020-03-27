@@ -122,3 +122,12 @@ td{
 .info{
   text-align: center;
 }
+
+
+.myCenter{
+  padding-top: .5em;
+  display: flex;
+  justify-content: center;
+  /* background-color: red; */
+
+}

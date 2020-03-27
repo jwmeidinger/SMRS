@@ -17,7 +17,7 @@
             <h3 class="h4">Date Opened</h3>
             <input type="text" name="dateOpened"  class="form-control" placeholder="Date Opened" required autofocus value = "{{form.initial.dateOpened|date:'Y-m-d' }}">
             <h3 class="h4">Date Closed</h3>
-            <input type="text" name="dateClosed"  class="form-control" placeholder="Date Closed" value = "{{form.initial.dateOpened|date:'Y-m-d' }}">
+            <input type="text" name="dateClosed"  class="form-control" placeholder="Date Closed" value = "{{form.initial.dateClosed|date:'Y-m-d' }}">
 
             {% for field in form %}
                 {% if field.name == "projectID" %}

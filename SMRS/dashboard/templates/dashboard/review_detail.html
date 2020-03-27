@@ -17,7 +17,7 @@
             <h3 class="h4">Date Opened</h3>
             <input type="text" name="dateOpened"  class="form-control" placeholder="Date Opened" required autofocus value = "{{form.initial.dateOpened|date:'Y-m-d' }}">
             <h3 class="h4">Date Closed</h3>
-            <input type="text" name="dateClosed"  class="form-control" placeholder="Date Closed" value = "{{form.initial.dateOpened|date:'Y-m-d' }}">
+            <input type="text" name="dateClosed"  class="form-control" placeholder="Date Closed" value = "{{form.initial.dateClosed|date:'Y-m-d' }}">
 
             {% for field in form %}
                 {% if field.name == "projectID" %}
@@ -53,11 +53,11 @@
                     <div class="alert alert-danger">
                         <strong> {{error|escape}} </strong>
                     </div>
-
                 {% endif %}
                 {%if success_message %}
                     <p style = "color: green; text-align: center"> {{success_message}}</p>
                 {% endif %}
+
                 <div><p></p></div>
             <button class="btn btn-lg btn-primary btn-block" type="submit">Save Changes</button>
                 <p class="info"> If you change anything be sure to update the source</p>
