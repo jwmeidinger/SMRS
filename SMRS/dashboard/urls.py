@@ -8,6 +8,8 @@ from .views import(
     review_view,
     projectAddFav_view,
     projectDelFav_view,
+    projectAll_view,
+    about_view,
 
 )
 
@@ -23,7 +25,9 @@ from .views import(
 app_name = 'dashboard'
 urlpatterns = [
     
-    path('projects/', project_view, name='project'),
+    path('about/', about_view, name='about'),
+    path('projects/', project_view, name='project_team'),
+    path('projects/all/', projectAll_view, name='project_all'),
     path('team/', team_view, name='team'),
     path('project/<int:pk>', projectDetail_view, name='detail'),
     path('review/<int:pk>', review_view, name='reviewDetail'),

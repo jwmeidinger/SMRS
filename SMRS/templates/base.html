@@ -19,6 +19,12 @@
 {%elif request.user.darkColorScheme == "Dark"%}
 
 <link rel="stylesheet" href="{% static 'css/darkMode.css' %}">
+
+<!-- If neither is set default to to light mode -->
+{%else%}
+<link rel="stylesheet" href="{% static 'css/lightMode.css' %}">
+
+
 {% endif %}
 <!-- End Theme -->
 

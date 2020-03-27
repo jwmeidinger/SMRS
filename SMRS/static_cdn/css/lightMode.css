@@ -1,3 +1,29 @@
-#title{
-    text-align: center;
-  }
+body{
+  background: white;
+  color:black;
+}
+
+.list-group-item{
+  background-color: #f2f2f2;
+}
+
+
+tr:nth-child(odd){
+  background-color: #e6e6e6  ;
+}
+
+tr:nth-child(even){
+  background-color: #cccccc ;
+}
+
+
+th{
+
+  color:black;
+  text-shadow: 2px 2px 4px #cccccc;
+
+}
+
+a{
+  color:000066;
+}
