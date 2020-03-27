@@ -66,7 +66,8 @@ def DefectsWhereFound(start_date, end_date):
 
     # find which phase each defect falls in
     for defect in defect_values:
-        defects_by_year[defect["dateOpened"].year][defect["whereFound"]-1] += 1
+        year = getFiscalYear(defect["dateOpened"])
+        defects_by_year[year][defect["whereFound"]-1] += 1
         
     # Make bar graph scatter for each year
     for year, counts in defects_by_year.items():
@@ -94,7 +95,8 @@ def ReviewsOverTime(start_date="2000-11-01", end_date=datetime.date.today()):
     counts_by_year = dict()
 
     for review in review_values:
-        review_year = review["dateOpened"].year
+        print(review)
+        review_year = getFiscalYear(review["dateOpened"])
         if review_year not in counts_by_year:
             counts_by_year[review_year] = dict()
             for i in range(1, 13):
@@ -104,13 +106,21 @@ def ReviewsOverTime(start_date="2000-11-01", end_date=datetime.date.today()):
         review_month = review["dateOpened"].month
         counts[review_month] += 1
 
-    months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+    months = ["November", "December", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October"]
     
     for year, counts in counts_by_year.items():
-        for i in range(1, 12):
-            counts[i+1] += counts[i]
 
-        new_scatter = graph_objs.Scatter(x=months, y=list(counts.values()),
+        for i in [10, 11, 12] + list(range(1, 10)):
+            if i == 12:
+                counts[1] += counts[12]
+            else:
+                counts[i+1] += counts[i]
+        
+        count_output = list(counts.values())
+        count_output = count_output[-2:] + count_output[:-2]
+        print(count_output)
+
+        new_scatter = graph_objs.Scatter(x=months, y=count_output,
                                         name=year)
         fig.add_trace(new_scatter)
 
@@ -129,7 +139,7 @@ def PostReleaseDefects(start_date="2000-11-01", end_date=datetime.date.today()):
     post_release_defects = dict()
 
     for defect in defect_values:
-        year = defect["dateOpened"].year
+        year = getFiscalYear(defect["dateOpened"])
         if year in total_defects.keys():
             total_defects[year] += 1
         else:
@@ -161,3 +171,9 @@ def PostReleaseDefects(start_date="2000-11-01", end_date=datetime.date.today()):
 
     graph = plot(fig, output_type='div', include_plotlyjs=False, show_link=False, link_text="")
     return graph
+
+def getFiscalYear(date):
+    if date.month in [11, 12]:
+        return date.year + 1
+    else:
+        return date.year
