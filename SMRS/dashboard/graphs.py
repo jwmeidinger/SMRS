@@ -95,7 +95,6 @@ def ReviewsOverTime(start_date="2000-11-01", end_date=datetime.date.today()):
     counts_by_year = dict()
 
     for review in review_values:
-        print(review)
         review_year = getFiscalYear(review["dateOpened"])
         if review_year not in counts_by_year:
             counts_by_year[review_year] = dict()
@@ -110,15 +109,16 @@ def ReviewsOverTime(start_date="2000-11-01", end_date=datetime.date.today()):
     
     for year, counts in counts_by_year.items():
 
+        # make sure the review count increments with each passing month
         for i in [10, 11, 12] + list(range(1, 10)):
             if i == 12:
                 counts[1] += counts[12]
             else:
                 counts[i+1] += counts[i]
         
+        # reorder the list of counts such that November and December come first
         count_output = list(counts.values())
         count_output = count_output[-2:] + count_output[:-2]
-        print(count_output)
 
         new_scatter = graph_objs.Scatter(x=months, y=count_output,
                                         name=year)

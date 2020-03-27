@@ -20,7 +20,7 @@
           <div id="item001">
           <h3>Review tracking per month</h3>
           <div class="graph">
-            {{ graph2|safe  }}
+            {{ RoT_graph|safe  }}
           </div>
         </div>
 
@@ -35,7 +35,7 @@
         <h3>Number of Defects Per Release</h3>
         <p>Color represents different years</p>
         <div class="graph">
-          {{ graph|safe  }}
+          {{ DWF_graph|safe  }}
         </div>
         <form class="form-signin" method="post">{% csrf_token %}
           <label >Start Date:</label>
@@ -50,13 +50,16 @@
           <h3>Post Release Defects</h3>
         
           <div class="graph">
-            {{ graph3|safe  }}
+            {{ PRD_graph|safe  }}
           </div>
     </div>
 
   </div>
 <div class="graph">
-  {{ graph|safe }}
+  {{ AD_table|safe }}
+</div>
+<div class="graph">
+  {{ containment_pie|safe }}
 </div>
 </body>
 </div>

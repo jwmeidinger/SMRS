@@ -44,11 +44,11 @@ def home_view(request):
 
     context['startDate'] = start_date
     context['endDate'] = end_date
-    context['graph'] = DefectsWhereFound(start_date=start_date, end_date=end_date)
-    context['graph2'] = ReviewsOverTime(start_date=start_date, end_date=end_date)
-    context['graph3'] = PostReleaseDefects(start_date=start_date, end_date=end_date)
-    # context['graph'] = AllDefectsTable(start_date=start_date, end_date=end_date)
-    context['graph'] = ContainmentPieChart(start_date=start_date, end_date=end_date)
+    context['DWF_graph'] = DefectsWhereFound(start_date=start_date, end_date=end_date)
+    context['RoT_graph'] = ReviewsOverTime(start_date=start_date, end_date=end_date)
+    context['PRD_graph'] = PostReleaseDefects(start_date=start_date, end_date=end_date)
+    context['AD_table'] = AllDefectsTable(start_date=start_date, end_date=end_date)
+    context['containment_pie'] = ContainmentPieChart(start_date=start_date, end_date=end_date)
     
     ##TODO: need to add Date to Date
     
