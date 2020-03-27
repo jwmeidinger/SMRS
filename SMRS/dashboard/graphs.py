@@ -26,6 +26,23 @@ def AllDefectsTable(start_date, end_date):
     
     return plot(fig, output_type='div', include_plotlyjs=False, show_link=False, link_text="")
 
+def ContainmentPieChart(start_date, end_date):
+    defects = Defect.objects.all()
+    defect_values = defects.values("dateOpened", "whereFound")
+
+    post_release_defects = 0
+
+    for defect in defect_values:
+        if defect["whereFound"] in [6, 7, 8]:
+            post_release_defects += 1
+    
+    contained_defects = len(defect_values) - post_release_defects
+
+    fig = graph_objs.Figure()
+    trace = graph_objs.Pie(labels = ["Post Release Defects", "Contained Defects"], values = [post_release_defects, contained_defects])
+    fig.add_trace(trace)
+
+    return plot(fig, output_type='div', include_plotlyjs=False, show_link=False, link_text="")
 
 def DefectsWhereFound(start_date, end_date):
 

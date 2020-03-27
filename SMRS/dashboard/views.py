@@ -46,8 +46,9 @@ def home_view(request):
     context['graph'] = DefectsWhereFound(start_date=start_date, end_date=end_date)
     context['graph2'] = ReviewsOverTime(start_date=start_date, end_date=end_date)
     context['graph3'] = PostReleaseDefects(start_date=start_date, end_date=end_date)
-    #context['table'] = AllDefectsTable(start_date=start_date, end_date=end_date)
-
+    # context['graph'] = AllDefectsTable(start_date=start_date, end_date=end_date)
+    context['graph'] = ContainmentPieChart(start_date=start_date, end_date=end_date)
+    
     ##TODO: need to add Date to Date
     
     user = request.user
