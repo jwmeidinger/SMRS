@@ -4,28 +4,72 @@ import datetime
 
 from restAPI.models import Project, Review, Defect, ProjectNumber, PhaseType
 
-def DefectsWhereFound(start_date="2000-11-01", end_date=datetime.date.today()):
-
-    start_year = int(start_date.split("-")[0])
-    end_year = end_date.year ## Need to also allow strings
-
+def AllDefectsTable(start_date, end_date):
+    # Filter based on this range
     defects = Defect.objects.filter(dateOpened__range=[start_date, end_date]).all()
-    phase_type = PhaseType.objects.all()
+    defect_values = defects.values()
+    if not defect_values:
+        return None
+    
+    cell_columns = dict()
+    for key in defect_values[0].keys():
+        cell_columns[key] = list()
+        for defect in defect_values:
+            cell_columns[key].append(defect[key])
 
+    print(cell_columns)
+    header = dict(values=list(defect_values[0].keys()))
+    cells = dict(values=[col for col in cell_columns.values()])
+    table = graph_objs.Table(header=header, 
+                            cells=cells,)
+    fig = graph_objs.Figure(data=[table])
+    
+    return plot(fig, output_type='div', include_plotlyjs=False, show_link=False, link_text="")
+
+def ContainmentPieChart(start_date, end_date):
+    defects = Defect.objects.all()
+    defect_values = defects.values("dateOpened", "whereFound")
+
+    post_release_defects = 0
+
+    for defect in defect_values:
+        if defect["whereFound"] in [6, 7, 8]:
+            post_release_defects += 1
+    
+    contained_defects = len(defect_values) - post_release_defects
+
+    fig = graph_objs.Figure()
+    trace = graph_objs.Pie(labels = ["Post Release Defects", "Contained Defects"], values = [post_release_defects, contained_defects])
+    fig.add_trace(trace)
+
+    return plot(fig, output_type='div', include_plotlyjs=False, show_link=False, link_text="")
+
+def DefectsWhereFound(start_date, end_date):
+
+    # Filter based on this range
+    defects = Defect.objects.filter(dateOpened__range=[start_date, end_date]).all()
     defect_values = defects.values("whereFound", "dateOpened", "id", "projectID")
+
+    # Get phase types
+    phase_type = PhaseType.objects.all()
     phase_type_values = [val['phase_type'] for val in list(phase_type.values('phase_type'))]
 
+    # Create figure
     fig = graph_objs.Figure()
     defects_by_year = dict()
 
-    for i in range(start_year, end_year+1):
+    # Loop per year
+    for i in range(start_date.year, end_date.year+1):
         defects_by_year[i] = dict()
         for j in range(len(phase_type_values)):
             defects_by_year[i][j] = 0
 
+    # find which phase each defect falls in
     for defect in defect_values:
-        defects_by_year[defect["dateOpened"].year][defect["whereFound"]-1] += 1
-
+        year = getFiscalYear(defect["dateOpened"])
+        defects_by_year[year][defect["whereFound"]-1] += 1
+        
+    # Make bar graph scatter for each year
     for year, counts in defects_by_year.items():
 
         new_scatter = graph_objs.Bar(x=phase_type_values, y=list(counts.values()),
@@ -34,10 +78,12 @@ def DefectsWhereFound(start_date="2000-11-01", end_date=datetime.date.today()):
         )
         fig.add_trace(new_scatter)
 
+    # Set figure details
     fig.update_layout(title="Defects Where Found",
                     xaxis_title="Phases",
                     yaxis_title="Defects")
 
+    # Generate graph object
     return plot(fig, output_type='div', include_plotlyjs=False, show_link=False, link_text="")
 
 
@@ -49,7 +95,7 @@ def ReviewsOverTime(start_date="2000-11-01", end_date=datetime.date.today()):
     counts_by_year = dict()
 
     for review in review_values:
-        review_year = review["dateOpened"].year
+        review_year = getFiscalYear(review["dateOpened"])
         if review_year not in counts_by_year:
             counts_by_year[review_year] = dict()
             for i in range(1, 13):
@@ -59,13 +105,23 @@ def ReviewsOverTime(start_date="2000-11-01", end_date=datetime.date.today()):
         review_month = review["dateOpened"].month
         counts[review_month] += 1
 
-    months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+    months = ["November", "December", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October"]
+    
+    for year, counts in counts_by_year.items():
 
-    for counts in counts_by_year.values():
-        for i in range(1, 12):
-            counts[i+1] += counts[i]
+        # make sure the review count increments with each passing month
+        for i in [10, 11, 12] + list(range(1, 10)):
+            if i == 12:
+                counts[1] += counts[12]
+            else:
+                counts[i+1] += counts[i]
+        
+        # reorder the list of counts such that November and December come first
+        count_output = list(counts.values())
+        count_output = count_output[-2:] + count_output[:-2]
 
-        new_scatter = graph_objs.Scatter(x=months, y=list(counts.values()))
+        new_scatter = graph_objs.Scatter(x=months, y=count_output,
+                                        name=year)
         fig.add_trace(new_scatter)
 
     fig.update_layout(title="Reviews over time",
@@ -83,29 +139,41 @@ def PostReleaseDefects(start_date="2000-11-01", end_date=datetime.date.today()):
     post_release_defects = dict()
 
     for defect in defect_values:
-        year = defect["dateOpened"].year
+        year = getFiscalYear(defect["dateOpened"])
         if year in total_defects.keys():
             total_defects[year] += 1
         else:
             total_defects[year] = 1
             post_release_defects[year] = 0
 
-        if defect["whereFound"] == 8:
+        if defect["whereFound"] in [6, 7, 8]:
             post_release_defects[year] += 1
 
     years = list(total_defects.keys())
     percentages = list()
     for year in years:
-        percentages.append(float(post_release_defects[year])/total_defects[year])
-
-
+        percentages.append(100 * float(post_release_defects[year])/total_defects[year]) 
+    
+    
     fig = graph_objs.Figure()
     new_scatter = graph_objs.Bar(x=years, y=percentages)
     fig.add_trace(new_scatter)
 
-    fig.update_layout(title="Reviews over time",
+    fig.update_layout(title="Post Release Defects",
                       xaxis_title="Years",
                       yaxis_title="Percentage")
 
+    # Set x axis to show only integers
+    fig.update_xaxes(
+        tickformat="d"
+    )
+    fig.update_yaxes(ticksuffix="%")
+
     graph = plot(fig, output_type='div', include_plotlyjs=False, show_link=False, link_text="")
     return graph
+
+def getFiscalYear(date):
+    if date.month in [11, 12]:
+        return date.year + 1
+    else:
+        return date.year
