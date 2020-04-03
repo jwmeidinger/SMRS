@@ -2,22 +2,31 @@ from plotly.offline import plot
 import plotly.graph_objs as graph_objs
 import datetime
 
+from django.db.models import Max, Min
 from restAPI.models import Project, Review, Defect, ProjectNumber, PhaseType
 
-def AllDefectsTable(start_date, end_date):
+def AllDefectsTable(date_range=None):
     # Filter based on this range
-    defects = Defect.objects.filter(dateOpened__range=[start_date, end_date]).all()
+    defects = Defect.objects.all()
+    if date_range:
+        defects = defects.filter(dateOpened__range=date_range)
     defect_values = defects.values()
     if not defect_values:
         return None
     
+    if not date_range:
+        start_date = defects.aggregate(Min('dateOpened'))["dateOpened__min"]
+        end_date = defects.aggregate(Max('dateOpened'))["dateOpened__max"]
+    else:
+        start_date = date_range[0]
+        end_date = date_range[1]
+
     cell_columns = dict()
     for key in defect_values[0].keys():
         cell_columns[key] = list()
         for defect in defect_values:
             cell_columns[key].append(defect[key])
 
-    print(cell_columns)
     header = dict(values=list(defect_values[0].keys()))
     cells = dict(values=[col for col in cell_columns.values()])
     table = graph_objs.Table(header=header, 
@@ -26,9 +35,22 @@ def AllDefectsTable(start_date, end_date):
     
     return plot(fig, output_type='div', include_plotlyjs=False, show_link=False, link_text="")
 
-def ContainmentPieChart(start_date, end_date):
+def ContainmentPieChart(date_range=None):
+    # Filter based on this range
     defects = Defect.objects.all()
+    if date_range:
+        defects = defects.filter(dateOpened__range=date_range)
+
     defect_values = defects.values("dateOpened", "whereFound")
+    if not defect_values:
+        return None
+    
+    if not date_range:
+        start_date = defects.aggregate(Min('dateOpened'))["dateOpened__min"]
+        end_date = defects.aggregate(Max('dateOpened'))["dateOpened__max"]
+    else:
+        start_date = date_range[0]
+        end_date = date_range[1]
 
     post_release_defects = 0
 
@@ -44,11 +66,25 @@ def ContainmentPieChart(start_date, end_date):
 
     return plot(fig, output_type='div', include_plotlyjs=False, show_link=False, link_text="")
 
-def DefectsWhereFound(start_date, end_date):
+def DefectsWhereFound(date_range=None, project_ID=None):
 
-    # Filter based on this range
-    defects = Defect.objects.filter(dateOpened__range=[start_date, end_date]).all()
+    # Filter based on input
+    defects = Defect.objects.all()
+    if date_range:
+        defects = Defect.objects.filter(dateOpened__range=date_range)
+    if project_ID:
+        defects = defects.filter(projectID=project_ID)
     defect_values = defects.values("whereFound", "dateOpened", "id", "projectID")
+
+    if not defect_values:
+        return None
+
+    if not date_range:
+        start_date = defects.aggregate(Min('dateOpened'))["dateOpened__min"]
+        end_date = defects.aggregate(Max('dateOpened'))["dateOpened__max"]
+    else:
+        start_date = date_range[0]
+        end_date = date_range[1]
 
     # Get phase types
     phase_type = PhaseType.objects.all()
@@ -87,9 +123,21 @@ def DefectsWhereFound(start_date, end_date):
     return plot(fig, output_type='div', include_plotlyjs=False, show_link=False, link_text="")
 
 
-def ReviewsOverTime(start_date="2000-11-01", end_date=datetime.date.today()):
-    reviews = Review.objects.filter(dateOpened__range=[start_date, end_date]).all()
+def ReviewsOverTime(date_range=None):
+    reviews = Review.objects.all()
+    if date_range is None:
+        reviews = reviews.filter(dateOpened__range=date_range)
     review_values = reviews.values("dateOpened")
+    if not review_values:
+        return None
+
+    if not date_range:
+        start_date = defects.aggregate(Min('dateOpened'))["dateOpened__min"]
+        end_date = defects.aggregate(Max('dateOpened'))["dateOpened__max"]
+    else:
+        start_date = date_range[0]
+        end_date = date_range[1]
+
     fig = graph_objs.Figure()
 
     counts_by_year = dict()
@@ -131,8 +179,10 @@ def ReviewsOverTime(start_date="2000-11-01", end_date=datetime.date.today()):
     graph = plot(fig, output_type='div', include_plotlyjs=False, show_link=False, link_text="")
     return graph
 
-def PostReleaseDefects(start_date="2000-11-01", end_date=datetime.date.today()):
+def PostReleaseDefects(date_range=None):
     defects = Defect.objects.all()
+    if date_range:
+        defects = defects.filter(dateOpened__range=date_range)
     defect_values = defects.values("dateOpened", "whereFound")
 
     total_defects = dict()
@@ -153,7 +203,6 @@ def PostReleaseDefects(start_date="2000-11-01", end_date=datetime.date.today()):
     percentages = list()
     for year in years:
         percentages.append(100 * float(post_release_defects[year])/total_defects[year]) 
-    
     
     fig = graph_objs.Figure()
     new_scatter = graph_objs.Bar(x=years, y=percentages)
@@ -177,3 +226,23 @@ def getFiscalYear(date):
         return date.year + 1
     else:
         return date.year
+
+def formatDates(start_date, end_date):
+    # Set default end date to be right now
+    if not end_date:
+        end_date = datetime.date.today()
+
+    # Set default start date to be one year before end date (if applicable)
+    if not start_date:
+        if type(end_date) != datetime.date:
+            end_date = datetime.datetime.strptime(end_date, '%Y-%m-%d').date()
+        start_date = end_date
+        start_date = start_date.replace(year=end_date.year-1)
+    
+    # Convert strings to dates
+    if type(end_date) != datetime.date:
+        end_date = datetime.datetime.strptime(end_date, "%Y-%m-%d").date()
+    if type(start_date) != datetime.date:
+        start_date = datetime.datetime.strptime(start_date, "%Y-%m-%d").date()
+    
+    return start_date, end_date
