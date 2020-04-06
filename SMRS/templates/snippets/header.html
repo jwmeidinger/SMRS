@@ -14,8 +14,10 @@
   {% if  request.user.is_authenticated %}
   <nav class="my-2 my-md-0 mr-md-3" >
     <a class="p-2 text-dark" href="{% url 'home' %}">Dashboard</a>
+    {% if request.user.teamid != NoneType %}
     <a class="p-2 text-dark" href="{% url 'dashboard:team' %}">Team</a>
     <a class="p-2 text-dark" href="{% url 'dashboard:project_team' %}">Projects</a>
+    {% endif %}
     <a class="p-2 text-dark" href="{% url 'account:detail' %}">User</a>
     <a class="p-2 text-dark" href="http://127.0.0.1:8000/restAPI/">RestAPI</a>  <!--  Needs to be changed -->
   </nav>

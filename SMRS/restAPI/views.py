@@ -1,13 +1,13 @@
 from django.shortcuts import render
 from rest_framework import viewsets, permissions
 
-from restAPI.models import Project, Review, Defect, ProjectNumber, PhaseType
+from restAPI.models import Project, Review, Defect, Product, PhaseType
 from account.models import Team, Account
 
 from restAPI.serializers import(
 TeamSerializer, ProjectSerializer,
 ReviewSerializer,DefectSerializer,
-ProjectNumberSerializer, PhaseTypeSerializer,
+ProductSerializer, PhaseTypeSerializer,
 UserSerializer)
 
 """
@@ -38,9 +38,9 @@ class DefectView(viewsets.ModelViewSet):
     serializer_class    = DefectSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
-class ProjectNumberView(viewsets.ModelViewSet):
-    queryset            = ProjectNumber.objects.all()
-    serializer_class    = ProjectNumberSerializer
+class ProductView(viewsets.ModelViewSet):
+    queryset            = Product.objects.all()
+    serializer_class    = ProductSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
 class PhaseTypeView(viewsets.ModelViewSet):

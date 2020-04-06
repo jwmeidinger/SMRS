@@ -45,7 +45,7 @@ class Defect (models.Model):
     tag                     = models.CharField(max_length=50, unique=True)
     severity                = models.CharField(choices=MajorMinorChoices,max_length=25)
     url                     = models.URLField(max_length=200, unique=True)
-    description             = models.CharField(max_length=1000)
+    description             = models.CharField(max_length=1000, default="Description not found")
 
     def __str__(self):
         return self.tag
@@ -71,4 +71,4 @@ class Product (models.Model): # Change to product and name
     projectID           = models.ForeignKey(Project, on_delete=models.CASCADE)
     
     def __str__(self):
-        return str(self.number)
+        return "{} {}".format(self.name,str(self.number))

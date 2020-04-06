@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from restAPI.models import Project, Review, Defect, ProjectNumber, PhaseType
+from restAPI.models import Project, Review, Defect, Product, PhaseType
 
 """
 *** This is file is used to add items to the admin portal
@@ -11,5 +11,5 @@ from restAPI.models import Project, Review, Defect, ProjectNumber, PhaseType
 admin.site.register(Project)
 admin.site.register(Review)
 admin.site.register(Defect)
-admin.site.register(ProjectNumber)
+admin.site.register(Product)
 admin.site.register(PhaseType)

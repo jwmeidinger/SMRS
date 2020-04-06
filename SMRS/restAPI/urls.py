@@ -9,7 +9,7 @@ from restAPI.views import (
     ProjectView,
     DefectView,
     ReviewView,
-    ProjectNumberView,
+    ProductView,
     PhaseTypeView,
     UserView
 )
@@ -28,7 +28,7 @@ router.register('Team', TeamView)
 router.register('Project', ProjectView)
 router.register('Review', ReviewView)
 router.register('Defect', DefectView)
-router.register('ProjectNumber', ProjectNumberView)
+router.register('Product', ProductView)
 router.register('PhaseType', PhaseTypeView)
 router.register('Users',UserView)
 

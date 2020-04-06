@@ -2,7 +2,7 @@ from plotly.offline import plot
 import plotly.graph_objs as graph_objs
 import datetime
 
-from restAPI.models import Project, Review, Defect, ProjectNumber, PhaseType
+from restAPI.models import Project, Review, Defect, Product, PhaseType
 
 def AllDefectsTable(start_date, end_date):
     # Filter based on this range

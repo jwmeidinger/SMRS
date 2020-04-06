@@ -7,7 +7,7 @@ import plotly.graph_objs as graph_objs
 import datetime
 import random
 
-from restAPI.models import Project, Review, Defect, ProjectNumber, PhaseType
+from restAPI.models import Project, Review, Defect, Product, PhaseType
 from account.models import Team, Account 
 from dashboard.forms import DefectForm, ReviewForm
 from dashboard.graphs import *
@@ -49,8 +49,6 @@ def home_view(request):
     context['PRD_graph'] = PostReleaseDefects(start_date=start_date, end_date=end_date)
     context['AD_table'] = AllDefectsTable(start_date=start_date, end_date=end_date)
     context['containment_pie'] = ContainmentPieChart(start_date=start_date, end_date=end_date)
-    
-    ##TODO: need to add Date to Date
     
     user = request.user
     if user.is_authenticated:
