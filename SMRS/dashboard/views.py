@@ -40,8 +40,6 @@ def home_view(request):
     context['AD_table'] = AllDefectsTable(date_range=date_range)
     context['containment_pie'] = ContainmentPieChart(date_range=date_range)
     
-    ##TODO: need to add Date to Date
-    
     user = request.user
     if user.is_authenticated:
         context['message'] = 'Welcome to the Dashboard'
@@ -80,7 +78,7 @@ def project_view(request):
 
         team= Team.objects.filter(pk=user.teamid.pk).first()
         projects = Project.objects.filter(teamID=team)
-    
+
         context["projects"]=projects
         context["team"]=team.name
     return render(request, "dashboard/projects.html", context)
