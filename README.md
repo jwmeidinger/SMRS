@@ -8,9 +8,9 @@
 - [What's in the API](#whats-in-the-api)
 - [Requirements](#requirements)
 - [API Key & Credentials](#api-key-and-credentials)
-- [Installation](#installation)
+- [Installation & Run](#installation-and-run)
 - [Usage](#usage)
-- [Features](#features)
+- [FAQ](#frequently-asked-questions)
 - [Documentation & Resources](#documentation-and-resources)
 
 ---
@@ -46,19 +46,31 @@ The following requirements must be met to use this API:
 
 The API uses a simple token-based HTTP Authentication scheme provided by [Django REST framework](https://www.django-rest-framework.org/api-guide/authentication/#tokenauthentication). When each user is created they are granted a token. The token can be removed from the Admin page. In order to use or view your token check out the [Usage](#usage) section.
 
-*If you don't want every user to have a token check out SMRS/SMRS/Account/models.py at the bottom.
+*If you don't want every user to have a token check out [FAQ](#frequently-asked-questions) at the bottom.
 
-## Installation
+## Installation and Run
 
-How to set it up....
+(Local) How to set it up....
 
 **Step 1 - Download from GitHub:**
 
-    Navigate to the Github page that is holding the projects code and click the download button and to edit the codeopen it in         your chosen editor
+Navigate to the Github page that is holding the projects code and click the download button, save to desktop.
     
 **Step 2 - Start the Env:**
 
+The environment is used to mitigate cross contamination for the server as we want to make sure we don't use items on your PC. This is how you start the Env.
+
+    \Desktop\SMRS\DeereEnv\Scripts>activate
     
+**Step 3 - Install requirements:**
+
+If modules are missing from the environment this is how you can install the missing items. We recommend doing this anyways.
+
+    \Desktop\SMRS>pip install -r requirements.txt
+    
+**Step 4 - Lastly run:**
+
+    \Desktop\SMRS\SMRS>python manage.py runserver
 
 ## Usage
 
@@ -69,55 +81,113 @@ import requests
 import json
 
 """
-*** Grap Team, Project, Review, Defect, ProductNumber, PhaseType, Users list
+*** Grap Team, Project, Review, Defect, Product, PhaseType, Users list
 """
 item = 'Team'
 r = requests.get('http://127.0.0.1:8000/restAPI/{}/'.format(item))
 print(r.text)
 
 """
-*** Grap your auth token
+*** Grap your auth token.
 """
 data = {'username':'admin@smrs.com','password':'pass'}
-r = requests.post('http://127.0.0.1:8000/restAPI/auth-token/',data = data )
+r = requests.post('http://127.0.0.1:8000/restAPI/auth-token/', data = data )
 token = r.json()['token']
 print(token)
 
 """
 *** This is setting the headers as the auth token so you don't have to type it every time
+    Reminder: change token below to the new token or simply use the token request above.
 """
 myToken = '3e1fca608220a091aaf613e963ec3fc8a97573ca'
 head = {'Authorization': 'Token {}'.format(myToken)}
 
 """
-*** This is an example of creating a new Team
+*** This is an example of creating a new Team.
 """
 data = {"name": "D - Team"}
 r = requests.post('http://127.0.0.1:8000/restAPI/Team/', headers = head, data=data)
 print(r.text)
 
 """
-*** This is an example of Deleting a Team
+*** This is an example of Deleting a Team.
 """
 item = '6' ## remember to change the ID of team you want to change
-r = requests.delete('http://127.0.0.1:8000/restAPI/Team/{}'.format(item),headers = head)
+r = requests.delete('http://127.0.0.1:8000/restAPI/Team/{}'.format(item), headers = head)
 print(r.text)
 
 ```
 
-## Features
+## Frequently Asked Questions
 
-### Item 1
+### How do you create a new Admin / Super user?
 
-example
+    \Desktop\SMRS\SMRS>python manage.py createsuperuser
 
-### Item 2
+### How do you wipe the database?
 
-example
+1. ) You need delete the db.sqlite3 file.
 
-### Item 3
+2. ) Once the file is deleted you need to migrate which creates the database with the requirements of all the models.py files.
 
-example
+        \Desktop\SMRS\SMRS>python migrate
+
+3. ) Lastly, create a new super user. (Q above)
+
+### How do you make changes to the database?
+
+If you make changes in any of models.py files I would advise to do this.
+
+1. ) Once the file is modified you need to make migrations which creates a new file in the migrations folder for the app. 
+
+        \Desktop\SMRS\SMRS>python makemigrations
+
+2. ) Lastly, you need to migrate to the database.
+
+        \Desktop\SMRS\SMRS>python migrate
+   
+3. ) Bonus: If the item is required it might ask you to create a default for the other items in the DB already.
+
+### How do you add data to the database?
+
+There are three ways to add data to the database.
+
+1. ) First way of adding items is through the admin portal which can be done at doman.com/admin/
+
+2. ) The second way and the fastest way is throught the REST API which more info can be found [Above](#usage). We found the best way to do this is to put info into a pandas table and using a for loop going through each row with a request at the bottom. A mock data example can be found \Desktop\SMRS\scripts\dumdata.py . This can not be done with users unless you add it to the REST API.
+
+3. ) The last way to create new entries is throught the [Shell](https://docs.djangoproject.com/en/3.0/ref/django-admin/#shell).
+
+### How do you add and remove tokens?
+
+Every user should have a token when there account is created. If you do not want this look at the next question below.
+To remove a token from someone you can do that from the admin portal which is doman.com/admin/ .
+
+### I don't want everyone to have a token how do I change that?
+
+To simply put you can remove or comment out the last fuction on the SMRS/SMRS/Account/models.py and save.
+
+If the users are already created you can still keep all the users and remove the tokens by simply doing the question above.
+
+### How do you add a new item to the rest API?
+
+I find it easier to watch then read so here is a good video that I used on [Youtube](https://youtu.be/263xt_4mBNc?t=226) but to make it short and sweet. The Rest-framework uses four main items. More info can be found in the resources below.
+
+1. ) Models are used to create the tables used for the Database. Start here when making a new table or just adding a new item.
+
+2. ) [Serializers](https://www.django-rest-framework.org/tutorial/1-serialization/) is used to change your models into a json format that you can view.
+
+3. ) [Views](https://www.django-rest-framework.org/api-guide/viewsets/) is bringing everything together such as the data and template to display the info.
+
+4. ) [Router](https://www.django-rest-framework.org/api-guide/routers/) is used to support for automatic URL routing to Django.
+
+### How do you add a new App?
+
+Below is the command to create the app but you also need to include it into the SMRS/SMRS/SMRS/settings.py under INSTALLED_APPS.
+
+    \Desktop\SMRS\SMRS>python manage.py startapp {name of project}
+
+
 
 ## Documentation and Resources
 
@@ -125,9 +195,9 @@ example
 
 - [Django Documentation](https://www.djangoproject.com/)
 - [Django Rest Framework](https://www.django-rest-framework.org/)
-- [item](put_link_here)
-- [item](put_link_here)
-- [item](put_link_here)
+- [Django Models](https://docs.djangoproject.com/en/3.0/topics/db/models/)
+- [Django Views](https://docs.djangoproject.com/en/3.0/topics/http/views/)
+- [Django Urls](https://docs.djangoproject.com/en/3.0/topics/http/urls/)
 
 
 
