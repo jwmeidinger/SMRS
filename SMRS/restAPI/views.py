@@ -11,7 +11,7 @@ ProductSerializer, PhaseTypeSerializer,
 UserSerializer)
 
 """
-*** This file is bringing everything together and handels all of viewing and requests.
+*** This file is bringing everything together and handles all of viewing and requests.
     Need to provide at least the queryset and serializer_class attributes.
     Permission class allows for read only or IsAuthenticatedOrReadOnly allowing for only users that have permission to edit.
     Offical : https://www.django-rest-framework.org/api-guide/viewsets/

@@ -36,6 +36,6 @@ router.register('Users',UserView)
 ## If using namespacing with hyperlinked serializers you'll also need to ensure that any view_name parameters on the serializers correctly reflect the namespace.
 
 urlpatterns = [
-    path('', include(router.urls)),
+    path('', include(router.urls), name='restAPI'),
     path('auth-token/', views.obtain_auth_token)
 ]
