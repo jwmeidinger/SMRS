@@ -120,7 +120,7 @@ def DefectsWhereFound(date_range=None, project_ID=None):
                     yaxis_title="Defects",
                     margin=dict(l=20, r=20, t=20, b=20))
 
-    # Set x axis to show only integers
+    # Set y axis to show only integers
     fig.update_yaxes(
         tickformat="d"
     )
@@ -225,11 +225,12 @@ def PostReleaseDefects(date_range=None):
     if len(years) == 1:
         fig.update_layout(xaxis_title=years[0])
 
-    # Set x axis to show only integers
-    fig.update_xaxes(
-        tickformat="d"
-    )
-    fig.update_yaxes(ticksuffix="%")
+    # Update x axis to show integers
+    fig.update_xaxes(tickformat="d")
+
+    # Update y axis to show integer percentages
+    fig.update_yaxes(tickformat="d",
+                     ticksuffix="%")
 
     graph = plot(fig, output_type='div', include_plotlyjs=False, show_link=False, link_text="")
     return graph
