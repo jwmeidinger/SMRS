@@ -118,12 +118,13 @@ def DefectsWhereFound(date_range=None, project_ID=None):
     fig.update_layout(title="Defects Where Found",
                     xaxis_title="Phases",
                     yaxis_title="Defects",
-                    margin=dict(l=20, r=20, t=20, b=20))
+                    margin=dict(l=0, r=0, b=0, t=0, pad=0))
 
     # Set y axis to show only integers
     fig.update_yaxes(
         tickformat="d"
     )
+
     # Generate graph object
     return plot(fig, output_type='div', include_plotlyjs=False, show_link=False, link_text="")
 
@@ -210,7 +211,7 @@ def PostReleaseDefects(date_range=None):
     years = list(total_defects.keys())
     percentages = list()
     for year in years:
-        percentages.append(100 * float(post_release_defects[year])/total_defects[year]) 
+        percentages.append(post_release_defects[year]/total_defects[year]) 
 
     fig = graph_objs.Figure()
     new_scatter = graph_objs.Bar(x=years, y=percentages)
@@ -218,7 +219,7 @@ def PostReleaseDefects(date_range=None):
 
     fig.update_layout(title="Post Release Defects",
                       xaxis_title="Years",
-                      yaxis=dict(range=[0, 100]),
+                      yaxis=dict(range=[0, 1]),
                       yaxis_title="Percentage")
 
     # if there's only one bar, update title to show the year
@@ -229,8 +230,7 @@ def PostReleaseDefects(date_range=None):
     fig.update_xaxes(tickformat="d")
 
     # Update y axis to show integer percentages
-    fig.update_yaxes(tickformat="d",
-                     ticksuffix="%")
+    fig.update_yaxes(tickformat="%")
 
     graph = plot(fig, output_type='div', include_plotlyjs=False, show_link=False, link_text="")
     return graph
