@@ -31,7 +31,13 @@
         <div class="pt-3">
           <div>{{jsonTable|safe}}</div> <!--If you want bigger tables I suggest making a new row below with a bigger size-->
         </div>
-        
+        <div>
+          <form class="form-signin" method="post">{% csrf_token %}
+          <label >Json input:</label>
+          <input type='text' name="jsonInput" class="form-control">
+          <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
+        </form>
+        </div>
     </div>
       <div class="col-sm-3"></div> <!--Off set-->
   </div>

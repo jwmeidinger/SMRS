@@ -67,6 +67,14 @@ def team_view(request):
         jsonTable = json2html.convert(json = team.teamData) # Handy little tool to convert Json to Html
         allmembers = Account.objects.filter(teamid = team) # Get all members with the same teamid
         projectsOfTeam = Project.objects.filter(teamID = team) # Get all the projects for that team
+
+        if request.POST:
+            jsonInput = request.POST["jsonInput"]
+            team.teamData = jsonInput
+            team.save()
+            return redirect("dashboard:team") 
+
+
         ## Declare items that are going into the template
         context['jsonTable'] = jsonTable
         context['TeamName'] = team.name
