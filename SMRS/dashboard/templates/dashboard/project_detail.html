@@ -24,7 +24,7 @@
             {% for item in openDefects %}
               <ul class= 'list-group '>
                 <a href="{% url 'dashboard:defectDetail' item.pk %}" style="text-decoration: none;">
-                  <li class="list-group-item" >{{item}} - {{item.description}}</li>
+                  <li class="list-group-item" >{{item}} - {{item.description|slice:":55"}}</li>
                 </a>
               </ul>
             {% endfor %}
@@ -34,7 +34,7 @@
           {% for item in allDefects %}
             <ul class= 'list-group '>
               <a href="{% url 'dashboard:defectDetail' item.pk %}" style="text-decoration: none;">
-                <li class="list-group-item" >{{item}} - {{item.description}}</li>
+                <li class="list-group-item" >{{item}} - {{item.description|slice:":55"}}</li>
               </a>
             </ul>
           {% endfor %}

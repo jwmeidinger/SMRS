@@ -13,7 +13,7 @@
     <div class="col-sm-2"></div> <!--Off set-->
         <div class="col-sm-8">
         <form class="form-signin" method="post">{% csrf_token %}
-            <h1 class="h3 mb-3 font-weight-normal">Defect: {{form.initial.projectID}}</h1>
+            <h1 class="h3 mb-3 font-weight-normal">Project: {{form.initial.projectID}}</h1>
             <h3 class="h4">Date Opened</h3>
             <input type="text" name="dateOpened"  class="form-control" placeholder="Date Opened" required autofocus value = "{{form.initial.dateOpened|date:'Y-m-d' }}">
             <h3 class="h4">Date Closed</h3>
@@ -43,12 +43,14 @@
                 {% endif %}
             {% endfor %}
             <p class="info"> If you would like to change the Where Found please change to PK</p>
+            <h3 class="h4">Description</h3>
+            <input type="text" name="description" class="form-control" placeholder="Description" required value = "{{form.initial.description}}">
             <h3 class="h4">Tag</h3>
             <input type="text" name="tag" class="form-control" placeholder="Tag" required value = "{{form.initial.tag}}">
             <h3 class="h4">Severity</h3>
             <input type="text" name="severity" class="form-control" placeholder="Severity" required value = "{{form.initial.severity}}">
             <h3 class="h4">Url</h3>
-            <input type="text"  name="url"  class="form-control" placeholder="URL" required value = "{{form.initial.url}}">
+            <input type="text"  name="url" class="form-control" placeholder="URL" required value = "{{form.initial.url}}">
                 {% if form.errors %}
                     <div class="alert alert-danger">
                         <strong> {{error|escape}} </strong>

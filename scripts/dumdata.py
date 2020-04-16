@@ -19,8 +19,9 @@ for x in range(20):
 
 """
 *** Input admin Token
+TODO: make sure you change your token or get the request from restAPI/testRequest.py
 """
-myToken = '9e29fa76fc3a824e0e02eb4abcf43bd8ee193c95'
+myToken = '100b91390899e258dc13098350e248fde2deec61'
 head = {'Authorization': 'Token {}'.format(myToken)}  
 
 

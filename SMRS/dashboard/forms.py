@@ -15,7 +15,7 @@ class DefectForm(forms.ModelForm):
 
     class Meta:
         model = Defect
-        fields = ('dateOpened','dateClosed','projectID','whereFound','tag','severity','url')
+        fields = ('dateOpened','dateClosed','projectID','whereFound','description','tag','severity','url')
 
 
 
