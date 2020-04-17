@@ -30,7 +30,6 @@ def home_view(request):
     else:
         date_range = None
 
-<<<<<<< HEAD
     if date_range:
         date_range_message = f"{start_date} through {end_date}"
     else:
@@ -41,16 +40,6 @@ def home_view(request):
     context['PRD_graph'] = PostReleaseDefects(date_range=date_range)
     context['AD_table'] = AllDefectsTable(date_range=date_range)
     context['containment_pie'] = ContainmentPieChart(date_range=date_range)
-=======
-    ## Declare items that are going into the template
-    context['startDate'] = start_date
-    context['endDate'] = end_date
-    context['DWF_graph'] = DefectsWhereFound(start_date=start_date, end_date=end_date)
-    context['RoT_graph'] = ReviewsOverTime(start_date=start_date, end_date=end_date)
-    context['PRD_graph'] = PostReleaseDefects(start_date=start_date, end_date=end_date)
-    context['AD_table'] = AllDefectsTable(start_date=start_date, end_date=end_date)
-    context['containment_pie'] = ContainmentPieChart(start_date=start_date, end_date=end_date)
->>>>>>> master
     
     user = request.user
     if user.is_authenticated:
@@ -101,11 +90,7 @@ def project_view(request):
 
         team= Team.objects.filter(pk=user.teamid.pk).first()
         projects = Project.objects.filter(teamID=team)
-<<<<<<< HEAD
-
-=======
         ## Declare items that are going into the template
->>>>>>> master
         context["projects"]=projects
         context["team"]=team.name
     return render(request, "dashboard/projects.html", context)
