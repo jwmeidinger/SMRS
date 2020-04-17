@@ -27,7 +27,7 @@ class PhaseType (models.Model):
         return self.phase_type
 
 
-class Project (models.Model): #add number
+class Project (models.Model):
     name                    = models.CharField(max_length=25) 
     productOwner            = models.ForeignKey(model.Account, null = True, blank = True, on_delete=models.CASCADE)
     teamID                  = models.ForeignKey(model.Team, on_delete=models.CASCADE)
@@ -65,7 +65,7 @@ class Review (models.Model):
         return self.tag
 
 
-class Product (models.Model): # Change to product and name
+class Product (models.Model):
     name                = models.CharField(max_length = 50, unique=True)
     number              = models.IntegerField()
     projectID           = models.ForeignKey(Project, on_delete=models.CASCADE)

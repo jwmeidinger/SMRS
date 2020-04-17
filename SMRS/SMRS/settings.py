@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     # Open Source apps
     'rest_framework',
     'rest_framework.authtoken',
+    # Open Source apps not Django
+    ## json2html github = https://github.com/softvar/json2html
     # Team made apps
     'restAPI',
     'account',

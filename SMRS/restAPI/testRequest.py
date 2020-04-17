@@ -2,7 +2,7 @@ import requests
 import json
 
 """
-*** Grap Team, Project, Review, Defect, ProductNumber, PhaseType, Users list
+*** Grap Team, Project, Review, Defect, Product, PhaseType, Users list
 """
 item = 'Team'
 r = requests.get('http://127.0.0.1:8000/restAPI/{}/'.format(item))

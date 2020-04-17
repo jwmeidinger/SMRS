@@ -4,20 +4,19 @@
 
 <div class="container">
   <div class="row">
-    <div class="col-sm-3 align-self-center">
+    <div class="col-sm-4  align-top">
       {% if TeamMembers %}
-      <h3 class='mb-4 font-weight-normal display-6 mx-auto' >Members:</h3>
+      <h3 class='mb-4 font-weight-normal display-6 mx-auto' >{{TeamName}} Members:</h3>
       {% for item in TeamMembers %}
         <ul class= 'list-group '>
           <a style="text-decoration: none;">
-            <li class="list-group-item">{{item}}</li>
+            <li class="list-group-item">{{item}}- {{item.name|slice:":8"}}</li>
           </a>
         </ul>
       {% endfor %}
       {% endif %}
     </div>
     <div class="col-sm-6">
-        <h1 class="h4">Team : {{TeamName}}</h1>
         {% if projectList %}
         <h3 class='mb-3 font-weight-normal display-6 mx-auto' >Projects:</h3>
         {% for item in projectList %}
@@ -28,6 +27,17 @@
           </ul>
         {% endfor %}
         {% endif %}
+        
+        <div class="pt-3">
+          <div>{{jsonTable|safe}}</div> <!--If you want bigger tables I suggest making a new row below with a bigger size-->
+        </div>
+        <div>
+          <form class="form-signin" method="post">{% csrf_token %}
+          <label >Json input:</label>
+          <input type='text' name="jsonInput" class="form-control">
+          <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
+        </form>
+        </div>
     </div>
       <div class="col-sm-3"></div> <!--Off set-->
   </div>

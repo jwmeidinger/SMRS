@@ -25,7 +25,9 @@ Theme = [
 *** Team needs to be in Account app as it is required by the AbstractBaseUser
 """
 class Team (models.Model):
-    name                     = models.CharField(max_length=25) ## change to uniq
+    name                     = models.CharField(max_length=25, unique=True )
+    teamData                 = models.TextField(null=True, blank=True)
+
 
     def __str__(self):
         return self.name

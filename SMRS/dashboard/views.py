@@ -4,8 +4,8 @@ from django.core.paginator import Paginator
 from rest_framework import viewsets, permissions
 from plotly.offline import plot
 import plotly.graph_objs as graph_objs
-import datetime
-import random
+import datetime, json
+from json2html import *
 
 from restAPI.models import Project, Review, Defect, Product, PhaseType
 from account.models import Team, Account 
@@ -15,7 +15,6 @@ from dashboard.graphs import *
 '''
 *** Splash page
 '''
-## TODO: Need to Figure out a better way to Create custom graphs or make all the ones they want and let them select them.
 def home_view(request):
     context= {}
     start_date = None
@@ -31,6 +30,7 @@ def home_view(request):
     else:
         date_range = None
 
+<<<<<<< HEAD
     if date_range:
         date_range_message = f"{start_date} through {end_date}"
     else:
@@ -41,6 +41,16 @@ def home_view(request):
     context['PRD_graph'] = PostReleaseDefects(date_range=date_range)
     context['AD_table'] = AllDefectsTable(date_range=date_range)
     context['containment_pie'] = ContainmentPieChart(date_range=date_range)
+=======
+    ## Declare items that are going into the template
+    context['startDate'] = start_date
+    context['endDate'] = end_date
+    context['DWF_graph'] = DefectsWhereFound(start_date=start_date, end_date=end_date)
+    context['RoT_graph'] = ReviewsOverTime(start_date=start_date, end_date=end_date)
+    context['PRD_graph'] = PostReleaseDefects(start_date=start_date, end_date=end_date)
+    context['AD_table'] = AllDefectsTable(start_date=start_date, end_date=end_date)
+    context['containment_pie'] = ContainmentPieChart(start_date=start_date, end_date=end_date)
+>>>>>>> master
     
     user = request.user
     if user.is_authenticated:
@@ -49,15 +59,26 @@ def home_view(request):
     return render(request, "dashboard/home.html", context)
 
 '''
-*** User's Team, members, and Projects
+*** User's Team, members, team data, and Projects
 '''
 def team_view(request):
     context= {}
     user = request.user
     if user.is_authenticated:
-        team = Team.objects.filter(pk = user.teamid.pk).first()
-        allmembers = Account.objects.filter(teamid = team)
-        projectsOfTeam = Project.objects.filter(teamID = team)
+        team = Team.objects.filter(pk = user.teamid.pk).first() # Get Team from user PK
+        jsonTable = json2html.convert(json = team.teamData) # Handy little tool to convert Json to Html
+        allmembers = Account.objects.filter(teamid = team) # Get all members with the same teamid
+        projectsOfTeam = Project.objects.filter(teamID = team) # Get all the projects for that team
+
+        if request.POST:
+            jsonInput = request.POST["jsonInput"]
+            team.teamData = jsonInput
+            team.save()
+            return redirect("dashboard:team") 
+
+
+        ## Declare items that are going into the template
+        context['jsonTable'] = jsonTable
         context['TeamName'] = team.name
         context['TeamMembers'] = allmembers
         context['projectList'] = projectsOfTeam
@@ -80,7 +101,11 @@ def project_view(request):
 
         team= Team.objects.filter(pk=user.teamid.pk).first()
         projects = Project.objects.filter(teamID=team)
+<<<<<<< HEAD
 
+=======
+        ## Declare items that are going into the template
+>>>>>>> master
         context["projects"]=projects
         context["team"]=team.name
     return render(request, "dashboard/projects.html", context)
@@ -114,7 +139,7 @@ def projectDetail_view(request, pk):
             openDefects = Defect.objects.filter(projectID=project_detail, dateClosed__isnull=True)
             context['openDefects'] = openDefects
 
-    ## Setting items to the template
+    ## Declare items that are going into the template
     context['allDefects'] = allDefects
     context['allReviews'] = allReviews
     context['projectName'] = project_detail.name
@@ -126,7 +151,7 @@ def projectDetail_view(request, pk):
 '''
 def projectAddFav_view(request, pk):
     value = request.COOKIES.get('FavoriteProjects')
-    projectpk = pk ## have to declare before response
+    projectpk = pk ## Have to declare before response
     response = redirect("dashboard:project_team")
     if value == None or value == "": ## No Favorite set yet
         response.set_cookie('FavoriteProjects', '{}'.format(projectpk))
@@ -134,12 +159,12 @@ def projectAddFav_view(request, pk):
         value += ",{}".format(projectpk)
         items = list(value.split(","))
         setOfElems = set()
-        for elem in items:
+        for elem in items: # Check for duplicates
             if elem in setOfElems:
                 print("double")
             else:
                 setOfElems.add(elem)         
-        final  = ",".join(setOfElems) ## back to string
+        final  = ",".join(setOfElems) # Back to string
         response.set_cookie('FavoriteProjects', final)
     return response
 
@@ -148,13 +173,12 @@ def projectAddFav_view(request, pk):
 *** User's Removes Favorite Projects
 '''
 def projectDelFav_view(request, pk):
-    value = request.COOKIES.get('FavoriteProjects')
-    projectpk = pk
-    items = set(value.split(','))
-    items.remove("{}".format(projectpk))
-    response = redirect("dashboard:project_team")
-    final  = ",".join(items)
-    response.set_cookie('FavoriteProjects', final)
+    value = request.COOKIES.get('FavoriteProjects') # Look in users cookies
+    items = set(value.split(',')) # Split the pks 
+    items.remove("{}".format(pk)) # Remove PK from string
+    response = redirect("dashboard:project_team") # Create request
+    final  = ",".join(items) # Remake string for Cookies
+    response.set_cookie('FavoriteProjects', final) # Set Cookie
     return response
 
 '''
@@ -190,7 +214,8 @@ def projectAll_view(request):
             projects = Project.objects.filter(productOwner=productOwner).all()
         if filterItem == "projectPk":
             projects = Project.objects.filter(pk=int(filterInput)).all() 
-
+            
+    ## Declare items that are going into the template
     context["projects"] = projects
     return render(request, "dashboard/project_all.html", context)
 
@@ -200,13 +225,13 @@ def projectAll_view(request):
 def defect_view(request, pk):
     context= {}
     user = request.user
-    if not user.is_authenticated:
-        return redirect("account:login")
-    
+
     currentDefect = Defect.objects.filter(pk = pk).first()
     project = Project.objects.filter(pk = currentDefect.projectID.pk).first()
 
     if request.POST:
+        if not user.is_authenticated:
+            return redirect("account:login") 
         form = DefectForm(request.POST, instance = currentDefect)
         if form.is_valid():
             form.initial = {
@@ -214,6 +239,7 @@ def defect_view(request, pk):
                 "dateClosed": request.POST["dateClosed"],
                 "projectID" : request.POST["projectID"],
                 "whereFound": request.POST["whereFound"],
+                "description": request.POST["description"],
                 "tag"       : request.POST["tag"],
                 "severity"  : request.POST["severity"],
                 "url"       : request.POST["url"]
@@ -230,11 +256,14 @@ def defect_view(request, pk):
                 "dateClosed": currentDefect.dateClosed,
                 "projectID" : currentDefect.projectID,
                 "whereFound": currentDefect.whereFound,
+                "description": currentDefect.description,
                 "tag"       : currentDefect.tag,
                 "severity"  : currentDefect.severity,
                 "url"       : currentDefect.url,
              }
         )
+
+    ## Declare items that are going into the template
     context['form'] = form
     return render(request, "dashboard/defect_detail.html", context)
 
@@ -244,13 +273,14 @@ def defect_view(request, pk):
 def review_view(request, pk):
     context= {}
     user = request.user
-    if not user.is_authenticated:
-        return redirect("account:login")
+    
     
     currentReview = Review.objects.filter(pk = pk).first()
     project = Project.objects.filter(pk = currentReview.projectID.pk).first()
 
     if request.POST:
+        if not user.is_authenticated:
+            return redirect("account:login")
         form = ReviewForm(request.POST)
         if form.is_valid():
             form.initial = {
@@ -279,6 +309,7 @@ def review_view(request, pk):
                 "url"       : currentReview.url,
              }
         )
+    ## Declare items that are going into the template
     context['form'] = form
     return render(request, "dashboard/review_detail.html", context)
 
