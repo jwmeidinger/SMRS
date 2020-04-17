@@ -21,34 +21,25 @@ def home_view(request):
     end_date = None
 
     if request.POST:
-        start_date = request.POST["startDate"]
-        end_date = request.POST["endDate"]
+        start_date, end_date = request.POST["startDate"], request.POST["endDate"]
+        # Format dates so they can be put into the graphs
+        start_date, end_date = formatDates(start_date=start_date, end_date=end_date)
 
-    # Set default end date to be right now
-    if not end_date:
-        end_date = datetime.date.today()
+    if start_date and end_date:
+        date_range = [start_date, end_date]
+    else:
+        date_range = None
 
-    # Set default start date to be one year before end date (if applicable)
-    if not start_date:
-        if type(end_date) != datetime.date:
-            end_date = datetime.datetime.strptime(end_date, '%Y-%m-%d').date()
-        start_date = end_date
-        start_date = start_date.replace(year=end_date.year-1)
-
-    # Convert strings to dates
-    if type(start_date) != datetime.date:
-        start_date = datetime.datetime.strptime(start_date, "%Y-%m-%d").date()
-    if type(end_date) != datetime.date:
-        end_date = datetime.datetime.strptime(end_date, "%Y-%m-%d").date()
-
-    ## Declare items that are going into the template
-    context['startDate'] = start_date
-    context['endDate'] = end_date
-    context['DWF_graph'] = DefectsWhereFound(start_date=start_date, end_date=end_date)
-    context['RoT_graph'] = ReviewsOverTime(start_date=start_date, end_date=end_date)
-    context['PRD_graph'] = PostReleaseDefects(start_date=start_date, end_date=end_date)
-    context['AD_table'] = AllDefectsTable(start_date=start_date, end_date=end_date)
-    context['containment_pie'] = ContainmentPieChart(start_date=start_date, end_date=end_date)
+    if date_range:
+        date_range_message = f"{start_date} through {end_date}"
+    else:
+        date_range_message = "All Time"
+    context['date_range_message'] = date_range_message
+    context['DWF_graph'] = DefectsWhereFound(date_range=date_range)
+    context['RoT_graph'] = ReviewsOverTime(date_range=date_range)
+    context['PRD_graph'] = PostReleaseDefects(date_range=date_range)
+    context['AD_table'] = AllDefectsTable(date_range=date_range)
+    context['containment_pie'] = ContainmentPieChart(date_range=date_range)
     
     user = request.user
     if user.is_authenticated:
@@ -137,6 +128,7 @@ def projectDetail_view(request, pk):
     context['allDefects'] = allDefects
     context['allReviews'] = allReviews
     context['projectName'] = project_detail.name
+    context['DWF_graph'] = DefectsWhereFound(project_ID=pk)
     return render(request, "dashboard/project_detail.html", context)
 
 '''
