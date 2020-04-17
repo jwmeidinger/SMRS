@@ -7,7 +7,7 @@ import plotly.graph_objs as graph_objs
 import datetime
 import random
 
-from restAPI.models import Project, Review, Defect, ProjectNumber, PhaseType
+from restAPI.models import Project, Review, Defect, Product, PhaseType
 from account.models import Team, Account 
 from dashboard.forms import DefectForm, ReviewForm
 from dashboard.graphs import *
@@ -23,17 +23,19 @@ def home_view(request):
 
     if request.POST:
         start_date, end_date = request.POST["startDate"], request.POST["endDate"]
-    
-    # Format dates so they can be put into the graphs
-    start_date, end_date = formatDates(start_date=start_date, end_date=end_date)
+        # Format dates so they can be put into the graphs
+        start_date, end_date = formatDates(start_date=start_date, end_date=end_date)
 
     if start_date and end_date:
         date_range = [start_date, end_date]
     else:
         date_range = None
 
-    context['startDate'] = start_date
-    context['endDate'] = end_date
+    if date_range:
+        date_range_message = f"{start_date} through {end_date}"
+    else:
+        date_range_message = "All Time"
+    context['date_range_message'] = date_range_message
     context['DWF_graph'] = DefectsWhereFound(date_range=date_range)
     context['RoT_graph'] = ReviewsOverTime(date_range=date_range)
     context['PRD_graph'] = PostReleaseDefects(date_range=date_range)

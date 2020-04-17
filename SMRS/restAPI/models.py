@@ -31,6 +31,7 @@ class Project (models.Model): #add number
     name                    = models.CharField(max_length=25) 
     productOwner            = models.ForeignKey(model.Account, null = True, blank = True, on_delete=models.CASCADE)
     teamID                  = models.ForeignKey(model.Team, on_delete=models.CASCADE)
+    projectNumber           = models.IntegerField()
 
     def __str__(self):
         return self.name
@@ -44,6 +45,7 @@ class Defect (models.Model):
     tag                     = models.CharField(max_length=50, unique=True)
     severity                = models.CharField(choices=MajorMinorChoices,max_length=25)
     url                     = models.URLField(max_length=200, unique=True)
+    description             = models.CharField(max_length=1000, default="Description not found")
 
     def __str__(self):
         return self.tag
@@ -57,14 +59,16 @@ class Review (models.Model):
     tag                     = models.CharField(max_length=50, unique=True)
     severity                = models.CharField(choices=MajorMinorChoices,max_length=25)
     url                     = models.URLField(max_length=200, unique=True)
+    
 
     def __str__(self):
         return self.tag
 
 
-class ProjectNumber (models.Model): # Change to product and name
+class Product (models.Model): # Change to product and name
+    name                = models.CharField(max_length = 50, unique=True)
     number              = models.IntegerField()
     projectID           = models.ForeignKey(Project, on_delete=models.CASCADE)
     
     def __str__(self):
-        return str(self.number)
+        return "{} {}".format(self.name,str(self.number))

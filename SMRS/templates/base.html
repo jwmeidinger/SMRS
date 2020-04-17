@@ -16,12 +16,12 @@
 {% if request.user.darkColorScheme == "Light" %}
 <link rel="stylesheet" href="{% static 'css/lightMode.css' %}">
 
-{%elif request.user.darkColorScheme == "Dark"%}
+{% elif request.user.darkColorScheme == "Dark" %}
 
 <link rel="stylesheet" href="{% static 'css/darkMode.css' %}">
 
 <!-- If neither is set default to to light mode -->
-{%else%}
+{% else %}
 <link rel="stylesheet" href="{% static 'css/lightMode.css' %}">
 
 

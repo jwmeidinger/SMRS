@@ -3,7 +3,7 @@ import plotly.graph_objs as graph_objs
 import datetime
 
 from django.db.models import Max, Min
-from restAPI.models import Project, Review, Defect, ProjectNumber, PhaseType
+from restAPI.models import Project, Review, Defect, Product, PhaseType
 
 def AllDefectsTable(date_range=None):
     # Filter based on this range
@@ -14,12 +14,12 @@ def AllDefectsTable(date_range=None):
     if not defect_values:
         return None
     
-    if not date_range:
-        start_date = defects.aggregate(Min('dateOpened'))["dateOpened__min"]
-        end_date = defects.aggregate(Max('dateOpened'))["dateOpened__max"]
-    else:
+    if date_range:
         start_date = date_range[0]
         end_date = date_range[1]
+    else:
+        start_date = defects.aggregate(Min('dateOpened'))["dateOpened__min"]
+        end_date = defects.aggregate(Max('dateOpened'))["dateOpened__max"]
 
     cell_columns = dict()
     for key in defect_values[0].keys():
@@ -45,12 +45,12 @@ def ContainmentPieChart(date_range=None):
     if not defect_values:
         return None
     
-    if not date_range:
-        start_date = defects.aggregate(Min('dateOpened'))["dateOpened__min"]
-        end_date = defects.aggregate(Max('dateOpened'))["dateOpened__max"]
-    else:
+    if date_range:
         start_date = date_range[0]
         end_date = date_range[1]
+    else:
+        start_date = defects.aggregate(Min('dateOpened'))["dateOpened__min"]
+        end_date = defects.aggregate(Max('dateOpened'))["dateOpened__max"]
 
     post_release_defects = 0
 
@@ -79,12 +79,12 @@ def DefectsWhereFound(date_range=None, project_ID=None):
     if not defect_values:
         return None
 
-    if not date_range:
-        start_date = defects.aggregate(Min('dateOpened'))["dateOpened__min"]
-        end_date = defects.aggregate(Max('dateOpened'))["dateOpened__max"]
-    else:
+    if date_range:
         start_date = date_range[0]
         end_date = date_range[1]
+    else:
+        start_date = defects.aggregate(Min('dateOpened'))["dateOpened__min"]
+        end_date = defects.aggregate(Max('dateOpened'))["dateOpened__max"]
 
     # Get phase types
     phase_type = PhaseType.objects.all()
@@ -131,18 +131,18 @@ def DefectsWhereFound(date_range=None, project_ID=None):
 
 def ReviewsOverTime(date_range=None):
     reviews = Review.objects.all()
-    if date_range is None:
+    if date_range:
         reviews = reviews.filter(dateOpened__range=date_range)
     review_values = reviews.values("dateOpened")
     if not review_values:
         return None
 
-    if not date_range:
-        start_date = defects.aggregate(Min('dateOpened'))["dateOpened__min"]
-        end_date = defects.aggregate(Max('dateOpened'))["dateOpened__max"]
-    else:
+    if date_range:
         start_date = date_range[0]
         end_date = date_range[1]
+    else:
+        start_date = reviews.aggregate(Min('dateOpened'))["dateOpened__min"]
+        end_date = reviews.aggregate(Max('dateOpened'))["dateOpened__max"]
 
     fig = graph_objs.Figure()
 
@@ -160,8 +160,8 @@ def ReviewsOverTime(date_range=None):
         counts[review_month] += 1
 
     months = ["November", "December", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October"]
-    
-    for year, counts in counts_by_year.items():
+    max_on_graph = 0
+    for year, counts in sorted(counts_by_year.items()):
 
         # make sure the review count increments with each passing month
         for i in [10, 11, 12] + list(range(1, 10)):
@@ -174,13 +174,16 @@ def ReviewsOverTime(date_range=None):
         count_output = list(counts.values())
         count_output = count_output[-2:] + count_output[:-2]
 
+        max_on_graph = max(max_on_graph, count_output[-1])
+
         new_scatter = graph_objs.Scatter(x=months, y=count_output,
                                         name=year)
         fig.add_trace(new_scatter)
 
     fig.update_layout(title="Reviews over time",
                       xaxis_title="Months",
-                      yaxis_title="Reviews")
+                      yaxis_title="Reviews",
+                      yaxis=dict(range=[0, max_on_graph]))
     # Set x axis to show only integers
     fig.update_yaxes(
         tickformat="d"

@@ -1,17 +1,17 @@
 from django.shortcuts import render
 from rest_framework import viewsets, permissions
 
-from restAPI.models import Project, Review, Defect, ProjectNumber, PhaseType
+from restAPI.models import Project, Review, Defect, Product, PhaseType
 from account.models import Team, Account
 
 from restAPI.serializers import(
 TeamSerializer, ProjectSerializer,
 ReviewSerializer,DefectSerializer,
-ProjectNumberSerializer, PhaseTypeSerializer,
+ProductSerializer, PhaseTypeSerializer,
 UserSerializer)
 
 """
-*** This file is bringing everything together and handels all of viewing and requests.
+*** This file is bringing everything together and handles all of viewing and requests.
     Need to provide at least the queryset and serializer_class attributes.
     Permission class allows for read only or IsAuthenticatedOrReadOnly allowing for only users that have permission to edit.
     Offical : https://www.django-rest-framework.org/api-guide/viewsets/
@@ -38,9 +38,9 @@ class DefectView(viewsets.ModelViewSet):
     serializer_class    = DefectSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
-class ProjectNumberView(viewsets.ModelViewSet):
-    queryset            = ProjectNumber.objects.all()
-    serializer_class    = ProjectNumberSerializer
+class ProductView(viewsets.ModelViewSet):
+    queryset            = Product.objects.all()
+    serializer_class    = ProductSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
 class PhaseTypeView(viewsets.ModelViewSet):

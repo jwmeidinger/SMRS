@@ -24,19 +24,17 @@
             {% for item in openDefects %}
               <ul class= 'list-group '>
                 <a href="{% url 'dashboard:defectDetail' item.pk %}" style="text-decoration: none;">
-                  <li class="list-group-item" >{{item}}</li>
+                  <li class="list-group-item" >{{item}} - {{item.description}}</li>
                 </a>
               </ul>
             {% endfor %}
-
-
 
           {% else %}
           <h3 class='mb-3 font-weight-normal display-6 text-center' >Project Defects:</h3>
           {% for item in allDefects %}
             <ul class= 'list-group '>
               <a href="{% url 'dashboard:defectDetail' item.pk %}" style="text-decoration: none;">
-                <li class="list-group-item" >{{item}}</li>
+                <li class="list-group-item" >{{item}} - {{item.description}}</li>
               </a>
             </ul>
           {% endfor %}
@@ -48,7 +46,12 @@
         <form method="post">{% csrf_token %}
           <div class="form-check text-center">
             <input type="hidden" name="defectCheck" value="0"/>
-            <input class="form-check-input" type="checkbox" value="openDefect" name="defectCheck">
+            {% if openDefects %}
+            <input class="form-check-input" type="checkbox" value="notopenDefect" name="defectCheck" checked>
+            {% else %}
+            <input class="form-check-input" type="checkbox" value="openDefect" name="defectCheck" >
+            {% endif %}
+            
             <label class="form-check-label" for="defectCheck">
               Open defects only
             </label>
