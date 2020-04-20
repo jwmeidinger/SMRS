@@ -38,7 +38,8 @@ def home_view(request):
     context['DWF_graph'] = DefectsWhereFound(date_range=date_range)
     context['RoT_graph'] = ReviewsOverTime(date_range=date_range)
     context['PRD_graph'] = PostReleaseDefects(date_range=date_range)
-    context['AD_table'] = AllDefectsTable(date_range=date_range)
+    context['open_defects_table'] = OpenDefectsTable(date_range=date_range)
+    context['open_reviews_table'] = OpenReviewsTable(date_range=date_range) 
     context['containment_pie'] = ContainmentPieChart(date_range=date_range)
     
     user = request.user
