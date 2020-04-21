@@ -41,7 +41,7 @@ def home_view(request):
     context['open_defects_table'] = OpenItemsTable(date_range=date_range, is_defects=True)
     context['open_reviews_table'] = OpenItemsTable(date_range=date_range, is_defects=False) 
     context['containment_pie'] = ContainmentPieChart(date_range=date_range)
-    
+
     user = request.user
     if user.is_authenticated:
         context['message'] = 'Welcome to the Dashboard'

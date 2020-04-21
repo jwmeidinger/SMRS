@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
+{% load render_table from django_tables2 %}
 <head>
 
   <!-- <link rel="stylesheet" href="{% static 'css/master.css' %}"> -->
@@ -60,13 +61,13 @@
 <div class="soloItem">
   <h3>Open Defects Table</h3>
   <div class="graph">
-    {{ open_defects_table|safe }}
+    {% render_table open_defects_table %}
   </div>
 </div>
 <div class="soloItem">
   <h3>Open Reviews Table</h3>
   <div class="graph">
-    {{ open_reviews_table|safe }}
+    {% render_table open_reviews_table %}
   </div>
 </div>
 <div class="soloItem">

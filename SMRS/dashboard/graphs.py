@@ -4,6 +4,7 @@ import datetime
 
 from django.db.models import Max, Min
 from restAPI.models import Project, Review, Defect, Product, PhaseType
+import django_tables2 as tables
 
 def OpenItemsTable(date_range=None, is_defects=True):
     items = None
@@ -15,54 +16,26 @@ def OpenItemsTable(date_range=None, is_defects=True):
     items = items.filter(dateClosed=None)
     if date_range:
         items = items.filter(dateOpened__range=date_range)
-    if is_defects:
-        item_values = items.values("id", "dateOpened", "projectID", "whereFound", "tag", "severity", "url", "description")
-    else:
-        item_values = items.values("id", "dateOpened", "projectID", "whereFound", "tag", "severity", "url")
-    if not item_values:
-        return None
-    
-    # Create a dictionary wherer project ids correlate to project names
-    projects = Project.objects.all()
-    project_values = projects.values("id", "name")
-    project_dict = dict()
-    for project in project_values:
-        proj_id = project["id"]
-        proj_name = project["name"]
-        project_dict[proj_id] = proj_name
 
-    phase_types = PhaseType.objects.all()
-    phase_type_values = [val['phase_type'] for val in list(phase_types.values('phase_type'))]
-
-    if date_range:
-        start_date = date_range[0]
-        end_date = date_range[1]
-    else:
-        start_date = items.aggregate(Min('dateOpened'))["dateOpened__min"]
-        end_date = items.aggregate(Max('dateOpened'))["dateOpened__max"]
-
-    cell_columns = dict()
-    for key in item_values[0].keys():
-        cell_columns[key] = list()
-        for item in item_values:
-            if key == "projectID":
-                proj_id = item[key]
-                proj_name = project_dict[proj_id]
-                cell_columns[key].append(proj_name)
-            elif key == "whereFound":
-                phase_type_index = int(item[key]) - 1
-                phase_type = phase_type_values[phase_type_index]
-                cell_columns[key].append(phase_type)
+    class DefectTable(tables.Table):
+        def render_description(self, **kwargs):
+            descrip = kwargs["value"]
+            if len(descrip) > 50:
+                return f"{kwargs['value'][:50]}..."
             else:
-                cell_columns[key].append(item[key])
+                return kwargs["value"]
 
-    header = dict(values=list(item_values[0].keys()))
-    cells = dict(values=[col for col in cell_columns.values()])
-    table = graph_objs.Table(header=header, 
-                            cells=cells,)
-    fig = graph_objs.Figure(data=[table])
-    
-    return plot(fig, output_type='div', include_plotlyjs=False, show_link=False, link_text="")
+        class Meta:
+            model = Defect
+
+    class ReviewTable(tables.Table):
+        class Meta:
+            model = Review
+
+    if is_defects:
+        return DefectTable(items, exclude="dateClosed")
+    else:
+        return ReviewTable(items, exclude="dateClosed")
 
 def ContainmentPieChart(date_range=None):
     # Filter based on this range

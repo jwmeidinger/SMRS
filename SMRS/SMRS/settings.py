@@ -43,10 +43,12 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     # Open Source apps not Django
     ## json2html github = https://github.com/softvar/json2html
+    "django_tables2",
     # Team made apps
     'restAPI',
     'account',
     'dashboard',
+    
 
 ]
 
