@@ -5,14 +5,21 @@ import datetime
 from django.db.models import Max, Min
 from restAPI.models import Project, Review, Defect, Product, PhaseType
 
-def OpenDefectsTable(date_range=None):
-    # Filter based on this range
-    defects = Defect.objects.all()
-    defects = defects.filter(dateClosed=None)
+def OpenItemsTable(date_range=None, is_defects=True):
+    items = None
+    # decide between defects or reviews
+    if is_defects:
+        items = Defect.objects.all()
+    else:
+        items = Review.objects.all()
+    items = items.filter(dateClosed=None)
     if date_range:
-        defects = defects.filter(dateOpened__range=date_range)
-    defect_values = defects.values("id", "dateOpened", "projectID", "whereFound", "tag", "severity", "url", "description")
-    if not defect_values:
+        items = items.filter(dateOpened__range=date_range)
+    if is_defects:
+        item_values = items.values("id", "dateOpened", "projectID", "whereFound", "tag", "severity", "url", "description")
+    else:
+        item_values = items.values("id", "dateOpened", "projectID", "whereFound", "tag", "severity", "url")
+    if not item_values:
         return None
     
     # Create a dictionary wherer project ids correlate to project names
@@ -31,56 +38,25 @@ def OpenDefectsTable(date_range=None):
         start_date = date_range[0]
         end_date = date_range[1]
     else:
-        start_date = defects.aggregate(Min('dateOpened'))["dateOpened__min"]
-        end_date = defects.aggregate(Max('dateOpened'))["dateOpened__max"]
+        start_date = items.aggregate(Min('dateOpened'))["dateOpened__min"]
+        end_date = items.aggregate(Max('dateOpened'))["dateOpened__max"]
 
     cell_columns = dict()
-    for key in defect_values[0].keys():
+    for key in item_values[0].keys():
         cell_columns[key] = list()
-        for defect in defect_values:
+        for item in item_values:
             if key == "projectID":
-                proj_id = defect[key]
+                proj_id = item[key]
                 proj_name = project_dict[proj_id]
                 cell_columns[key].append(proj_name)
             elif key == "whereFound":
-                phase_type_index = int(defect[key]) - 1
+                phase_type_index = int(item[key]) - 1
                 phase_type = phase_type_values[phase_type_index]
                 cell_columns[key].append(phase_type)
             else:
-                cell_columns[key].append(defect[key])
+                cell_columns[key].append(item[key])
 
-    header = dict(values=list(defect_values[0].keys()))
-    cells = dict(values=[col for col in cell_columns.values()])
-    table = graph_objs.Table(header=header, 
-                            cells=cells,)
-    fig = graph_objs.Figure(data=[table])
-    
-    return plot(fig, output_type='div', include_plotlyjs=False, show_link=False, link_text="")
-
-def OpenReviewsTable(date_range=None):
-    # Filter based on this range
-    reviews = Review.objects.all()
-    reviews = reviews.filter(dateClosed=None)
-    if date_range:
-        reviews = reviews.filter(dateOpened__range=date_range)
-    review_values = reviews.values()
-    if not review_values:
-        return None
-    
-    if date_range:
-        start_date = date_range[0]
-        end_date = date_range[1]
-    else:
-        start_date = reviews.aggregate(Min('dateOpened'))["dateOpened__min"]
-        end_date = reviews.aggregate(Max('dateOpened'))["dateOpened__max"]
-
-    cell_columns = dict()
-    for key in review_values[0].keys():
-        cell_columns[key] = list()
-        for review in review_values:
-            cell_columns[key].append(review[key])
-
-    header = dict(values=list(review_values[0].keys()))
+    header = dict(values=list(item_values[0].keys()))
     cells = dict(values=[col for col in cell_columns.values()])
     table = graph_objs.Table(header=header, 
                             cells=cells,)
