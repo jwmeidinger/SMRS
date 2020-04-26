@@ -22,8 +22,9 @@ def home_view(request):
 
     if request.POST:
         start_date, end_date = request.POST["startDate"], request.POST["endDate"]
-        # Format dates so they can be put into the graphs
-        start_date, end_date = formatDates(start_date=start_date, end_date=end_date)
+
+    # Format dates so they can be put into the graphs
+    start_date, end_date = formatDates(start_date=start_date, end_date=end_date)
 
     if start_date and end_date:
         date_range = [start_date, end_date]
@@ -130,6 +131,7 @@ def projectDetail_view(request, pk):
     context['allReviews'] = allReviews
     context['projectName'] = project_detail.name
     context['DWF_graph'] = DefectsWhereFound(project_ID=pk)
+    context['containment_pie'] = ContainmentPieChart(project_ID=pk)
     return render(request, "dashboard/project_detail.html", context)
 
 '''

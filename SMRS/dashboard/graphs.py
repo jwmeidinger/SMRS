@@ -37,12 +37,13 @@ def OpenItemsTable(date_range=None, is_defects=True):
     else:
         return ReviewTable(items, exclude="dateClosed")
 
-def ContainmentPieChart(date_range=None):
+def ContainmentPieChart(date_range=None, project_ID=None):
     # Filter based on this range
     defects = Defect.objects.all()
     if date_range:
         defects = defects.filter(dateOpened__range=date_range)
-
+    if project_ID:
+        defects = defects.filter(projectID=project_ID)
     defect_values = defects.values("dateOpened", "whereFound")
     if not defect_values:
         return None
@@ -94,27 +95,46 @@ def DefectsWhereFound(date_range=None, project_ID=None):
 
     # Create figure
     fig = graph_objs.Figure()
-    defects_by_year = dict()
 
-    # Loop per year
-    for i in range(start_date.year, end_date.year+1):
-        defects_by_year[i] = dict()
-        for j in range(len(phase_type_values)):
-            defects_by_year[i][j] = 0
+    if project_ID:
+        # Show all defects for individual project
+        defects_by_phase = dict()
 
-    # find which phase each defect falls in
-    for defect in defect_values:
-        year = getFiscalYear(defect["dateOpened"])
-        defects_by_year[year][defect["whereFound"]-1] += 1
-        
-    # Make bar graph scatter for each year
-    for year, counts in defects_by_year.items():
+        for i in range(len(phase_type_values)):
+            defects_by_phase[i] = 0
+            
+        # find which phase each defect falls in
+        for defect in defect_values:
+            defects_by_phase[defect["whereFound"]-1] += 1
 
-        new_scatter = graph_objs.Bar(x=phase_type_values, y=list(counts.values()),
-            name=year,
+        new_scatter = graph_objs.Bar(x=phase_type_values, y=list(defects_by_phase.values()),
             opacity=0.8,
         )
         fig.add_trace(new_scatter)
+
+    else:
+        # Split defects by year
+        defects_by_year = dict()
+
+        # Loop per year
+        for i in range(start_date.year, end_date.year+1):
+            defects_by_year[i] = dict()
+            for j in range(len(phase_type_values)):
+                defects_by_year[i][j] = 0
+
+        # find which phase each defect falls in
+        for defect in defect_values:
+            year = getFiscalYear(defect["dateOpened"])
+            defects_by_year[year][defect["whereFound"]-1] += 1
+            
+        # Make bar graph scatter for each year
+        for year, counts in defects_by_year.items():
+
+            new_scatter = graph_objs.Bar(x=phase_type_values, y=list(counts.values()),
+                name=year,
+                opacity=0.8,
+            )
+            fig.add_trace(new_scatter)
 
     # Set figure details
     fig.update_layout(title="Defects Where Found",
@@ -251,12 +271,12 @@ def formatDates(start_date, end_date):
     if not end_date:
         end_date = datetime.date.today()
 
-    # Set default start date to be one year before end date (if applicable)
+    # Set default start date to be three years before end date (if applicable)
     if not start_date:
         if type(end_date) != datetime.date:
             end_date = datetime.datetime.strptime(end_date, '%Y-%m-%d').date()
         start_date = end_date
-        start_date = start_date.replace(year=end_date.year-1)
+        start_date = start_date.replace(year=end_date.year-3)
     
     # Convert strings to dates
     if type(end_date) != datetime.date:

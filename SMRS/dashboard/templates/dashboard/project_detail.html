@@ -66,9 +66,17 @@
         {% endif %}
       </div>
   </div>
-  <div class="row">
-    <div class="graph">
-      {{ DWF_graph|safe  }}
+    <div class="soloItem">
+      <h3>Number of Defects Per Release</h3>
+      <div class="graph">
+        {{ DWF_graph|safe  }}
+      </div>
+    </div>
+    <div class="soloItem">
+      <h3>Post Release Containment</h3>
+      <div class="graph">
+        {{ containment_pie|safe }}
+      </div>
     </div>
   </div>
 </div>
