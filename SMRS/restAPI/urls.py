@@ -30,7 +30,7 @@ router.register('Review', ReviewView)
 router.register('Defect', DefectView)
 router.register('Product', ProductView)
 router.register('PhaseType', PhaseTypeView)
-router.register('Users',UserView)
+router.register('Users', UserView)
 
 ## The .urls attribute on a router instance is simply a standard list of URL patterns
 ## If using namespacing with hyperlinked serializers you'll also need to ensure that any view_name parameters on the serializers correctly reflect the namespace.

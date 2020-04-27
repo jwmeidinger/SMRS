@@ -43,8 +43,10 @@ class ProductSerializer(serializers.ModelSerializer):
         model  = Product
         fields = ('id','number', 'projectID')
         
+## If you want to add users to the rest API you need to have all of the fields
+## The password will be a hash so no worries there.        
 class UserSerializer(serializers.ModelSerializer):
    class Meta:
         model = Account
-        fields = ('name',)
+        fields = ('name', )
 
