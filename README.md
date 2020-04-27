@@ -23,7 +23,7 @@ This project is part of the John Deere Standardized Metrics Reporting and Storag
 
 The API consists of:
 
-- Get request to obtain data from Team, Project, Review, Defects, ProductNumber, PhaseType and Account list.
+- Get request to obtain data from Team, Project, Review, Defects, Product, PhaseType and Account list.
 - Ability to grant or delete Tokens as admins privileges.
 - Ability for POST requests for authenticated users can create new objects such as Defects or Projects.
 - Ability for DELETE requests for authenticated users can remove objects such as Defects or Projects.
@@ -72,7 +72,7 @@ If modules are missing from the environment this is how you can install the miss
 
 ## API Usage
 
-This example demonstrates how to make requests to the running server
+This example demonstrates how to make requests to the running server (This can be found in the scripts/testRequest.py)
 
 ```python
 import requests
@@ -115,11 +115,13 @@ r = requests.delete('http://127.0.0.1:8000/restAPI/Team/{}'.format(item), header
 print(r.text)
 
 ```
-Let's just say you just got this project. This is how you would set this up for easy uses.
+Let's just say you just got this project. This is how you would set this up for easy use.
 
-1. ) Create a python script that gets all the infromation from all the repos. Gather all the info into a pandas table. lastly, For loop the requests into the server. A example file is in the scripts called dumdata.py
+1. ) Create a python script that gets all the infromation from all the repos. Gather all the info into a pandas table. lastly, For loop the requests into the server. A example file is in the scripts/dumdata.py
 
 2. ) linux servers can run python scripts everyday or week to update the server.
+
+3. ) If you want to add new urls or add/change the objects look below
 
 ## Frequently Asked Questions
 
@@ -133,9 +135,20 @@ Let's just say you just got this project. This is how you would set this up for 
 
 2. ) Once the file is deleted you need to migrate which creates the database with the requirements of all the models.py files.
 
+        \Desktop\SMRS\SMRS>python makemigrations account
         \Desktop\SMRS\SMRS>python migrate
 
 3. ) Lastly, create a new super user. (Q above)
+
+### How do I add a large number of users at one time?
+
+There is three ways that I would suggest doing this. 
+
+1. ) (Fastest way) You can add users to the rest API before the server is fully depolyed with a request script and remove the url once all the users are added.
+
+2. ) (Half speed) You can create a script that interacts with the django models.py and do a bulk create. I would watch this video for a [crash-course](https://www.youtube.com/watch?v=E8y_6S2Fc5s)
+
+3. ) (Slowest) lastly, you can try to add the users from the [django shell](https://tutorial.djangogirls.org/en/django_orm/)
 
 ### How do you make changes to the database?
 
@@ -157,14 +170,13 @@ There are three ways to add data to the database.
 
 1. ) First way of adding items is through the admin portal which can be done at doman.com/admin/
 
-2. ) The second way and the fastest way is through the REST API which more info can be found [Above](#usage). We found the best way to do this is to put info into a pandas table and using a for loop going through each row with a request at the bottom. A mock data example can be found \Desktop\SMRS\scripts\dumdata.py . This can not be done with users unless you add it to the REST API.
+2. ) The second way and the fastest way is through the REST API which more info can be found [Above](#api-usage). We found the best way to do this is to put info into a pandas table and using a for loop going through each row with a request at the bottom. A mock data example can be found \Desktop\SMRS\scripts\dumdata.py . This can not be done with users unless you add it to the REST API.
 
 3. ) The last way to create new entries is through the [Shell](https://docs.djangoproject.com/en/3.0/ref/django-admin/#shell).
 
 ### How do you add and remove tokens?
 
-Every user should have a token when there account is created. If you do not want this look at the next question below.
-To remove a token from someone you can do that from the admin portal which is doman.com/admin/ .
+Every user should have a token when there account is created. If you do not want this look at the next question below. To remove a token from someone you can do that from the admin portal which is doman.com/admin/ .
 
 ### I don't want everyone to have a token. How do I change that?
 
@@ -172,7 +184,7 @@ To simply put you can remove or comment out the last function on the SMRS/SMRS/A
 
 If the users are already created you can still keep all the users and remove the tokens by simply doing the question above.
 
-### How do you add a new item to the rest API?
+### How do you Add/Change/Remove a item to the rest API?
 
 I find it easier to watch then read so here is a good video that I used on [YouTube](https://youtu.be/263xt_4mBNc?t=226) but to make it short and sweet. The Rest-framework uses four main items. More info can be found in the resources below.
 
@@ -192,11 +204,13 @@ Below is the command to create the app but you also need to include it into the 
 
 ### I changed the static files but it's not changing.
 
-There is two reason this happens. One, you need to run this command when you change any static file.
+There is two reason this happens. 
 
-    \Desktop\SMRS\SMRS>python manage.py collectstatic
+1. ) You need to run this command when you change any static file.
 
-Two, sometimes when using chrome it holds onto the css to load the pages faster and this can be fixed by using incognito or removing them in the chrome settings.
+       \Desktop\SMRS\SMRS>python manage.py collectstatic
+
+2. ) Sometimes when using chrome it holds onto the css to load the pages faster and this can be fixed by using incognito or removing them in the Chrome settings.
 
 ## Documentation and Resources
 
